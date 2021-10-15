@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import { Position } from "../AmazeOnlineModels/position";
 import { Sticker } from "../AmazeOnlineModels/grid-sticker";
+import { StickerDTO } from "../AmazeOnlineModels/grid-sticker-DTO";
 
 
 export interface Player {
@@ -84,14 +85,14 @@ export const gameSlice = createSlice({
             state.game_map.push(action.payload);
             
         },
-        removeStickerFromGameMap: (state , action : PayloadAction<Sticker>) => {
-            if(state.game_map.length < 19 * 19)
-            state.game_map.push(action.payload);
+        removeStickerFromGameMap: (state , action : PayloadAction<StickerDTO>) => {
+            
+            state.game_map[action.payload.index].image = '';
             
         },
-        replaceStickerOnMap: (state , action : PayloadAction<Sticker>) => {
-            if(state.game_map.length < 19 * 19)
-            state.game_map.push(action.payload);
+        replaceStickerOnMap: (state , action : PayloadAction<StickerDTO>) => {
+            
+            state.game_map[action.payload.index].image = action.payload.image;
             
         },
         // Used when resetting the state
@@ -116,7 +117,11 @@ export const gameSlice = createSlice({
 export const {
     setGame,
     resetGame,
-    countDown
+    countDown,
+    appendStickerToGameMap,
+    replaceStickerOnMap,
+    removeStickerFromGameMap
+
 } = gameSlice.actions;
 
 // Export the state of the entire slice to be referenced in the components

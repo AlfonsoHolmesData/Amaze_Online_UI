@@ -6,7 +6,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { onUpdateGame } from '../graphql/subscriptions';
 import { clearScreenDown } from 'readline';
 import { Position } from '../AmazeOnlineModels/position';
-import AmazePlayerComponent from './AmazeBoardGeneratorComponent';
+import AmazePlayerComponent from './AmazePlayerComponent';
 import { moveDown, moveLeft, moveRight, moveUp, playerState } from '../AmazeOnlineStateSlices/amaze-player-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { countDown, gameState } from '../AmazeOnlineStateSlices/amaze-game-slice';
@@ -161,6 +161,7 @@ import { countDown, gameState } from '../AmazeOnlineStateSlices/amaze-game-slice
 
             {/*this is the player avitar */ }
             <AmazePlayerComponent/> 
+            <BoardGeneratorComponent />
             <div className={classes.button_div}  > 
             <h1 className={classes.labels}>C o n t r o l s :</h1>
               <Button variant="contained"  className={classes.button_for_up} onClick={HandleMoveUp}  > <b>U p</b>  </Button>

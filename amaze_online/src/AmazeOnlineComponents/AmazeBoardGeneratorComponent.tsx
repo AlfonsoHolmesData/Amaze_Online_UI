@@ -1,14 +1,19 @@
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux"
-import { gameState } from "../AmazeOnlineStateSlices/amaze-game-slice";
+import { Sticker } from "../AmazeOnlineModels/grid-sticker";
+import { Position } from "../AmazeOnlineModels/position";
+import { appendStickerToGameMap, gameState } from "../AmazeOnlineStateSlices/amaze-game-slice";
 import {  playerSlice, playerState } from "../AmazeOnlineStateSlices/amaze-player-slice"
 
-function PlayerComponent (props : any)  {
+function BoardGeneratorComponent (props : any)  {
     
     const playerinfo = useSelector(playerState);
-    const gameInfo = useSelector(gameState);
+    const gameinfo = useSelector(gameState);
     const dispatch = useDispatch();
+    let cloud_emoji : string = '&#x2601;';
+    let invader_emoji : string = '&#x1F47E;';
+    let money_emoji : string = '&#x1F4B5;';
     const useStyles = makeStyles((theme) => ({
         root: {
           position: 'relative',
@@ -46,16 +51,37 @@ function PlayerComponent (props : any)  {
        }
       }));
       const classes = useStyles();
-    
+
+    const generateBoard = () => {
+      for (let x = 0; x < 19; x++) {
+        for (let y = 0; y < 19; y++) {
+           if(playerinfo.player.current_position.x == x && playerinfo.player.current_position.y == y)
+           {
+             console.log('skipping ' , x , ' ' , y , ' ' , 'player is occupying that space');
+           }
+          //  if(gameinfo.destination.x == x && gameinfo.destination.y == y)
+          //  {
+          //    console.log('skipping ' , x , ' ' , y , ' ' , 'destination is occupying that space');
+          //  }
+            dispatch(appendStickerToGameMap({coordinates : {x: x  , y: y } as Position , image : cloud_emoji , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute' }));
+        }
+      }
+    }
+
+    generateBoard();
      
     return(
         <>
-        {
-          
+        {gameinfo.game_map.map((S : Sticker) =>{
+          return(
+            <div  style={{ position : 'absolute',  width :` ${S.width_percentage}%`, height : ` ${S.hieght_percentage}%`, top : S.coordinates.y , left: S.coordinates.x }}>{S.image}</div>
+          )
+        
+        })
         }
       
         </>
     );
 };
 
-export default PlayerComponent;
+export default BoardGeneratorComponent;
