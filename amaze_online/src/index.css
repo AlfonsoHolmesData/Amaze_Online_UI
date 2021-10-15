@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#button_for_Home {
+  background-color: '#DBDFE7';
+  color:'white';
+  margin: '.5em';
+}

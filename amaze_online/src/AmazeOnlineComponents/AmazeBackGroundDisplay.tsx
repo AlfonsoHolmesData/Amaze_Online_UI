@@ -23,6 +23,9 @@ import Button from '@material-ui/core/Button';
       },
          display_span : {
           color:'orange'
+        },
+         display_span1 : {
+          color:'blue'
         }
     }));
     
@@ -31,7 +34,7 @@ import Button from '@material-ui/core/Button';
     return(
       <>
         <div className={classes.root}>
-            <h1>Amaze <span className={classes.display_span} >O</span>nline</h1>
+            <h1>A m a z e  <span className={classes.display_span} >O</span> n l i n e</h1>
         </div> 
       </>
     );
