@@ -1,11 +1,13 @@
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux"
+import { gameState } from "../AmazeOnlineStateSlices/amaze-game-slice";
 import {  playerSlice, playerState } from "../AmazeOnlineStateSlices/amaze-player-slice"
 
 function PlayerComponent (props : any)  {
     
     const playerinfo = useSelector(playerState);
+    const gameInfo = useSelector(gameState);
     const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -48,11 +50,8 @@ function PlayerComponent (props : any)  {
      
     return(
         <>
-        {playerinfo.player.current_position.x >= 500 ||  playerinfo.player.current_position.y >= 500 || playerinfo.player.current_position.x < 0 ||  playerinfo.player.current_position.y < 0
-         ?
-            <div className={classes.player} style={{top : 0, left: 0}}>&#x1F4A9;</div>
-         :
-            <div className={classes.player} style={{ top : playerinfo.player.current_position.y , left: playerinfo.player.current_position.x}}>&#x1F451;</div>
+        {
+          
         }
       
         </>

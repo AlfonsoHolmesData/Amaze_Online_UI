@@ -6,7 +6,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { onUpdateGame } from '../graphql/subscriptions';
 import { clearScreenDown } from 'readline';
 import { Position } from '../AmazeOnlineModels/position';
-import AmazePlayerComponent from './AmazePlayerComponent';
+import AmazePlayerComponent from './AmazeBoardGeneratorComponent';
 import { moveDown, moveLeft, moveRight, moveUp, playerState } from '../AmazeOnlineStateSlices/amaze-player-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { countDown, gameState } from '../AmazeOnlineStateSlices/amaze-game-slice';
@@ -15,7 +15,7 @@ import { countDown, gameState } from '../AmazeOnlineStateSlices/amaze-game-slice
   const history = useHistory();
   const dispatch = useDispatch();
   const gameinfo = useSelector(gameState);
-
+  const playerinfo = useSelector(playerState);
   
 
     const useStyles = makeStyles((theme) => ({
@@ -97,7 +97,7 @@ import { countDown, gameState } from '../AmazeOnlineStateSlices/amaze-game-slice
      }
     }));
     const classes = useStyles();
-    const playerinfo = useSelector(playerState);
+    
     
   
     const HandleMoveRight = () =>
@@ -158,6 +158,7 @@ import { countDown, gameState } from '../AmazeOnlineStateSlices/amaze-game-slice
       <h1 className={classes.labels} style={{ position : 'absolute', left: '1%'}} >I n s t r u c t i o n :</h1>
       <h1 className={classes.labels} >T i m e : {gameinfo.match_time}</h1>
         <div id="gameCanvas"   className={classes.root_canvas} >
+
             {/*this is the player avitar */ }
             <AmazePlayerComponent/> 
             <div className={classes.button_div}  > 

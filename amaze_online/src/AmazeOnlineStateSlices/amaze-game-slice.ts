@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import { Position } from "../AmazeOnlineModels/position";
+import { Sticker } from "../AmazeOnlineModels/grid-sticker";
 
 
 export interface Player {
@@ -25,7 +26,7 @@ interface State {
 	destination: Position,
 	start_position: Position,
 	runner_psotion: Position,
-	game_map: [],
+	game_map: Sticker[],
 	current_instruction: string,
 	match_time: number
 }
@@ -39,7 +40,7 @@ const initialState: State = {
 	destination: {x: 0, y: 0 } as Position,
 	start_position: {x: 0, y: 0 } as Position,
 	runner_psotion: {x: 0, y: 0 } as Position,
-	game_map: [],
+	game_map: [] as Sticker[],
 	current_instruction: '',
 	match_time: 60
 };
@@ -78,7 +79,21 @@ export const gameSlice = createSlice({
             state.match_time -= 1;
             
         },
-
+        appendStickerToGameMap: (state , action : PayloadAction<Sticker>) => {
+            if(state.game_map.length < 19 * 19)
+            state.game_map.push(action.payload);
+            
+        },
+        removeStickerFromGameMap: (state , action : PayloadAction<Sticker>) => {
+            if(state.game_map.length < 19 * 19)
+            state.game_map.push(action.payload);
+            
+        },
+        replaceStickerOnMap: (state , action : PayloadAction<Sticker>) => {
+            if(state.game_map.length < 19 * 19)
+            state.game_map.push(action.payload);
+            
+        },
         // Used when resetting the state
         resetGame: (state) => {
             state.id = '';
