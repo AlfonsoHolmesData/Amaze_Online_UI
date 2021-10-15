@@ -17,7 +17,7 @@ interface iGameSettingsModal {
 
  function GameSettingsModal (props : any) {
   const history = useHistory();
-  const game = useSelector(gameState);
+  
   const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({
       root: {

@@ -35,10 +35,10 @@ export const playerSlice = createSlice({
         // Define action names here: pass in the state, define how the state is manipulated within the reducer
         
         // Used when establishing a new game
-        moveHozizontal: (state) => {
+        moveHozizontal: (state , action :PayloadAction<number>) => {
             // state = action.payload;
             state.head = state.bodyTranslate[state.bodyTranslate.length - 1];
-            state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x  + 1 ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y } as Position;
+            state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x  + action.payload ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y } as Position;
             state.player.current_position = state.head;
             state.bodyTranslate.push(state.head);
             state.bodyTranslate.shift();

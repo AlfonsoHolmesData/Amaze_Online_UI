@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import thunk from 'redux-thunk';
 import {createStore, combineReducers} from 'redux'
 import playerReducer from "../AmazeOnlineStateSlices/amaze-player-slice";
-import gameReducer from "../AmazeOnlineStateSlices/amaze-player-slice";
+import gameReducer from "../AmazeOnlineStateSlices/amaze-game-slice";
 
 
 export const store = configureStore({

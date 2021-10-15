@@ -72,6 +72,12 @@ export const gameSlice = createSlice({
             state.match_time = action.payload.match_time;
             console.log('Setting ', state, ' to ', action.payload)
         },
+        countDown: (state) => {
+            // state = action.payload;
+            if(state.match_time > 0)
+            state.match_time = state.match_time - 1;
+            
+        },
 
         // Used when resetting the state
         resetGame: (state) => {
@@ -94,7 +100,8 @@ export const gameSlice = createSlice({
 // Export the actions/reducers to be imported into a component and dispatched from component
 export const {
     setGame,
-    resetGame
+    resetGame,
+    countDown
 } = gameSlice.actions;
 
 // Export the state of the entire slice to be referenced in the components

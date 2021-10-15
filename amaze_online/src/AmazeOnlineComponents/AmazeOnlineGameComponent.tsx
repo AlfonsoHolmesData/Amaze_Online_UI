@@ -9,13 +9,11 @@ import { Position } from '../AmazeOnlineModels/position';
 import AmazePlayerComponent from './AmazePlayerComponent';
 import { moveHozizontal, playerState } from '../AmazeOnlineStateSlices/amaze-player-slice';
 import { useDispatch, useSelector } from 'react-redux';
+import { countDown, gameState } from '../AmazeOnlineStateSlices/amaze-game-slice';
 
  function GameComponent (this: any, props : any) {
   const history = useHistory();
-  const [x , setX] = useState(0);
-  let x_pos : number = 0;
-  let y_pos : number = 0;
-  let playerPos : Position[] = [{x : 0 as number, y : 0 as number}] as Position[];
+
 
   
 
@@ -30,6 +28,12 @@ import { useDispatch, useSelector } from 'react-redux';
         height : '100px',
         marginTop:'3%'
        
+      },
+      root_timer: {
+        textAlign : 'center',
+        color:'#DBDFE7',
+        fontFamily: 'Poiret One'
+     
       },
       root_canvas: {
         position: 'relative',
@@ -62,12 +66,22 @@ import { useDispatch, useSelector } from 'react-redux';
     }));
     const classes = useStyles();
     const playerinfo = useSelector(playerState);
+    
     const dispatch = useDispatch();
+    const gameinfo = useSelector(gameState);
     const clearScreen = () =>
     {
-      dispatch(moveHozizontal());
      
+      dispatch(moveHozizontal(5));
       console.log(playerinfo.player.current_position , 'pos');
+     
+    }
+
+    const timer = () =>
+    {
+     
+      dispatch(countDown());
+      console.log(gameinfo.match_time, 'time');
      
     }
     //game loop
@@ -75,10 +89,10 @@ import { useDispatch, useSelector } from 'react-redux';
     {
        
         
-      setInterval(clearScreen, 1000/speed);
+      setInterval(timer, 1000/speed);
     }
 
-    startSimulation(3);
+    startSimulation(1);
     // Subscribe to creation of Todo
     // const subscription = API.graphql(
     //     graphqlOperat)ion(onUpdateGame)
@@ -98,15 +112,23 @@ import { useDispatch, useSelector } from 'react-redux';
     return(
       <>
       <div style={{display: 'flex'}}>
-     <div id="gameCanvas"   className={classes.root_canvas} >
-         {/*this is the player avitar */ }
-         <AmazePlayerComponent/>
-     </div>
-     <div id="gameCanvas"   className={classes.root} >
-        <h1>U P</h1>
-     </div>
-     </div>
-       
+      <h1 className={classes.root_timer} >T i m e : {gameinfo.match_time}</h1>
+        <div id="gameCanvas"   className={classes.root_canvas} >
+            {/*this is the player avitar */ }
+            <AmazePlayerComponent/>
+            <div>  
+              <Button variant="contained"  className={classes.button_for_Home} > <b>Up</b>  </Button>
+                <br/>
+                <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={clearScreen} > <b>Left</b>  </Button>
+                <br/>
+              </div>
+        </div>
+
+        <div id="gameCanvas"   className={classes.root} >
+            <h1>U P</h1>
+        </div>
+
+      </div>
       </>
     );
 };

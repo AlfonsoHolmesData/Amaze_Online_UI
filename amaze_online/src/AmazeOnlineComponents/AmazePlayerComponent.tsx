@@ -48,7 +48,7 @@ function PlayerComponent (props : any)  {
      
     return(
         <>
-        {playerinfo.player.current_position.x >  100 ||  playerinfo.player.current_position.x >  100 
+        {playerinfo.player.current_position.x > 600||  playerinfo.player.current_position.x > 600
          ?
             <div className={classes.player} style={{top : 0, left: 0}}></div>
          :
