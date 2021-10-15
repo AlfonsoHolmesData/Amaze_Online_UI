@@ -75,7 +75,7 @@ export const gameSlice = createSlice({
         countDown: (state) => {
             // state = action.payload;
             if(state.match_time > 0)
-            state.match_time = state.match_time - 1;
+            state.match_time -= 1;
             
         },
 

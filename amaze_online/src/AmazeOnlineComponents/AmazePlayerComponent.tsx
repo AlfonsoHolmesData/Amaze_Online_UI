@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux"
-import { moveHozizontal, playerSlice, playerState } from "../AmazeOnlineStateSlices/amaze-player-slice"
+import {  playerSlice, playerState } from "../AmazeOnlineStateSlices/amaze-player-slice"
 
 function PlayerComponent (props : any)  {
     
@@ -48,11 +48,11 @@ function PlayerComponent (props : any)  {
      
     return(
         <>
-        {playerinfo.player.current_position.x > 600||  playerinfo.player.current_position.x > 600
+        {playerinfo.player.current_position.x >= 500||  playerinfo.player.current_position.x >= 500
          ?
-            <div className={classes.player} style={{top : 0, left: 0}}></div>
+            <div className={classes.player} style={{top : 0, left: 0}}>&#x1F4A9;</div>
          :
-            <div className={classes.player} style={{top : playerinfo.player.current_position.y, left: playerinfo.player.current_position.x}}></div>
+            <div className={classes.player} style={{bottom : playerinfo.player.current_position.y, left: playerinfo.player.current_position.x}}>&#x1F451;</div>
         }
       
         </>

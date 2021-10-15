@@ -17,8 +17,7 @@ import AmazeOnlineGameSettingsModal from './AmazeOnlineGameSettingsModal';
         alignContent : 'center',
         textAlign : 'center',
         marginTop:'10%'
-      },
-      
+      }, 
       welcome_page: {
         alignContent : 'center',
         textAlign : 'center',
@@ -52,6 +51,7 @@ import AmazeOnlineGameSettingsModal from './AmazeOnlineGameSettingsModal';
             <br/>
             <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={toggelModal} > <b>Game Settings</b>  </Button>
             <Modal
+                
                 open={Modal_IsOpen}
                 onClose={() => {
                     SetModal_IsOpen(false);

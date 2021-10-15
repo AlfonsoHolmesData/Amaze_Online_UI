@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
         fontSize:'3em',
      
       },
+      
       welcome_page: {
         alignContent : 'center',
         textAlign : 'center'

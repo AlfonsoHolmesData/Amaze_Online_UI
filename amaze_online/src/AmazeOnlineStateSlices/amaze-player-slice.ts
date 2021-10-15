@@ -34,8 +34,8 @@ export const playerSlice = createSlice({
     reducers: {
         // Define action names here: pass in the state, define how the state is manipulated within the reducer
         
-        // Used when establishing a new game
-        moveHozizontal: (state , action :PayloadAction<number>) => {
+        // Used used to move player right by specified step
+        moveRight: (state , action :PayloadAction<number>) => {
             // state = action.payload;
             state.head = state.bodyTranslate[state.bodyTranslate.length - 1];
             state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x  + action.payload ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y } as Position;
@@ -45,10 +45,30 @@ export const playerSlice = createSlice({
 
             
         },
-        moveVertical: (state, action) => {
+        // Used used to move player left by specified step
+        moveLeft: (state , action :PayloadAction<number>) => {
             // state = action.payload;
             state.head = state.bodyTranslate[state.bodyTranslate.length - 1];
-            state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y + 1  } as Position;
+            state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x  - action.payload ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y } as Position;
+            state.player.current_position = state.head;
+            state.bodyTranslate.push(state.head);
+            state.bodyTranslate.shift();
+
+            
+        },
+        // Used used to move player  up by specified step
+        moveUp: (state,  action :PayloadAction<number>) => {
+            // state = action.payload;
+            state.head = state.bodyTranslate[state.bodyTranslate.length - 1];
+            state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y  + action.payload  } as Position;
+            state.bodyTranslate.push(state.head);
+            state.bodyTranslate.shift();
+        }, 
+        // Used used to move down player by specified step 
+        moveDown: (state,  action :PayloadAction<number>) => {
+            // state = action.payload;
+            state.head = state.bodyTranslate[state.bodyTranslate.length - 1];
+            state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y  - action.payload } as Position;
             state.bodyTranslate.push(state.head);
             state.bodyTranslate.shift();
         }, 
@@ -65,8 +85,7 @@ export const playerSlice = createSlice({
 
 // Export the actions/reducers to be imported into a component and dispatched from component
 export const {
-    moveHozizontal,
-    moveVertical
+    moveRight , moveLeft , moveDown , moveUp , teleprtTo
 } = playerSlice.actions;
 
 // Export the state of the entire slice to be referenced in the components

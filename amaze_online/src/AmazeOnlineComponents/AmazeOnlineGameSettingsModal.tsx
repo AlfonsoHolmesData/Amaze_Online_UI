@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
-import { Box, TextField } from '@material-ui/core';
+import { Box, Container, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { gameState, setGame } from '../AmazeOnlineStateSlices/amaze-game-slice';
 import { Position } from '../AmazeOnlineModels/position';
@@ -20,7 +20,8 @@ interface iGameSettingsModal {
   
   const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({
-      root: {
+      modal_template: {
+        boarder: 'solid 2em blue',
         position: 'relative',
         background: 'white',
         boxShadow: 'black 20px 10px 50px',
@@ -62,7 +63,7 @@ interface iGameSettingsModal {
 
     return(
       <>
-        <Box className={classes.root}>
+        <Container className={classes.modal_template}>
         <br/>
         <br/>
             <h1>Game Settings</h1>
@@ -72,7 +73,7 @@ interface iGameSettingsModal {
             <TextField id="standard-basic" label="Match Time" className={classes.form_setting}/>
             <br/>
             <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}> <b>Create</b>  </Button>
-        </Box>
+        </Container>
       </>
     );
 };
