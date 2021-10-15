@@ -58,14 +58,17 @@ function BoardGeneratorComponent (props : any)  {
            if(playerinfo.player.current_position.x == x && playerinfo.player.current_position.y == y)
            {
              console.log('skipping ' , x , ' ' , y , ' ' , 'player is occupying that space');
+             continue;
            }
           //  if(gameinfo.destination.x == x && gameinfo.destination.y == y)
           //  {
           //    console.log('skipping ' , x , ' ' , y , ' ' , 'destination is occupying that space');
           //  }
-            dispatch(appendStickerToGameMap({coordinates : {x: x  , y: y } as Position , image : cloud_emoji , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute' }));
+          console.log('generating...' ,  x * 25 , ' ' , y * 25 , ' ' );
+            dispatch(appendStickerToGameMap({coordinates : {x: x * 25 , y: y * 25 } as Position , image : cloud_emoji , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute' }));
         }
       }
+      console.log('board complete');
     }
 
     generateBoard();
@@ -74,7 +77,7 @@ function BoardGeneratorComponent (props : any)  {
         <>
         {gameinfo.game_map.map((S : Sticker) =>{
           return(
-            <div  style={{ position : 'absolute',  width :` ${S.width_percentage}%`, height : ` ${S.hieght_percentage}%`, top : S.coordinates.y , left: S.coordinates.x }}>{S.image}</div>
+            <div  style={{ position : 'absolute',  width :` ${S.width_percentage}%`, height : ` ${S.hieght_percentage}%`, top : S.coordinates.y , left: S.coordinates.x }}>&#x2601;</div>
           )
         
         })

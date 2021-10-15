@@ -10,6 +10,7 @@ import AmazePlayerComponent from './AmazePlayerComponent';
 import { moveDown, moveLeft, moveRight, moveUp, playerState } from '../AmazeOnlineStateSlices/amaze-player-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { countDown, gameState } from '../AmazeOnlineStateSlices/amaze-game-slice';
+import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
 
  function GameComponent (this: any, props : any) {
   const history = useHistory();
