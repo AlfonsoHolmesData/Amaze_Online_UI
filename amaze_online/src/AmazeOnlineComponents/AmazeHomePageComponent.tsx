@@ -2,12 +2,18 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
+import { authState } from '../AmazeOnlineStateSlices/auth-slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { appState, changeToPReGameDisplay } from '../AmazeOnlineStateSlices/app-state-slice';
 
  function HomePage (props : any) {
     
     const history = useHistory();
-
+    const auth = useSelector(authState);
+    const app_state = useSelector(appState);
+    const dispatch = useDispatch();
     const switch_to_game = () => {
+      dispatch(changeToPReGameDisplay);
         history.push('/creategame');
     }
 
@@ -41,6 +47,7 @@ import { useHistory } from 'react-router-dom';
 
     return(
       <>
+      { 
         <div className={classes.root}>
             <Button variant="contained"  className={classes.button_for_Home} > <b>A b <span className={classes.display_span} > O</span> u t</b>  </Button>
             <br/>
@@ -48,6 +55,9 @@ import { useHistory } from 'react-router-dom';
             <br/>
             <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}> <b>H <span className={classes.display_span} >O</span> w T <span className={classes.display_span} >O</span> P l a y</b>  </Button>
         </div>
+        
+        }
+
       </>
     );
 };

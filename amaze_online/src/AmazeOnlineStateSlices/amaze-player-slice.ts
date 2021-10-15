@@ -61,6 +61,7 @@ export const playerSlice = createSlice({
             // state = action.payload;
             state.head = state.bodyTranslate[state.bodyTranslate.length - 1];
             state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y  + action.payload  } as Position;
+            state.player.current_position = state.head;
             state.bodyTranslate.push(state.head);
             state.bodyTranslate.shift();
         }, 
@@ -69,6 +70,7 @@ export const playerSlice = createSlice({
             // state = action.payload;
             state.head = state.bodyTranslate[state.bodyTranslate.length - 1];
             state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y  - action.payload } as Position;
+            state.player.current_position = state.head;
             state.bodyTranslate.push(state.head);
             state.bodyTranslate.shift();
         }, 

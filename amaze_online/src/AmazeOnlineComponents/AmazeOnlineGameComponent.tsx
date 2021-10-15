@@ -118,14 +118,14 @@ import { countDown, gameState } from '../AmazeOnlineStateSlices/amaze-game-slice
     const HandleMoveUp = () =>
     {
      
-      dispatch(moveUp(25));
+      dispatch(moveDown(25));
       console.log(playerinfo.player.current_position , 'pos');
      
     }
     const HandleMoveDown= () =>
     {
-     
-      dispatch(moveDown(25));
+      //because the player style cooordinates are set to top and left we need to "move up" to go down
+      dispatch(moveUp(25));
       console.log(playerinfo.player.current_position , 'pos');
      
     }
@@ -145,18 +145,9 @@ import { countDown, gameState } from '../AmazeOnlineStateSlices/amaze-game-slice
     }
 
    // startSimulation(1);
-    // Subscribe to creation of Todo
-    // const subscription = API.graphql(
-    //     graphqlOperat)ion(onUpdateGame)
-    // ).subscribe({
-    //     next: (update: any) => {
-    //       console.log(update);
-    //       // Do something with the data
-    //     }
-    // });
-    
-    // Stop receiving data updates from the subscription
-    //subscription.unsubscribe();
+
+   // Subscribe to creation of Todo
+
 
     const switch_to_game = () => {
       history.push('/game');

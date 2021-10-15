@@ -4,13 +4,16 @@ import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import { Modal } from '@material-ui/core';
 import AmazeOnlineGameSettingsModal from './AmazeOnlineGameSettingsModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { appState, changeToGameDisplay } from '../AmazeOnlineStateSlices/app-state-slice';
 
  function CreateGameComponent (props : any) {
   const history = useHistory();
   const [Modal_IsOpen , SetModal_IsOpen] = useState(false);
   const [gameName , setGameName] = useState('');
   const [matchTime , setMatchTime] = useState(0);
-
+  const app_state = useSelector(appState);
+  const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({
       root: {
         background: 'blue',
@@ -41,6 +44,7 @@ import AmazeOnlineGameSettingsModal from './AmazeOnlineGameSettingsModal';
      SetModal_IsOpen(!Modal_IsOpen);
   }
     const switch_to_game = () => {
+      dispatch(changeToGameDisplay);
       history.push('/game');
   }
 

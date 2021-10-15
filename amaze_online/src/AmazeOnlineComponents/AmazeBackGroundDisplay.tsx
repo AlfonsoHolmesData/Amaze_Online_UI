@@ -1,10 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import { useSelector } from 'react-redux';
+import { appState } from '../AmazeOnlineStateSlices/app-state-slice';
 
  function BackGroundDisply (props : any) {
     
-    
+    const app_state = useSelector(appState);
     const useStyles = makeStyles((theme) => ({
       root: {
         textAlign : 'center',
@@ -13,7 +15,7 @@ import Button from '@material-ui/core/Button';
         fontSize:'3em',
      
       },
-      
+
       welcome_page: {
         alignContent : 'center',
         textAlign : 'center'
@@ -23,7 +25,8 @@ import Button from '@material-ui/core/Button';
         margin: '.1em'
       },
          display_span : {
-          color:'orange'
+           //dynamically changes with screen
+          color: `${app_state.app_title_color}`
         },
          display_span1 : {
           color:'blue'

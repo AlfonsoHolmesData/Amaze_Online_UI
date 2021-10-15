@@ -48,11 +48,11 @@ function PlayerComponent (props : any)  {
      
     return(
         <>
-        {playerinfo.player.current_position.x >= 500||  playerinfo.player.current_position.x >= 500
+        {playerinfo.player.current_position.x >= 500 ||  playerinfo.player.current_position.y >= 500 || playerinfo.player.current_position.x < 0 ||  playerinfo.player.current_position.y < 0
          ?
             <div className={classes.player} style={{top : 0, left: 0}}>&#x1F4A9;</div>
          :
-            <div className={classes.player} style={{bottom : playerinfo.player.current_position.y, left: playerinfo.player.current_position.x}}>&#x1F451;</div>
+            <div className={classes.player} style={{ top : playerinfo.player.current_position.y , left: playerinfo.player.current_position.x}}>&#x1F451;</div>
         }
       
         </>
