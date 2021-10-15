@@ -81,7 +81,7 @@ export const gameSlice = createSlice({
             
         },
         appendStickerToGameMap: (state , action : PayloadAction<Sticker>) => {
-            if(state.game_map.length < 19 * 19)
+            if(state.game_map.length < 20 * 20)
             state.game_map.push(action.payload);
             
         },
