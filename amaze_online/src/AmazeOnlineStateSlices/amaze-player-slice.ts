@@ -74,7 +74,10 @@ export const playerSlice = createSlice({
             state.bodyTranslate.push(state.head);
             state.bodyTranslate.shift();
         }, 
-
+        addPoints: (state,  action :PayloadAction<number>) => {
+            // state = action.payload;
+            state.player.points += action.payload;
+        }, 
       
 
         // Used when resetting the state
@@ -87,7 +90,12 @@ export const playerSlice = createSlice({
 
 // Export the actions/reducers to be imported into a component and dispatched from component
 export const {
-    moveRight , moveLeft , moveDown , moveUp , teleprtTo
+    moveRight,
+     moveLeft, 
+     moveDown, 
+     moveUp, 
+     addPoints,
+     teleprtTo
 } = playerSlice.actions;
 
 // Export the state of the entire slice to be referenced in the components

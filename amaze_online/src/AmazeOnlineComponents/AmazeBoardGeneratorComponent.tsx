@@ -3,8 +3,9 @@ import { makeStyles } from "@material-ui/styles";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { Sticker } from "../AmazeOnlineModels/grid-sticker";
+import { StickerDTO } from "../AmazeOnlineModels/grid-sticker-DTO";
 import { Position } from "../AmazeOnlineModels/position";
-import { appendStickerToGameMap, gameState } from "../AmazeOnlineStateSlices/amaze-game-slice";
+import { appendStickerToGameMap, gameState, replaceStickerOnMap, setDestination, setRandomDestination } from "../AmazeOnlineStateSlices/amaze-game-slice";
 import {  playerSlice, playerState } from "../AmazeOnlineStateSlices/amaze-player-slice"
 
 function BoardGeneratorComponent (props : any)  {
@@ -12,13 +13,13 @@ function BoardGeneratorComponent (props : any)  {
     const playerinfo = useSelector(playerState);
     const gameinfo = useSelector(gameState);
     const dispatch = useDispatch();
-    let cloud_emoji : string = '&#x2601;';
-    let invader_emoji : string = '&#x1F47E;';
+    let cloud_emoji : string  = '&#x2601;';
+    let invader_emoji  : string  = '&#x1F47E;';
     let money_emoji : string = '&#x1F4B5;';
 
 
     useEffect(() => {
-      generateBoard();
+           generateBoard();
     }, [])
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -59,6 +60,7 @@ function BoardGeneratorComponent (props : any)  {
       const classes = useStyles();
 
     const generateBoard = () => {
+      dispatch(setRandomDestination());
       for (let x = 0; x < 20; x++) {
         for (let y = 0; y < 20; y++) {
            if(playerinfo.player.current_position.x == x && playerinfo.player.current_position.y == y)
@@ -66,25 +68,44 @@ function BoardGeneratorComponent (props : any)  {
              console.log('skipping ' , x , ' ' , y , ' ' , 'player is occupying that space');
              continue;
            }
-          //  if(gameinfo.destination.x == x && gameinfo.destination.y == y)
-          //  {
-          //    console.log('skipping ' , x , ' ' , y , ' ' , 'destination is occupying that space');
-          //    continue;
-          //  }
-          console.log('generating...' ,  x * 25 , ' ' , y * 25 , ' ' );
-            dispatch(appendStickerToGameMap({coordinates : {x: x * 25 , y: y * 25 } as Position , image : cloud_emoji , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute' }));
+           if(gameinfo.destination.x == x && gameinfo.destination.y == y)
+           {
+             console.log('marking space ' , x , ' ' , y , ' ' , 'as destination space');
+             dispatch(appendStickerToGameMap({coordinates : {x: x * 25 , y: y * 25 } as Position , image : invader_emoji , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false}));
+           }
+          console.log('generating... x:' ,  x * 25 , ' y:' , y * 25 , ' ' );
+            dispatch(appendStickerToGameMap({coordinates : {x: x * 25 , y: y * 25 } as Position , image : cloud_emoji , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false}));
         }
       }
       console.log('board complete');
     }
 
+    
+     function Check_For_Player (){
+       
+    }
 
      
     return(
         <>
-        {gameinfo.game_map.map((S : Sticker) =>{
-          return(
-            <div  style={{ position : 'absolute',  width :` ${S.width_percentage}%`, height : ` ${S.hieght_percentage}%`, top : S.coordinates.y , left: S.coordinates.x }}>&#x2601;</div>
+        {gameinfo.game_map.map((S : Sticker , index) =>{
+          
+          return( 
+          
+            <div key={index} style={{ position : 'absolute',  width :` ${S.width_percentage}%`, height : ` ${S.hieght_percentage}%`, top : S.coordinates.y , left: S.coordinates.x }} >
+              
+               {
+                  gameinfo.destination.x == S.coordinates.x && gameinfo.destination.y == S.coordinates.y 
+               ?  // if current node == destination distinguish it as a destination
+                  <b>&#x1F47E;</b> // invader emoji
+               :// else
+                 S.visited == true 
+               ?  // if current node == has been visited by the player , dont render it
+                  <b></b> 
+               : // else  render 
+                  <b>&#x2601;</b> // cloud emoji
+               }
+            </div>
           )
         
         })

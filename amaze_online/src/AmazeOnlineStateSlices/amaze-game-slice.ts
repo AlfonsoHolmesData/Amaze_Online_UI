@@ -27,7 +27,7 @@ interface State {
 	destination: Position,
 	start_position: Position,
 	runner_psotion: Position,
-	game_map: Sticker[],
+	game_map: Sticker[] ,
 	current_instruction: string,
 	match_time: number
 }
@@ -41,7 +41,7 @@ const initialState: State = {
 	destination: {x: 0, y: 0 } as Position,
 	start_position: {x: 0, y: 0 } as Position,
 	runner_psotion: {x: 0, y: 0 } as Position,
-	game_map: [] as Sticker[],
+	game_map: [] as Sticker[] ,
 	current_instruction: '',
 	match_time: 60
 };
@@ -80,14 +80,20 @@ export const gameSlice = createSlice({
             state.match_time -= 1;
             
         },
-        appendStickerToGameMap: (state , action : PayloadAction<Sticker>) => {
-            if(state.game_map.length < 20 * 20)
-            state.game_map.push(action.payload);
+        setGameMatchTime: (state, action : PayloadAction<number>) => {
+            // state = action.payload;
+            
+            state.match_time = action.payload;
             
         },
-        removeStickerFromGameMap: (state , action : PayloadAction<StickerDTO>) => {
+        appendStickerToGameMap: (state , action : PayloadAction<Sticker>) => {
+            if(state.game_map?.length < 20 * 20)
+            state.game_map?.push(action.payload);
             
-            state.game_map[action.payload.index].image = '';
+        },
+        removeStickerFromGameMap: (state , action : PayloadAction<number>) => {
+            
+            state.game_map[action.payload].visited = true;
             
         },
         replaceStickerOnMap: (state , action : PayloadAction<StickerDTO>) => {
@@ -95,6 +101,20 @@ export const gameSlice = createSlice({
             state.game_map[action.payload.index].image = action.payload.image;
             
         },
+        setDestination: (state , action : PayloadAction<Position>) => {
+            
+            state.destination = action.payload;
+            
+        },
+        setRandomDestination: (state) =>{
+            let min : number = Math.ceil(1);
+            let max : number = Math.floor(20);
+            let random_y : number = Math.floor(Math.random() * ( max - min ) + min) * 25;
+            let random_x : number = Math.floor(Math.random() * ( max - min ) + min) * 25;
+            console.log( 'random x', random_x , ' random y ',  random_y);
+            state.destination = {x: random_x , y: random_y } as Position ;
+        },
+     
         // Used when resetting the state
         resetGame: (state) => {
             state.id = '';
@@ -120,7 +140,10 @@ export const {
     countDown,
     appendStickerToGameMap,
     replaceStickerOnMap,
-    removeStickerFromGameMap
+    removeStickerFromGameMap,
+    setDestination,
+    setRandomDestination,
+    setGameMatchTime
 
 } = gameSlice.actions;
 

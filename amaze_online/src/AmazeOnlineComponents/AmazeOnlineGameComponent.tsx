@@ -9,7 +9,7 @@ import { Position } from '../AmazeOnlineModels/position';
 import AmazePlayerComponent from './AmazePlayerComponent';
 import { moveDown, moveLeft, moveRight, moveUp, playerState } from '../AmazeOnlineStateSlices/amaze-player-slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { countDown, gameState } from '../AmazeOnlineStateSlices/amaze-game-slice';
+import { countDown, gameState, setGameMatchTime } from '../AmazeOnlineStateSlices/amaze-game-slice';
 import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
 
  function GameComponent (this: any, props : any) {
@@ -17,7 +17,8 @@ import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
   const dispatch = useDispatch();
   const gameinfo = useSelector(gameState);
   const playerinfo = useSelector(playerState);
-  
+  const [matchTime , setMatchTime] = useState(60);
+  let t = 60;
 
     const useStyles = makeStyles((theme) => ({
       root: {
@@ -133,8 +134,10 @@ import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
    
     const timer = () =>
     {
-     
-      dispatch(countDown());
+      t--;
+      setMatchTime(t);
+      dispatch(setGameMatchTime(matchTime));
+      //dispatch(countDown());
      
     }
     //game loop
@@ -145,7 +148,7 @@ import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
       setInterval(timer, 1000);
     }
 
-   // startSimulation(1);
+  //startSimulation(1);
 
    // Subscribe to creation of Todo
 
@@ -156,7 +159,8 @@ import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
     return(
       <>
       <div >
-      <h1 className={classes.labels} style={{ position : 'absolute', left: '1%'}} >I n s t r u c t i o n :</h1>
+      <h1 className={classes.labels} style={{ position : 'absolute', left: '80%' , top: '35%'}} >p o i n t s : {playerinfo.player.points}{}</h1>
+      <h1 className={classes.labels} style={{ position : 'absolute', left: '1%' , top: '35%' }} >I n s t r u c t i o n :</h1>
       <h1 className={classes.labels} >T i m e : {gameinfo.match_time}</h1>
         <div id="gameCanvas"   className={classes.root_canvas} >
 

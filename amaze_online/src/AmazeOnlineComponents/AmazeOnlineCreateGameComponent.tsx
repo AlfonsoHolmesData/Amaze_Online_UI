@@ -11,7 +11,7 @@ import { appState, changeToGameDisplay } from '../AmazeOnlineStateSlices/app-sta
   const history = useHistory();
   const [Modal_IsOpen , SetModal_IsOpen] = useState(false);
   const [gameName , setGameName] = useState('');
-  const [matchTime , setMatchTime] = useState(0);
+  const [matchTime , setMatchTime] = useState(60);
   const app_state = useSelector(appState);
   const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({

@@ -1,11 +1,14 @@
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux"
-import {  playerSlice, playerState } from "../AmazeOnlineStateSlices/amaze-player-slice"
+import { StickerDTO } from "../AmazeOnlineModels/grid-sticker-DTO";
+import { gameState, removeStickerFromGameMap, setRandomDestination } from "../AmazeOnlineStateSlices/amaze-game-slice";
+import {  addPoints, playerSlice, playerState } from "../AmazeOnlineStateSlices/amaze-player-slice"
 
 function PlayerComponent (props : any)  {
     
     const playerinfo = useSelector(playerState);
+    const gameinfo = useSelector(gameState);
     const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -45,6 +48,24 @@ function PlayerComponent (props : any)  {
       }));
       const classes = useStyles();
     
+      function check_position(){ 
+        
+        for (let x = 0; x < gameinfo.game_map.length - 1 ; x++) {
+          if(gameinfo.game_map[x].coordinates.x == playerinfo.player.current_position.x && gameinfo.game_map[x].coordinates.y == playerinfo.player.current_position.y )
+          {
+           
+           dispatch(removeStickerFromGameMap(x));
+          }
+            
+      }
+        if(gameinfo.destination.x == playerinfo.player.current_position.x && gameinfo.destination.y == playerinfo.player.current_position.y )
+        {
+          dispatch(addPoints(300));
+           dispatch(setRandomDestination());
+        }
+       
+    }
+      check_position();
      
     return(
         <>
@@ -52,7 +73,7 @@ function PlayerComponent (props : any)  {
          ?
             <div className={classes.player} style={{top : 0, left: 0}}>&#x2620;</div>
          :
-            <div className={classes.player} style={{ top : playerinfo.player.current_position.y , left: playerinfo.player.current_position.x}}>&#x1F451;</div>
+            <div className={classes.player}  style={{ top : playerinfo.player.current_position.y , left: playerinfo.player.current_position.x}}>&#x1F451;</div>
         }
       
         </>

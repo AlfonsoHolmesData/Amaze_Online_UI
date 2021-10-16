@@ -16,22 +16,25 @@ Amplify.configure(awsconfig);
 function App() {
   return (
     <div className="App">
-      <BackGroundDisply />
-     <Router>
+    
+      <Router>
+        <BackGroundDisply />
+          <Switch>
 
-       <Route exact path = "/">
-         <HomePage />
-       </Route>
+              <Route exact path = "/">
+                <HomePage />
+              </Route>
 
-       <Route  path = "/creategame">
-         <CreateGameComponent />
-       </Route>
+              <Route  path = "/creategame">
+                <CreateGameComponent />
+              </Route>
 
-       <Route  path = "/game">
-         <GameComponent />
-       </Route>
-       
-     </Router>
+              <Route  path = "/game">
+                <GameComponent />
+              </Route>
+
+          </Switch>
+      </Router>
     </div>
   );
 }
