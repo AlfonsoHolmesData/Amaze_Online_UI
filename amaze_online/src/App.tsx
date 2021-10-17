@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BackGroundDisply from './AmazeOnlineComponents/AmazeBackGroundDisplay';
 import GameComponent from './AmazeOnlineComponents/AmazeOnlineGameComponent';
 import CreateGameComponent from './AmazeOnlineComponents/AmazeOnlineCreateGameComponent';
+import LoginComponent from './AmazeOnlineComponents/AmazeOnineAuthComponent';
 
 Amplify.configure(awsconfig);
 
@@ -20,6 +21,10 @@ function App() {
       <Router>
         <BackGroundDisply />
           <Switch>
+
+              <Route path = "/login">
+                <LoginComponent />
+              </Route>
 
               <Route exact path = "/">
                 <HomePage />

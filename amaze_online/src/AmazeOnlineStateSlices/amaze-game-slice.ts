@@ -6,44 +6,44 @@ import { StickerDTO } from "../AmazeOnlineModels/grid-sticker-DTO";
 
 
 export interface Player {
-    id: string,
-    username: string,
-    points: number,
-    is_navigator: boolean,
-    instruction: string,
+    id:               string,
+    username:         string,
+    points:           number,
+    is_navigator:     boolean,
+    instruction:      string,
     current_position: Position,
-    afk: boolean
+    afk:              boolean
 }
 
 
 
 
 interface State {
-    id: string,
-    has_navigator: boolean,
-	has_runner: boolean,
-	game_set: boolean,
-	is_active: boolean,
-	destination: Position,
-	start_position: Position,
-	runner_psotion: Position,
-	game_map: Sticker[] ,
+    id:                  string,
+    has_navigator:       boolean,
+	has_runner:          boolean,
+	game_set:            boolean,
+	is_active:           boolean,
+	destination:         Position,
+	start_position:      Position,
+	runner_psotion:      Position,
+	game_map:            Sticker[] ,
 	current_instruction: string,
-	match_time: number
+	match_time:          number
 }
 
 const initialState: State = {
-    id: '',
-    has_navigator: false,
-	has_runner: false,
-	game_set: false,
-	is_active: false,
-	destination: {x: 0, y: 0 } as Position,
-	start_position: {x: 0, y: 0 } as Position,
-	runner_psotion: {x: 0, y: 0 } as Position,
-	game_map: [] as Sticker[] ,
+    id:                  '',
+    has_navigator:       false,
+	has_runner:          false,
+	game_set:            false,
+	is_active:           false,
+	destination:         {x: 0, y: 0 } as Position,
+	start_position:      {x: 0, y: 0 } as Position,
+	runner_psotion:      {x: 0, y: 0 } as Position,
+	game_map:            [] as Sticker[] ,
 	current_instruction: '',
-	match_time: 60
+	match_time:          60
 };
 
 // Create the actual slice
@@ -62,7 +62,7 @@ export const gameSlice = createSlice({
         setGame: (state, action) => {
             // state = action.payload;
             state.id = action.payload.id;
-            state.has_navigator = action.payload.has_navigator;
+            state.has_navigator  = action.payload.has_navigator;
             state.has_runner = action.payload.has_runner;
             state.game_set = action.payload.game_set;
             state.is_active = action.payload.is_active;
@@ -107,30 +107,30 @@ export const gameSlice = createSlice({
             
         },
         setRandomDestination: (state) =>{
-            let min : number = Math.ceil(1);
-            let max : number = Math.floor(20);
-            let random_y : number = Math.floor(Math.random() * ( max - min ) + min) * 25;
-            let random_x : number = Math.floor(Math.random() * ( max - min ) + min) * 25;
+            let min : number =           Math.ceil(1);
+            let max : number =           Math.floor(20);
+            let random_y : number =      Math.floor(Math.random() * ( max - min ) + min) * 25;
+            let random_x : number =      Math.floor(Math.random() * ( max - min ) + min) * 25;
             console.log( 'random x', random_x , ' random y ',  random_y);
-            state.destination = {x: random_x , y: random_y } as Position ;
+            state.destination =          {x: random_x , y: random_y } as Position ;
         },
      
         // Used when resetting the state
         resetGame: (state) => {
-            state.id = '';
-            state.has_navigator = false;
-            state.has_runner = false;
-            state.game_set = false;
-            state.is_active = false;
-            state.destination = {x: 0, y: 0 } as Position;
-            state.start_position = {x: 0, y: 0 } as Position;
-            state.runner_psotion = {x: 0, y: 0 } as Position;
-            state.game_map = [];
+            state.id                = '';
+            state.has_navigator     = false;
+            state.has_runner        = false;
+            state.game_set          = false;
+            state.is_active         = false;
+            state.destination       = {x: 0, y: 0 } as Position;
+            state.start_position    = {x: 0, y: 0 } as Position;
+            state.runner_psotion    = {x: 0, y: 0 } as Position;
+            state.game_map          = [];
             state.current_instruction = '';
-            state. match_time = 60;
+            state. match_time       = 60;
         
         }
-    }
+        }
 });
 
 // Export the actions/reducers to be imported into a component and dispatched from component
