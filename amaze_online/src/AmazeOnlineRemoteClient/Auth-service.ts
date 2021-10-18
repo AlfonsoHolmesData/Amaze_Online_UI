@@ -4,7 +4,7 @@ import {Auth} from 'aws-amplify';
 export const Authenticate = async (credentials : {username : string , password : string}) => {
    let respones;
    try{
-       
+
       respones  = await Auth.signIn({
             username: credentials.username,
             password: credentials.password,
@@ -31,8 +31,7 @@ export const Authenticate = async (credentials : {username : string , password :
             username: newUser.username,
             password: newUser.password,
             attributes: {
-                email: newUser.email,
-                name: newUser.firstname + ' ' + newUser.lastname
+                email: newUser.email
             }
         });
     }catch(err:any){

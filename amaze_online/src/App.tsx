@@ -5,8 +5,6 @@ import Amplify, { API, graphqlOperation } from 'aws-amplify';
 import awsconfig from './aws-exports';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePage from './AmazeOnlineComponents/AmazeHomePageComponent';
-import React from 'react';
-import { useDispatch, useSelector } from "react-redux";
 import BackGroundDisply from './AmazeOnlineComponents/AmazeBackGroundDisplay';
 import GameComponent from './AmazeOnlineComponents/AmazeOnlineGameComponent';
 import CreateGameComponent from './AmazeOnlineComponents/AmazeOnlineCreateGameComponent';

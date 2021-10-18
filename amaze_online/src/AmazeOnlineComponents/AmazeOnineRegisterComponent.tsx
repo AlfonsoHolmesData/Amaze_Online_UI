@@ -67,7 +67,7 @@ import ErrorAlert from './ErrorComponent';
 
  const register = async () => {
           try{
-            Register(newUser);
+            Register({firstname : newUser.firstname , lastname : newUser.lastname , email : newUser.email ,username : newUser.username , password : newUser.password});
           }catch(err: any)
           {
            
