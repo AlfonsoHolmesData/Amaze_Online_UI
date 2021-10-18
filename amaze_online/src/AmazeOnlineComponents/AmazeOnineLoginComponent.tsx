@@ -64,14 +64,13 @@ import ErrorAlert from './ErrorComponent';
 
  const login = async () => {
           try{
-            Authenticate(creds);
-          }catch(msg)
+            Authenticate({ username: creds.username , password : creds.password  });
+          }catch(err: any)
           {
-            if(msg == 'Unable to Authenticate')
-            {
+              
               SetErrorAlertStatus(true);
-              SetErrorMessage('Unable to Authenticate');
-            }
+              SetErrorMessage('Failed');
+            
           }
 }
    
@@ -97,7 +96,7 @@ import ErrorAlert from './ErrorComponent';
             <br/>
             <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={login}> <b>L o g i n</b>  </Button>
 
-            <ErrorAlert isOpen={errorAlertStatus} duration={3000} message={errorMessage} SetStatusOnClose={SetErrorAlertStatus}  />
+            <ErrorAlert isOpen={errorAlertStatus} duration={6000} message={errorMessage} SetStatusOnClose={SetErrorAlertStatus}  />
         </div> 
       </>
     );

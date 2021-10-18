@@ -68,13 +68,12 @@ import ErrorAlert from './ErrorComponent';
  const register = async () => {
           try{
             Register(newUser);
-          }catch(msg)
+          }catch(err: any)
           {
-            if(msg == 'Unable to Authenticate')
-            {
+           
               SetErrorAlertStatus(true);
               SetErrorMessage('Unable to Authenticate');
-            }
+            
           }
 }
    

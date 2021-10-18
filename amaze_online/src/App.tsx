@@ -10,9 +10,14 @@ import { useDispatch, useSelector } from "react-redux";
 import BackGroundDisply from './AmazeOnlineComponents/AmazeBackGroundDisplay';
 import GameComponent from './AmazeOnlineComponents/AmazeOnlineGameComponent';
 import CreateGameComponent from './AmazeOnlineComponents/AmazeOnlineCreateGameComponent';
-import LoginComponent from './AmazeOnlineComponents/AmazeOnineAuthComponent';
+import { COGNITO } from './config/aws';
+import AuthComponent from './AmazeOnlineComponents/AmazeOnineAuthComponent';
 
-Amplify.configure(awsconfig);
+Amplify.configure({
+  aws_cognito_region: COGNITO.REGION,
+  aws_user_pools_id: COGNITO.USER_POOL_ID,
+  aws_user_pools_web_client_id: COGNITO.APP_CLIENT_ID,
+});
 
 function App() {
   return (
@@ -23,7 +28,7 @@ function App() {
           <Switch>
 
               <Route path = "/login">
-                <LoginComponent />
+                <AuthComponent />
               </Route>
 
               <Route exact path = "/">

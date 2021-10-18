@@ -8,8 +8,10 @@ import {Auth} from 'aws-amplify';
 import { authState } from '../AmazeOnlineStateSlices/auth-slice';
 import { Authenticate } from '../AmazeOnlineRemoteClient/Auth-service';
 import ErrorAlert from './ErrorComponent';
+import LoginComponent from './AmazeOnineLoginComponent';
+import RegisterComponent from './AmazeOnineRegisterComponent';
 
- function LoginComponent (props : any) {
+ function AuthComponent (props : any) {
     
     const app_state = useSelector(appState);
     const auth_slice = useSelector(authState);
@@ -62,45 +64,16 @@ import ErrorAlert from './ErrorComponent';
     
     const classes = useStyles();
 
- const login = async () => {
-          try{
-            Authenticate(creds);
-          }catch(msg)
-          {
-            if(msg == 'Unable to Authenticate')
-            {
-              SetErrorAlertStatus(true);
-              SetErrorMessage('Unable to Authenticate');
-            }
-          }
-}
    
  
 
     return(
       <>
         <div >
-        <TextField  
-                  label="username" 
-                  id="username" 
-                  name="username" 
-                  type="username"
-                  placeholder="Enter your username" 
-                  className={classes.form_setting} onChange={handleChange} />
-            <br/>
-            <TextField label="password" 
-                       id="password" 
-                       name="password" 
-                       type="password"
-                       placeholder="Enter your password" 
-                       className={classes.form_setting} value={creds.password} onChange={handleChange} />
-            <br/>
-            <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}> <b>L o g i n</b>  </Button>
-
-            <ErrorAlert isOpen={errorAlertStatus} duration={3000} message={errorMessage} SetStatusOnClose={SetErrorAlertStatus}  />
+        <RegisterComponent />
         </div> 
       </>
     );
 };
 
-export default LoginComponent;
+export default AuthComponent;
