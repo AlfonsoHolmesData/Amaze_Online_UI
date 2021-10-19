@@ -16,7 +16,8 @@ function BoardGeneratorComponent (props : any)  {
     let cloud_emoji : string  = '&#x2601;';
     let invader_emoji  : string  = '&#x1F47E;';
     let money_emoji : string = '&#x1F4B5;';
-
+    let robot_gif : any  = "robot.gif";
+    let screw_gif : any  = "Cloudy.gif";
 
     useEffect(() => {
            generateBoard();
@@ -71,7 +72,7 @@ function BoardGeneratorComponent (props : any)  {
            if(gameinfo.destination.x == x && gameinfo.destination.y == y)
            {
              console.log('marking space ' , x , ' ' , y , ' ' , 'as destination space');
-             dispatch(appendStickerToGameMap({coordinates : {x: x * 25 , y: y * 25 } as Position , image : invader_emoji , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false}));
+             dispatch(appendStickerToGameMap({coordinates : {x: x * 25 , y: y * 25 } as Position , image : robot_gif , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false}));
            }
           console.log('generating... x:' ,  x * 25 , ' y:' , y * 25 , ' ' );
             dispatch(appendStickerToGameMap({coordinates : {x: x * 25 , y: y * 25 } as Position , image : cloud_emoji , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false}));
@@ -97,13 +98,13 @@ function BoardGeneratorComponent (props : any)  {
                {
                   gameinfo.destination.x == S.coordinates.x && gameinfo.destination.y == S.coordinates.y 
                ?  // if current node == destination distinguish it as a destination
-                  <b>&#x1F47E;</b> // invader emoji
+                  <>  <img src={robot_gif} width='20'/>   </> // invader emoji
                :// else
                  S.visited == true 
                ?  // if current node == has been visited by the player , dont render it
                   <b></b> 
                : // else  render 
-                  <b>&#x2601;</b> // cloud emoji
+               <img src={robot_gif} width='20'/> // cloud emoji
                }
             </div>
           )
