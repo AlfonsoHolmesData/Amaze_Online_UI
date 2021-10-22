@@ -12,11 +12,17 @@ import GameComponent from './AmazeOnlineComponents/AmazeOnlineGameComponent';
 import CreateGameComponent from './AmazeOnlineComponents/AmazeOnlineCreateGameComponent';
 import { COGNITO } from './config/aws';
 import AuthComponent from './AmazeOnlineComponents/AmazeOnineAuthComponent';
+import awsmobile from './aws-exports';
 
 Amplify.configure({
   aws_cognito_region: COGNITO.REGION,
   aws_user_pools_id: COGNITO.USER_POOL_ID,
   aws_user_pools_web_client_id: COGNITO.APP_CLIENT_ID,
+  aws_project_region: awsmobile.aws_project_region,
+  aws_appsync_graphqlEndpoint: awsmobile.aws_appsync_graphqlEndpoint,
+  aws_appsync_region: awsmobile.aws_appsync_region,
+  aws_appsync_authenticationType: awsmobile.aws_appsync_authenticationType,
+  aws_appsync_apiKey: awsmobile.aws_appsync_apiKey
 });
 
 function App() {

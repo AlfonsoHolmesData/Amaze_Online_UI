@@ -10,11 +10,12 @@ import Paper from '@material-ui/core/Paper';
 import { useState } from "react";
 import { User } from "../AmazeOnlineModels/user";
 import { Button } from "@material-ui/core";
+import { UserDTO } from "../AmazeOnlineModels/user-dto";
 
 
 function LeaderBoardModal (props : any) {
 
-    const [users , SetUsers] = useState([] as User[]);
+    const [users , SetUsers] = useState([] as UserDTO[]);
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -36,7 +37,7 @@ function LeaderBoardModal (props : any) {
             fontFamily: 'Poiret One',
             alignContent : 'center',
             textAlign : 'center',
-            width : '700px',
+            width : '900px',
             height : '550px',
             margin:'50px auto'
           },
@@ -54,12 +55,27 @@ function LeaderBoardModal (props : any) {
         },  
         button_for_Home: {
           background: 'blue',
+          fontFamily: 'Poiret One',
           color:'white',
           margin: '.5em'
         },
         display_span : {
          color:'blue'
        },
+       table_cell: {
+        background: 'blue',
+        textAlign : 'center',
+        fontFamily: 'Poiret One',
+        opacity : '100%',
+        color:'white '
+      },
+      table_rowd: {
+        background: '#DBDFE7',
+        textAlign : 'center',
+        fontFamily: 'Poiret One',
+        opacity : '98%',
+        color:'grey '
+      },
         display_span1 : {
          color:'blue'
        }
@@ -72,7 +88,25 @@ function LeaderBoardModal (props : any) {
                 let userArry : User[] = await GetUserRecords();
                  SetUsers(userArry);
             }catch(err: any){
-    
+                 
+                    SetUsers([
+                        {username: 'A' , password: '56434' ,  games_as_navigator : 34 , games_as_runner : 6789 , wins : 6000 } ,
+                        {username: 'B' , password: '54764' ,  games_as_navigator : 23 , games_as_runner : 689 , wins : 700 } ,
+                        {username: 'C' , password: 'gew53' ,  games_as_navigator : 645 , games_as_runner : 68 , wins : 5 } ,
+                        {username: 'D' , password: 't3t3wt3' ,  games_as_navigator : 34564 , games_as_runner : 6897 , wins : 5 } ,
+                        {username: 'E' , password: '33353r' ,  games_as_navigator : 36543 , games_as_runner : 6789 , wins : 5668 } ,
+                        {username: 'F' , password: 'wwyt5t4' ,  games_as_navigator : 78897 , games_as_runner : 6789 , wins : 5 } ,
+                        {username: 'G' , password: 'tw3t636' , games_as_navigator : 789 , games_as_runner : 9 , wins : 77654 } ,
+                        {username: 'H' , password: 'wt34te' ,  games_as_navigator : 789 , games_as_runner : 6 , wins : 5} ,
+                        {username: 'I' , password: '3tw3t4' ,  games_as_navigator : 3345 , games_as_runner : 45635 , wins : 3456 } ,
+                        {username: 'J' , password: '3tw3t4' ,  games_as_navigator : 34563 , games_as_runner : 34653 , wins : 434 } ,
+                        {username: 'K' , password: '3tw3t4' ,  games_as_navigator : 78345639 , games_as_runner : 45644336 , wins : 453456 } ,
+                        {username: 'L' , password: '3tw3t4' ,  games_as_navigator : 784459 , games_as_runner : 56 , wins : 66544 } ,
+                        {username: 'M' , password: '3tw3t4' ,  games_as_navigator : 44 , games_as_runner : 56 , wins : 75 } ,
+                        {username: 'Z' , password: '3tw3t4' ,  games_as_navigator : 2088665 , games_as_runner : 788 , wins : 2000665 } 
+                    ]);
+                
+                  
             }
         }
     return(
@@ -84,33 +118,35 @@ function LeaderBoardModal (props : any) {
                    <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={getUsers}> <b>Load LeaderBoard</b>  </Button>
                </div>
             :
-        
-            <TableContainer className={classes.modal_template}>
-            <Table  aria-label="customized table">
+        <>
+         
+        <TableContainer className={classes.modal_template}>
+            <h1>L E A D E R  B A O R D</h1>
+            <Table  >
               <TableHead>
-                <TableRow>
-                  <TableCell>Username</TableCell>
-                  <TableCell align="right">Games as navigator</TableCell>
-                  <TableCell align="right">Games as runner</TableCell>
-                  <TableCell align="right">Wins</TableCell>
-                  <TableCell align="right">Win %</TableCell>
-                  <TableCell align="right">Total games played</TableCell>
-                  <TableCell align="right">Rank</TableCell>
+                <TableRow className={classes.table_cell}>
+                  <TableCell className={classes.table_cell}>Username</TableCell>
+                  <TableCell className={classes.table_cell}>GAN</TableCell>
+                  <TableCell className={classes.table_cell} >GAR</TableCell>
+                  <TableCell className={classes.table_cell}>Wins</TableCell>
+                  <TableCell className={classes.table_cell}>Win %</TableCell>
+                  <TableCell className={classes.table_cell}>TGP</TableCell>
+                  <TableCell className={classes.table_cell}>Rank</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.map((U : User , index ) => (
-                  <TableRow key={index}>
-                    <TableCell component="th" scope="row">
+                {users.map((U : UserDTO , index ) => (
+                  <TableRow key={index}  >
+                    <TableCell className={classes.table_rowd} >
                       {U.username}
                     </TableCell>
-                    <TableCell align="right">{U.games_as_navigator}</TableCell>
-                    <TableCell align="right">{U.games_as_runner}</TableCell>
-                    <TableCell align="right">{U.wins}</TableCell>
-                    <TableCell align="right">{U.wins / U.total_games_played}</TableCell>
-                    <TableCell align="right">{U.total_games_played}</TableCell>
-                    <TableCell align="right">
-                        { U.rank == 'Elite' ? <><img src='award.png' width='10'/> </> : <> Rookie </>}
+                    <TableCell className={classes.table_rowd}>{U.games_as_navigator}</TableCell>
+                    <TableCell className={classes.table_rowd}>{U.games_as_runner}</TableCell>
+                    <TableCell className={classes.table_rowd}>{U.wins}</TableCell>
+                    <TableCell className={classes.table_rowd}>{U.wins > 0 ? <> {(U.wins/(U.games_as_navigator + U.games_as_runner) * 100).toFixed(2) }% </>: <i>???</i> }</TableCell>
+                    <TableCell className={classes.table_rowd}>{U.games_as_navigator + U.games_as_runner}</TableCell>
+                    <TableCell className={classes.table_rowd}>
+                        {U.wins/(U.games_as_navigator + U.games_as_runner) > 0.88 ? <><img src='award.png' width='10'/> </> : <> Rookie </>}
                   </TableCell>
                   </TableRow>
                 ))}
@@ -119,6 +155,8 @@ function LeaderBoardModal (props : any) {
             
             <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={getUsers}> <b>Refreash</b>  </Button>
           </TableContainer>
+        </>
+            
         }
 
 

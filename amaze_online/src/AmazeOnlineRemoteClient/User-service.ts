@@ -1,3 +1,4 @@
+import { User } from "../AmazeOnlineModels/user";
 import { AmazeClient } from "./AmazeOnlineClient"
 
 export const GetUserRecords = async () =>{
@@ -9,7 +10,7 @@ export const GetUserRecords = async () =>{
     }
 
     console.log( "RESPONSOE FROM GET USERS METHOD :", response);
-     let users : []  = response.data;
+     let users : User[]  = response.data;
 
      return users;
 

@@ -9,6 +9,7 @@ export const Authenticate = async (credentials : {username : string , password :
             username: credentials.username,
             password: credentials.password,
             });
+            localStorage.setItem('api-token', respones.signInUserSession.idToken.jwtToken);
 
    }catch(err:any){
      

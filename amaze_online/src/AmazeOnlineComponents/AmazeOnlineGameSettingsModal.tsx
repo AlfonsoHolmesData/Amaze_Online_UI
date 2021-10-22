@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
-import { Box, Container, TextField } from '@material-ui/core';
+import { Box, Container, InputLabel, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { gameState, setGame } from '../AmazeOnlineStateSlices/amaze-game-slice';
 import { Position } from '../AmazeOnlineModels/position';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
 
 interface iGameSettingsModal {
   gameName: string,
@@ -17,7 +21,7 @@ interface iGameSettingsModal {
 
  function GameSettingsModal (props : any) {
   const history = useHistory();
-  
+  const [mT , SetMT] = useState(30);
   const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({
       modal_template: {
@@ -56,6 +60,10 @@ interface iGameSettingsModal {
     const switch_to_game = () => {
       history.push('/creategame');
   }
+
+  const SetMatchTime = (e : any) => {
+    SetMT(e.target.value);
+}
   const createGame = () => {
    
    
@@ -70,7 +78,25 @@ interface iGameSettingsModal {
         
             <TextField id="standard-basic" label="Game Name" className={classes.form_setting} />
             <br/>
-            <TextField id="standard-basic" label="Match Time" className={classes.form_setting}/>
+            <FormControl className={classes.form_setting}>
+              <InputLabel htmlFor="age-native-helper">Match Time (secs)</InputLabel>
+                <NativeSelect
+                  value={mT}
+                  onChange={SetMatchTime}
+                  inputProps={{
+                    name: 'age',
+                    id: 'age-native-helper',
+                  }}
+                >
+                  <option aria-label="None" value={30} >default</option>
+                  <option value={45}>45</option>
+                  <option value={60}>60</option>
+                  <option value={75}>75</option>
+                  <option value={90}>90</option>
+                  <option value={130}>130</option>
+                </NativeSelect>
+              <FormHelperText>how long you would like the round to last</FormHelperText>
+          </FormControl>
             <br/>
             <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}> <b>Create</b>  </Button>
         </Container>
