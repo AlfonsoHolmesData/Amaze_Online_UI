@@ -17,7 +17,7 @@ function BoardGeneratorComponent (props : any)  {
     let invader_emoji  : string  = '&#x1F47E;';
     let money_emoji : string = '&#x1F4B5;';
     let robot_gif : any  = "robot.gif";
-    let screw_gif : any  = "Cloudy.gif";
+    let questionmark_gif : any  = "question-mark.gif";
 
     useEffect(() => {
            generateBoard();
@@ -98,13 +98,13 @@ function BoardGeneratorComponent (props : any)  {
                {
                   gameinfo.destination.x == S.coordinates.x && gameinfo.destination.y == S.coordinates.y 
                ?  // if current node == destination distinguish it as a destination
-                  <>  <img src={robot_gif} width='20'/>   </> // invader emoji
+                  <>  <img src={questionmark_gif} width='10'/>   </> // invader emoji
                :// else
                  S.visited == true 
                ?  // if current node == has been visited by the player , dont render it
                   <b></b> 
                : // else  render 
-               <img src={robot_gif} width='20'/> // cloud emoji
+               <img src={questionmark_gif} width='10'/> // cloud emoji
                }
             </div>
           )

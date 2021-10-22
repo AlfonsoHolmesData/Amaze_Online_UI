@@ -3,6 +3,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useSelector } from 'react-redux';
 import { appState } from '../AmazeOnlineStateSlices/app-state-slice';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+import clsx from 'clsx';
 
  function BackGroundDisply (props : any) {
     
@@ -34,14 +43,24 @@ import { appState } from '../AmazeOnlineStateSlices/app-state-slice';
     }));
     
     const classes = useStyles();
+  
 
     return(
-      <>
+      <>  
+    
+         
+       
         <div className={classes.root}>
             <h1>A m a z e  <span className={classes.display_span} >O</span> n l i n e</h1>
+             
+          
         </div> 
       </>
     );
 };
 
 export default BackGroundDisply;
+
+function toggleDrawer( arg1: boolean) {
+  throw new Error('Function not implemented.');
+}
