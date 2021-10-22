@@ -83,28 +83,38 @@ function LeaderBoardModal (props : any) {
       const classes = useStyles();
 
         const getUsers = async () => {
+
+
+                function compare(a : UserDTO, b : UserDTO){
+                    return b.wins - a.wins;
+                    }
+
             try{
                 
                 let userArry : User[] = await GetUserRecords();
+                userArry.sort(compare);
                  SetUsers(userArry);
             }catch(err: any){
-                 
-                    SetUsers([
-                        {username: 'A' , password: '56434' ,  games_as_navigator : 34 , games_as_runner : 6789 , wins : 6000 } ,
-                        {username: 'B' , password: '54764' ,  games_as_navigator : 23 , games_as_runner : 689 , wins : 700 } ,
-                        {username: 'C' , password: 'gew53' ,  games_as_navigator : 645 , games_as_runner : 68 , wins : 5 } ,
-                        {username: 'D' , password: 't3t3wt3' ,  games_as_navigator : 34564 , games_as_runner : 6897 , wins : 5 } ,
-                        {username: 'E' , password: '33353r' ,  games_as_navigator : 36543 , games_as_runner : 6789 , wins : 5668 } ,
-                        {username: 'F' , password: 'wwyt5t4' ,  games_as_navigator : 78897 , games_as_runner : 6789 , wins : 5 } ,
-                        {username: 'G' , password: 'tw3t636' , games_as_navigator : 789 , games_as_runner : 9 , wins : 77654 } ,
-                        {username: 'H' , password: 'wt34te' ,  games_as_navigator : 789 , games_as_runner : 6 , wins : 5} ,
-                        {username: 'I' , password: '3tw3t4' ,  games_as_navigator : 3345 , games_as_runner : 45635 , wins : 3456 } ,
-                        {username: 'J' , password: '3tw3t4' ,  games_as_navigator : 34563 , games_as_runner : 34653 , wins : 434 } ,
-                        {username: 'K' , password: '3tw3t4' ,  games_as_navigator : 78345639 , games_as_runner : 45644336 , wins : 453456 } ,
-                        {username: 'L' , password: '3tw3t4' ,  games_as_navigator : 784459 , games_as_runner : 56 , wins : 66544 } ,
-                        {username: 'M' , password: '3tw3t4' ,  games_as_navigator : 44 , games_as_runner : 56 , wins : 75 } ,
-                        {username: 'Z' , password: '3tw3t4' ,  games_as_navigator : 2088665 , games_as_runner : 788 , wins : 2000665 } 
-                    ]);
+
+                let userArry : UserDTO[] = [
+                    {username: 'A' , password: '56434' ,  games_as_navigator : 34 , games_as_runner : 6789 , wins : 6000 } ,
+                    {username: 'B' , password: '54764' ,  games_as_navigator : 23 , games_as_runner : 689 , wins : 700 } ,
+                    {username: 'C' , password: 'gew53' ,  games_as_navigator : 645 , games_as_runner : 68 , wins : 5 } ,
+                    {username: 'D' , password: 't3t3wt3' ,  games_as_navigator : 34564 , games_as_runner : 6897 , wins : 5 } ,
+                    {username: 'E' , password: '33353r' ,  games_as_navigator : 36543 , games_as_runner : 6789 , wins : 5668 } ,
+                    {username: 'F' , password: 'wwyt5t4' ,  games_as_navigator : 78897 , games_as_runner : 6789 , wins : 5 } ,
+                    {username: 'G' , password: 'tw3t636' , games_as_navigator : 789 , games_as_runner : 9 , wins : 801 } ,
+                    {username: 'H' , password: 'wt34te' ,  games_as_navigator : 789 , games_as_runner : 6 , wins : 5} ,
+                    {username: 'I' , password: '3tw3t4' ,  games_as_navigator : 3345 , games_as_runner : 45635 , wins : 3456 } ,
+                    {username: 'J' , password: '3tw3t4' ,  games_as_navigator : 34563 , games_as_runner : 34653 , wins : 434 } ,
+                    {username: 'K' , password: '3tw3t4' ,  games_as_navigator : 78345639 , games_as_runner : 45644336 , wins : 453456 } ,
+                    {username: 'L' , password: '3tw3t4' ,  games_as_navigator : 784459 , games_as_runner : 56 , wins : 66544 } ,
+                    {username: 'M' , password: '3tw3t4' ,  games_as_navigator : 44 , games_as_runner : 56 , wins : 75 } ,
+                    {username: 'Z' , password: '3tw3t4' ,  games_as_navigator : 2088665 , games_as_runner : 788 , wins : 2000665 } 
+                ]
+
+                userArry.sort(compare);
+                    SetUsers(userArry);
                 
                   
             }
