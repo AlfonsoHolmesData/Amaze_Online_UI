@@ -39,7 +39,7 @@ function BoardGeneratorComponent (props : any)  {
             position : 'absolute',
             width : '5%',
             height : '5%',
-            background:'blue'
+            background:'green'
           },  
         form_setting: {
           alignContent : 'center',
@@ -48,7 +48,7 @@ function BoardGeneratorComponent (props : any)  {
           margin:'2em'
         },  
         button_for_Home: {
-          background: 'blue',
+          background: 'green',
           color:'white',
           margin: '.5em'
         },

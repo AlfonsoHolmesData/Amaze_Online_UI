@@ -26,7 +26,7 @@ function PlayerComponent (props : any)  {
             position : 'absolute',
             width : '5%',
             height : '5%',
-            background:'blue'
+            background:' green'
           },  
         form_setting: {
           alignContent : 'center',
