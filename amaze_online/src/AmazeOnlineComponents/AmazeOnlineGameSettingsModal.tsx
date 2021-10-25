@@ -5,6 +5,11 @@ import { useHistory } from 'react-router-dom';
 import { Box, Container, InputLabel, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { gameState, setGame } from '../AmazeOnlineStateSlices/amaze-game-slice';
+import ImageList from '@material-ui/core/ImageList';
+import ImageListItem from '@material-ui/core/ImageListItem';
+import ImageListItemBar from '@material-ui/core/ImageListItemBar';
+import IconButton from '@material-ui/core/IconButton';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { Position } from '../AmazeOnlineModels/position';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
@@ -77,26 +82,27 @@ interface iGameSettingsModal {
             <h1>Game Settings</h1>
         
             <TextField id="standard-basic" label="Game Name" className={classes.form_setting} />
-            <br/>
-            <FormControl className={classes.form_setting}>
-              <InputLabel htmlFor="age-native-helper">Match Time (secs)</InputLabel>
-                <NativeSelect
-                  value={mT}
-                  onChange={SetMatchTime}
-                  inputProps={{
-                    name: 'age',
-                    id: 'age-native-helper',
-                  }}
-                >
-                  <option aria-label="None" value={30} >default</option>
-                  <option value={45}>45</option>
-                  <option value={60}>60</option>
-                  <option value={75}>75</option>
-                  <option value={90}>90</option>
-                  <option value={130}>130</option>
-                </NativeSelect>
-              <FormHelperText>how long you would like the round to last</FormHelperText>
-          </FormControl>
+              
+         
+                <FormControl className={classes.form_setting}>
+                  <InputLabel htmlFor="age-native-helper">Match Time (secs)</InputLabel>
+                    <NativeSelect
+                      value={mT}
+                      onChange={SetMatchTime}
+                      inputProps={{
+                        name: 'age',
+                        id: 'age-native-helper',
+                      }}
+                    >
+                      <option aria-label="None" value={30} >default</option>
+                      <option value={45}>45</option>
+                      <option value={60}>60</option>
+                      <option value={75}>75</option>
+                      <option value={90}>90</option>
+                      <option value={130}>130</option>
+                    </NativeSelect>
+                  <FormHelperText>how long you would like the round to last</FormHelperText>
+              </FormControl>
             <br/>
             <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}> <b>Create</b>  </Button>
         </Container>

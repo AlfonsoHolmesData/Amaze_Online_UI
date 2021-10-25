@@ -114,6 +114,80 @@ export const gameSlice = createSlice({
             console.log( 'random x', random_x , ' random y ',  random_y);
             state.destination =          {x: random_x , y: random_y } as Position ;
         },
+
+        /**
+         * takes in an index and returns a row of coordinateds that act as a game board
+         * @param state 
+         * @param action index of the current row to generate 
+         * @Author Alfonso Holmes
+         */
+        generateRandomizedMap: (state) =>{
+          let generated_map : Sticker[] = [];
+            /*
+            STEP 1).
+            + loop through board length
+            @Author Alfonso Holmes
+          */
+         for (let cbl = 0 ; cbl < 20 ; cbl++)
+         {
+             /*
+            STEP 2).
+            + establish target y-coordinate
+            + generate random number of spaces
+            + generate random space map
+            @Author Alfonso Holmes
+          */
+          let min : number =           Math.ceil(0);
+          let max : number =           Math.floor(20);
+          let target_y : number =      cbl * 25;
+          let skips : number =  Math.floor(Math.random() * ( max - min ) + min);
+          console.log(' random y ',  target_y , ' number of black grid points' , skips);
+           /*
+            STEP 3).
+            + generate random space map
+            + make integer array of length space_map_length filled with 1 or 0.  0 representing a space and 1 representing filled space 
+            Ex )
+                 [ 0 , 0 , 1 , 1 , 1 , 1]
+
+            @Author Alfonso Holmes
+          */
+            let rsm : number[] = [];
+            let skips_assigned = 0; 
+            let mn : number =           Math.ceil(1);
+            let mx : number =           Math.floor(4);
+            for(let i = 0 ; i < 20 ; i++){
+               
+                let space_val : number =      Math.floor(Math.random() * ( mx - mn ) + mn);
+                if(i % space_val == 0 && skips_assigned < skips)
+                {
+                    rsm.push(0);
+                    skips_assigned++;
+                }else{
+                    rsm.push(1);
+                }
+            }
+              /*
+            STEP 4).
+            + use space map to generate row starting at the randomly generate y position
+            @Author Alfonso Holmes
+          */
+            for(let i = 0 ; i < 20 ; i++){
+
+                if(rsm[i] == 1)
+                generated_map.push({coordinates : {x: i * 25 , y: target_y } as Position , image : ' ' , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false});
+                else 
+                generated_map.push({coordinates : {x: i * 25 , y: target_y } as Position , image : ' ' , width_percentage : 5 , hieght_percentage : 5 , position_type : 'null'  , visited : true});
+            }
+         }
+              /*
+            STEP 5).
+            + set game map to newly generated one
+            @Author Alfonso Holmes
+          */
+
+                state.game_map = generated_map;
+         
+        },
      
         // Used when resetting the state
         resetGame: (state) => {
@@ -143,6 +217,7 @@ export const {
     removeStickerFromGameMap,
     setDestination,
     setRandomDestination,
+    generateRandomizedMap,
     setGameMatchTime
 
 } = gameSlice.actions;

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Sticker } from "../AmazeOnlineModels/grid-sticker";
 import { StickerDTO } from "../AmazeOnlineModels/grid-sticker-DTO";
 import { Position } from "../AmazeOnlineModels/position";
-import { appendStickerToGameMap, gameState, replaceStickerOnMap, setDestination, setRandomDestination } from "../AmazeOnlineStateSlices/amaze-game-slice";
+import { appendStickerToGameMap, gameState, generateRandomizedMap, replaceStickerOnMap, setDestination, setRandomDestination } from "../AmazeOnlineStateSlices/amaze-game-slice";
 import {  playerSlice, playerState } from "../AmazeOnlineStateSlices/amaze-player-slice"
 
 function BoardGeneratorComponent (props : any)  {
@@ -20,7 +20,8 @@ function BoardGeneratorComponent (props : any)  {
     let questionmark_gif : any  = "question-mark.gif";
 
     useEffect(() => {
-           generateBoard();
+          // generateBoard();
+          generatePremadeMap();
     }, [])
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -64,26 +65,66 @@ function BoardGeneratorComponent (props : any)  {
       dispatch(setRandomDestination());
       for (let x = 0; x < 20; x++) {
         for (let y = 0; y < 20; y++) {
-           if(playerinfo.player.current_position.x == x && playerinfo.player.current_position.y == y)
+            let isPlayerLocation : boolean = playerinfo.player.current_position.x == x && playerinfo.player.current_position.y == y;
+            let isDestinationLocation : boolean = gameinfo.destination.x == x && gameinfo.destination.y == y;
+           if(isPlayerLocation)
            {
              console.log('skipping ' , x , ' ' , y , ' ' , 'player is occupying that space');
              continue;
            }
-           if(gameinfo.destination.x == x && gameinfo.destination.y == y)
+
+           if(isDestinationLocation)
            {
              console.log('marking space ' , x , ' ' , y , ' ' , 'as destination space');
              dispatch(appendStickerToGameMap({coordinates : {x: x * 25 , y: y * 25 } as Position , image : robot_gif , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false}));
            }
-          console.log('generating... x:' ,  x * 25 , ' y:' , y * 25 , ' ' );
-            dispatch(appendStickerToGameMap({coordinates : {x: x * 25 , y: y * 25 } as Position , image : cloud_emoji , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false}));
+
+           if(isDestinationLocation == false && isPlayerLocation == false )
+           {
+              console.log('generating... x:' ,  x * 25 , ' y:' , y * 25 , ' ' );
+             dispatch(appendStickerToGameMap({coordinates : {x: x * 25 , y: y * 25 } as Position , image : cloud_emoji , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false}));
+           }
+          
         }
       }
       console.log('board complete');
     }
 
+    const generatePremadeMap = () => {
+      dispatch(setRandomDestination());
+       dispatch(generateRandomizedMap());
+      
+      console.log('board complete');
+    }
+
     
-     function Check_For_Player (){
-       
+     function random_image (){
+      let min : number =           Math.ceil(1);
+      let max : number =           Math.floor(4);
+      let pic : number =  Math.floor(Math.random() * ( max - min ) + min);
+      switch (pic) {
+        case 1:
+          return(
+            <img src='toxic.gif' width='15'/>
+            );
+          break;
+          case 2:
+            return(
+              <img src='Rectangular-Block-Wall-1.jpg' width='20'/>
+              );
+            break;
+            case 3:
+           return(
+            <img src={questionmark_gif} width='10'/>
+            );
+              break;
+        default:
+          return(
+            <img src='portal.gif' width='10'/>
+            );
+          break;
+      }
+     
     }
 
      
@@ -98,13 +139,13 @@ function BoardGeneratorComponent (props : any)  {
                {
                   gameinfo.destination.x == S.coordinates.x && gameinfo.destination.y == S.coordinates.y 
                ?  // if current node == destination distinguish it as a destination
-                  <>  <img src={questionmark_gif} width='10'/>   </> // invader emoji
+                  <>  <img src={robot_gif} width='20'/>   </> // invader emoji
                :// else
                  S.visited == true 
                ?  // if current node == has been visited by the player , dont render it
                   <b></b> 
                : // else  render 
-               <img src={questionmark_gif} width='10'/> // cloud emoji
+               <img src='Rectangular-Block-Wall-1.jpg' width='20'/>
                }
             </div>
           )

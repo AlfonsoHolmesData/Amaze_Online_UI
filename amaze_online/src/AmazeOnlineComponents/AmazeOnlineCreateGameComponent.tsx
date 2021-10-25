@@ -82,7 +82,7 @@ import LeaderBoardModal from './AmazeOnlineLeaderBoardModal';
                   <LeaderBoardModal IsOpen={leaderBoardModal_IsOpen}  />
               </Modal>
             <br/>
-            <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}> <b>Quit</b>  </Button>
+            <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}> <b>Map Select</b>  </Button>
         </div>
       </>
     );

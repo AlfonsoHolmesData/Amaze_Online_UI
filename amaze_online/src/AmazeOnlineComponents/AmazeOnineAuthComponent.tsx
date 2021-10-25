@@ -70,7 +70,7 @@ import RegisterComponent from './AmazeOnineRegisterComponent';
     return(
       <>
         <div >
-        <RegisterComponent />
+        <RegisterComponent /> 
         </div> 
       </>
     );
