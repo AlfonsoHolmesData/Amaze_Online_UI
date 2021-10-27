@@ -2,11 +2,11 @@ import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { Sticker } from "../AmazeOnlineModels/grid-sticker";
-import { StickerDTO } from "../AmazeOnlineModels/grid-sticker-DTO";
-import { Position } from "../AmazeOnlineModels/position";
-import { appendStickerToGameMap, gameState, generateRandomizedMap, replaceStickerOnMap, setDestination, setRandomDestination } from "../AmazeOnlineStateSlices/amaze-game-slice";
-import {  playerSlice, playerState } from "../AmazeOnlineStateSlices/amaze-player-slice"
+import { Sticker } from "../../AmazeOnlineModels/grid-sticker";
+import { StickerDTO } from "../../AmazeOnlineModels/grid-sticker-DTO";
+import { Position } from "../../AmazeOnlineModels/position";
+import { appendStickerToGameMap, gameState, generateRandomizedMap, replaceStickerOnMap, setDestination, setRandomDestination } from "../../AmazeOnlineStateSlices/amaze-game-slice";
+import {  playerSlice, playerState } from "../../AmazeOnlineStateSlices/amaze-player-slice"
 
 function BoardGeneratorComponent (props : any)  {
     

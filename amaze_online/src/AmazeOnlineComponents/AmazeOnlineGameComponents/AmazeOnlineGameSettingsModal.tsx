@@ -4,30 +4,43 @@ import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import { Box, Container, InputLabel, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { gameState, setGame } from '../AmazeOnlineStateSlices/amaze-game-slice';
+import { gameState, setGame } from '../../AmazeOnlineStateSlices/amaze-game-slice';
 import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import { Position } from '../AmazeOnlineModels/position';
+import { Position } from '../../AmazeOnlineModels/position';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import { Sticker } from '../../AmazeOnlineModels/grid-sticker';
 
 interface iGameSettingsModal {
   gameName: string,
   setGameName: (gn: string) => void,
   match_time: number,
-  setMatch_time: (mt: string) => void,
   IsOpen: (nextIsOpenVal: boolean) => void
 }
 
- function GameSettingsModal (props : any) {
+ function GameSettingsModal (props : iGameSettingsModal) {
   const history = useHistory();
   const [mT , SetMT] = useState(30);
   const dispatch = useDispatch();
+  let default_settings = {
+    id:                  '9907-hb86f-98f8f8c-89gyb',
+    has_navigator:       false,
+    has_runner:          true,
+    game_set:            false,
+    is_active:           true,
+    destination:         {x: 0, y: 0 } as Position,
+    start_position:      {x: 0, y: 0 } as Position,
+    runner_psotion:      {x: 0, y: 0 } as Position,
+    game_map:            [] as Sticker[] ,
+    current_instruction: '',
+    match_time:          mT
+  };
     const useStyles = makeStyles((theme) => ({
       modal_template: {
         boarder: 'solid 2em blue',
@@ -70,6 +83,10 @@ interface iGameSettingsModal {
     SetMT(e.target.value);
 }
   const createGame = () => {
+   dispatch(setGame(default_settings));
+   setTimeout(() => {
+     props.IsOpen(false);
+   } , 500);
    
    
 }
@@ -101,10 +118,10 @@ interface iGameSettingsModal {
                       <option value={90}>90</option>
                       <option value={130}>130</option>
                     </NativeSelect>
-                  <FormHelperText>how long you would like the round to last</FormHelperText>
+                  <FormHelperText>how long you would like the round to last?</FormHelperText>
               </FormControl>
             <br/>
-            <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}> <b>Create</b>  </Button>
+            <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={createGame}> <b>Create</b>  </Button>
         </Container>
       </>
     );

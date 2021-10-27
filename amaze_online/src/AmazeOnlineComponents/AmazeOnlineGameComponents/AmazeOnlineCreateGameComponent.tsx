@@ -5,8 +5,8 @@ import { useHistory } from 'react-router-dom';
 import { Modal } from '@material-ui/core';
 import AmazeOnlineGameSettingsModal from './AmazeOnlineGameSettingsModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { appState, changeToGameDisplay } from '../AmazeOnlineStateSlices/app-state-slice';
-import LeaderBoardModal from './AmazeOnlineLeaderBoardModal';
+import { appState, changeToGameDisplay } from '../../AmazeOnlineStateSlices/app-state-slice';
+import LeaderBoardModal from '../AmazeOnlineLeaderBoardModal';
 
  function CreateGameComponent (props : any) {
   const history = useHistory();
@@ -68,7 +68,7 @@ import LeaderBoardModal from './AmazeOnlineLeaderBoardModal';
                       SetModal_IsOpen(false);
                   }}
               >
-                <AmazeOnlineGameSettingsModal gameName={gameName} match_time={matchTime} IsOpen={Modal_IsOpen}/>
+                <AmazeOnlineGameSettingsModal gameName={gameName} match_time={matchTime} IsOpen={SetModal_IsOpen} setGameName={setGameName}/>
             </Modal>
 
             <br/>

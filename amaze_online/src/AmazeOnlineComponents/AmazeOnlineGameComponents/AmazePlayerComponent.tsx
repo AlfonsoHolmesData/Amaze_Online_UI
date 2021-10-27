@@ -1,9 +1,9 @@
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux"
-import { StickerDTO } from "../AmazeOnlineModels/grid-sticker-DTO";
-import { gameState, removeStickerFromGameMap, setRandomDestination } from "../AmazeOnlineStateSlices/amaze-game-slice";
-import {  addPoints, playerSlice, playerState } from "../AmazeOnlineStateSlices/amaze-player-slice"
+import { StickerDTO } from "../../AmazeOnlineModels/grid-sticker-DTO";
+import { gameState, removeStickerFromGameMap, setRandomDestination } from "../../AmazeOnlineStateSlices/amaze-game-slice";
+import {  addPoints, playerSlice, playerState } from "../../AmazeOnlineStateSlices/amaze-player-slice"
 
 function PlayerComponent (props : any)  {
     

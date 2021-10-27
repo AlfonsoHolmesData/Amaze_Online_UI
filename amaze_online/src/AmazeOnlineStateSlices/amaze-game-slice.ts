@@ -27,7 +27,8 @@ interface State {
 	destination:         Position,
 	start_position:      Position,
 	runner_psotion:      Position,
-	game_map:            Sticker[] ,
+	game_map:            Sticker[],
+    game_state:            number,
 	current_instruction: string,
 	match_time:          number
 }
@@ -41,7 +42,8 @@ const initialState: State = {
 	destination:         {x: 0, y: 0 } as Position,
 	start_position:      {x: 0, y: 0 } as Position,
 	runner_psotion:      {x: 0, y: 0 } as Position,
-	game_map:            [] as Sticker[] ,
+	game_map:            [] as Sticker[],
+    game_state:            0,
 	current_instruction: '',
 	match_time:          60
 };
@@ -113,6 +115,9 @@ export const gameSlice = createSlice({
             let random_x : number =      Math.floor(Math.random() * ( max - min ) + min) * 25;
             console.log( 'random x', random_x , ' random y ',  random_y);
             state.destination =          {x: random_x , y: random_y } as Position ;
+        },
+        setGameState: (state , action) =>{
+            state.game_state = action.payload;
         },
 
         /**
@@ -216,6 +221,7 @@ export const {
     replaceStickerOnMap,
     removeStickerFromGameMap,
     setDestination,
+    setGameState,
     setRandomDestination,
     generateRandomizedMap,
     setGameMatchTime
