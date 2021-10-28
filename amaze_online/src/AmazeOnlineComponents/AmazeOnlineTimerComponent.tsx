@@ -10,6 +10,7 @@ interface RemainingTime {
 }
 interface ITimerProps{
   start: number;
+  SetCurrentTime: ((secVal : number)=> void);
   onTimeout: (() => void);
 }
  function Timer (props : ITimerProps) {
@@ -50,6 +51,7 @@ interface ITimerProps{
     const classes = useStyles();
     useEffect(()=>{
       start();
+     
     }, [])
       return(
         <>

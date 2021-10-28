@@ -7,7 +7,7 @@ import { onUpdateGame } from '../../graphql/subscriptions';
 import { clearScreenDown } from 'readline';
 import { Position } from '../../AmazeOnlineModels/position';
 import AmazePlayerComponent from './AmazePlayerComponent';
-import { moveDown, moveLeft, moveRight, moveUp, playerState } from '../../AmazeOnlineStateSlices/amaze-player-slice';
+import { addPoints, moveDown, moveLeft, moveRight, moveUp, playerState } from '../../AmazeOnlineStateSlices/amaze-player-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { countDown, gameState, setGameMatchTime, setGameState } from '../../AmazeOnlineStateSlices/amaze-game-slice';
 import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
@@ -20,8 +20,8 @@ import renderTime from '../TimerHookUitil';
   const dispatch = useDispatch();
   const gameinfo = useSelector(gameState);
   const playerinfo = useSelector(playerState);
-  const [matchTime , setMatchTime] = useState(60);
-  const {isRunning , start , stop , seconds} = renderTime(gameinfo.match_time);
+  const [currentTime , setCurrentTime] = useState(60);
+  const [buttonDown , setButtonDown] = useState(false);
   let t = 60;
 
     const useStyles = makeStyles((theme) => ({
@@ -108,11 +108,11 @@ import renderTime from '../TimerHookUitil';
 
     const startMatch = () =>
     {
-     
+      setCurrentTime(gameinfo.match_time);
+      dispatch(addPoints(4500));
       dispatch(setGameState(1));
-     
     }
-    
+
     const HandleMoveRight = () =>
     {
      
@@ -142,6 +142,26 @@ import renderTime from '../TimerHookUitil';
       console.log(playerinfo.player.current_position , 'pos');
      
     }
+
+    const playerMotor = () =>
+        {
+          if(playerinfo.isEleminated)
+          {
+            dispatch(setGameState(3));
+          }
+        }
+
+
+    const detectFailure = () =>
+        {
+          if(currentTime <= 0)
+          {
+            dispatch(setGameState(3));
+          }
+        }
+
+    detectFailure();
+
     const renderGame = (gameState : number) =>{
       switch(gameState)
       {
@@ -168,9 +188,9 @@ import renderTime from '../TimerHookUitil';
           return(
             <>
             <div >
-            <h1 className={classes.labels} style={{ position : 'absolute', left: '80%' , top: '35%'}} >p o i n t s : {playerinfo.player.points}{}</h1>
+            <h1 className={classes.labels} style={{ position : 'absolute', left: '80%' , top: '35%'}} >p o i n t s : <span  style={{ color : 'green'}}>${playerinfo.player.points}</span></h1>
             <h1 className={classes.labels} style={{ position : 'absolute', left: '1%' , top: '35%' }} >I n s t r u c t i o n :</h1>
-            <Timer onTimeout={() =>{console.log("TIME UP")}} start={gameinfo.match_time}/>
+            <Timer SetCurrentTime={setCurrentTime} onTimeout={() =>{console.log("TIME UP")}} start={gameinfo.match_time}/>
               <div id="gameCanvas"   className={classes.root_canvas} >
       
                   {/*this is the player avitar */ }
@@ -226,10 +246,12 @@ import renderTime from '../TimerHookUitil';
             
               <div id="gameCanvas"   className={classes.root_canvas} >
                   <h1 className={classes.labels}>O P T I O N S :</h1>
+
+
                     <Button variant="contained"  className={classes.button_for_up} onClick={HandleMoveUp}  > <b>A B O R T</b>  </Button>
                       <br/>
                       <br/>
-                      <Button variant="contained"  className={classes.button_for_down} onClick={ startMatch}  > <b>R E S t a r t </b>  </Button>
+                      <Button variant="contained"  className={classes.button_for_down} onClick={startMatch}  > <b>R E S t a r t </b>  </Button>
                     </div>
             </div>
             </>
@@ -247,7 +269,7 @@ import renderTime from '../TimerHookUitil';
 
     return(
       <>
-         {renderGame(0)}
+         {renderGame(gameinfo.game_state)}
       </>
     );
 

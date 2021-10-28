@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux"
 import { StickerDTO } from "../../AmazeOnlineModels/grid-sticker-DTO";
 import { gameState, removeStickerFromGameMap, setRandomDestination } from "../../AmazeOnlineStateSlices/amaze-game-slice";
-import {  addPoints, playerSlice, playerState } from "../../AmazeOnlineStateSlices/amaze-player-slice"
+import {  addPoints, playerSlice, playerState, setIsEleminated, subtractPoints } from "../../AmazeOnlineStateSlices/amaze-player-slice"
 
 function PlayerComponent (props : any)  {
     
@@ -50,17 +50,23 @@ function PlayerComponent (props : any)  {
     
       function check_position(){ 
         
+        
+
         for (let x = 0; x < gameinfo.game_map.length - 1 ; x++) {
           if(gameinfo.game_map[x].coordinates.x == playerinfo.player.current_position.x && gameinfo.game_map[x].coordinates.y == playerinfo.player.current_position.y )
           {
+            if(!gameinfo.game_map[x].visited)
+            {
+              dispatch(subtractPoints(450));
+              dispatch(removeStickerFromGameMap(x));
+            }
            
-           dispatch(removeStickerFromGameMap(x));
           }
             
       }
         if(gameinfo.destination.x == playerinfo.player.current_position.x && gameinfo.destination.y == playerinfo.player.current_position.y )
         {
-          dispatch(addPoints(300));
+          dispatch(addPoints(500));
            dispatch(setRandomDestination());
         }
        
@@ -81,3 +87,4 @@ function PlayerComponent (props : any)  {
 };
 
 export default PlayerComponent;
+

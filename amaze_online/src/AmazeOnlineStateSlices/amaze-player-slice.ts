@@ -13,12 +13,14 @@ import { Player } from "./amaze-game-slice";
 interface State {
  player: RunTimePlayerModelDTO,
  bodyTranslate :  Position[],
+ isEleminated: boolean,
  head: Position
 }
 
 const initialState: State = {
     player : { username: '', points: 0, is_navigator: false, instruction: 'Left', current_position: {x: 0 , y: 0} as Position, afk: false} as RunTimePlayerModelDTO,
     bodyTranslate : [] = [{x : 0 ,  y : 0 }] as Position[],
+    isEleminated: false,
     head: {x : 0 ,  y : 0 } as Position
 }
 
@@ -78,8 +80,15 @@ export const playerSlice = createSlice({
             // state = action.payload;
             state.player.points += action.payload;
         }, 
+        subtractPoints: (state,  action :PayloadAction<number>) => {
+            // state = action.payload;
+            state.player.points -= action.payload;
+        }, 
       
-
+        setIsEleminated: (state,  action :PayloadAction<boolean>) => {
+            // state = action.payload;
+            state.isEleminated = action.payload;
+        }, 
         // Used when resetting the state
         teleprtTo: (state , action) => {
             state.player.current_position = {x: action.payload.x , y: action.payload.y} as Position;
@@ -95,6 +104,8 @@ export const {
      moveDown, 
      moveUp, 
      addPoints,
+     setIsEleminated,
+     subtractPoints,
      teleprtTo
 } = playerSlice.actions;
 
