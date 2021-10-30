@@ -1,46 +1,39 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import { useSelector } from 'react-redux';
 import { appState } from '../AmazeOnlineStateSlices/app-state-slice';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import clsx from 'clsx';
 import { AppBar, Box, Container, Drawer, IconButton, Toolbar, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import { executeReducerBuilderCallback } from '@reduxjs/toolkit/dist/mapBuilders';
+import App from '../App';
+import { gameState } from '../AmazeOnlineStateSlices/amaze-game-slice';
 
-
- function BackGroundDisply (props : any) {
-    
+function NavigationBar (props : any) {
     const app_state = useSelector(appState);
+    const gameinfo = useSelector(gameState);
+
     const useStyles = makeStyles((theme) => ({
       root: {
         textAlign : 'center',
         color:'#DBDFE7',
         fontFamily: 'Poiret One',
-        fontSize:'3em',
+        fontSize:'2em'
      
       },
       sideBar: {
           background:'blue',
-          width: '22%',
-          Top:'59%',
-          color: 'black',
-          hieght: '100%'
+          width: '20%',
+          height: '100%',
+          zIndex: 1, 
+          left: '0%',
+          color: 'black'
+          
       },
       toolBar: {
         background:'blue',
         Top:'10%',
         width: '22%',
         hieght: '900px',
-        marginLeft: '0%',
+      
     },
       welcome_page: {
         alignContent : 'center',
@@ -60,26 +53,34 @@ import { executeReducerBuilderCallback } from '@reduxjs/toolkit/dist/mapBuilders
     }));
     
     const classes = useStyles();
-    
-    
-    
-  
 
     return(
-      <>  
-    
-       
-         
-          <div className={classes.root}>
-         
-       <h1>A m a z e  <span className={classes.display_span} >O</span> n l i n e</h1>  
-               
+        <>
+        {
+
+            gameinfo.game_state !== 1 
             
-          </div> 
-      </>
+            ? 
+
+            <AppBar  className={classes.sideBar}>
+                <Toolbar className={classes.root}>
+                <IconButton color='inherit' >
+                <MenuIcon />
+            </IconButton> <h6>A m a z e  <span className={classes.display_span} >O</span> n l i n e</h6>  
+                </Toolbar>
+            
+            </AppBar>
+
+            
+            :
+
+
+            <></>
+           
+        }
+        </>
     );
+
 };
 
-export default BackGroundDisply;
-
-
+export default NavigationBar;

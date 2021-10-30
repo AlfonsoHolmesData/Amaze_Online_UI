@@ -20,6 +20,7 @@ import renderTime from '../TimerHookUitil';
   const dispatch = useDispatch();
   const gameinfo = useSelector(gameState);
   const playerinfo = useSelector(playerState);
+  const [isloading , setIsLoading] = useState(false);
   const [currentTime , setCurrentTime] = useState(60);
   const [buttonDown , setButtonDown] = useState(false);
   let t = 60;
@@ -111,6 +112,8 @@ import renderTime from '../TimerHookUitil';
       setCurrentTime(gameinfo.match_time);
       dispatch(addPoints(4500));
       dispatch(setGameState(1));
+      setIsLoading(true);
+      setInterval(() => {setIsLoading(false)} , 3000);
     }
 
     const HandleMoveRight = () =>
@@ -195,7 +198,7 @@ import renderTime from '../TimerHookUitil';
       
                   {/*this is the player avitar */ }
                   <AmazePlayerComponent/> 
-                  <BoardGeneratorComponent />
+                 { !isloading ? <BoardGeneratorComponent /> : <div style={{ position : 'relative', left: '0%' , top: '36%'  }}> <p>Generating...</p><img src='loading.gif' width='100' /></div> }
                   <div className={classes.button_div}  > 
                   <h1 className={classes.labels}>C o n t r o l s :</h1>
                     <Button variant="contained"  className={classes.button_for_up} onClick={HandleMoveUp}  > <b>U p</b>  </Button>

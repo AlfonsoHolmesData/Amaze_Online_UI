@@ -16,6 +16,7 @@ import { UserDTO } from "../AmazeOnlineModels/user-dto";
 function LeaderBoardModal (props : any) {
 
     const [users , SetUsers] = useState([] as UserDTO[]);
+    const [isloading , setIsLoading] = useState(false);
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -90,10 +91,11 @@ function LeaderBoardModal (props : any) {
                     }
 
             try{
-                
+                 setIsLoading(true);
                 let userArry : User[] = await GetUserRecords();
                 userArry.sort(compare);
                  SetUsers(userArry);
+                 setIsLoading(false);
             }catch(err: any){
 
                 let userArry : UserDTO[] = [
@@ -125,7 +127,7 @@ function LeaderBoardModal (props : any) {
         { users.length == 0
             ?
                <div  className={classes.modal_template}> 
-                   <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={getUsers}> <b>Load LeaderBoard</b>  </Button>
+                   <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={getUsers}> {isloading ? <img src='loading.gif' width='40'/>  :<b>Load LeaderBoard</b>}  </Button>
                </div>
             :
         <>

@@ -13,6 +13,7 @@ import CreateGameComponent from './AmazeOnlineComponents/AmazeOnlineGameComponen
 import { COGNITO } from './config/aws';
 import AuthComponent from './AmazeOnlineComponents/AmazeOnineAuthComponent';
 import awsmobile from './aws-exports';
+import NavigationBar from './AmazeOnlineComponents/AmazeOnlineNavBar';
 
 Amplify.configure({
   aws_cognito_region: COGNITO.REGION,
@@ -28,9 +29,11 @@ Amplify.configure({
 function App() {
   return (
     <div className="App">
-    
-      <Router>
-        <BackGroundDisply />
+   
+      <Router> 
+        
+         <NavigationBar />
+       
           <Switch>
 
               <Route path = "/login">
@@ -38,10 +41,12 @@ function App() {
               </Route>
 
               <Route exact path = "/">
-                <HomePage />
+                <BackGroundDisply />  
+                <HomePage />    
               </Route>
 
               <Route  path = "/creategame">
+                <BackGroundDisply />  
                 <CreateGameComponent />
               </Route>
 
