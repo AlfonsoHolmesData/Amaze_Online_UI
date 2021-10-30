@@ -7,7 +7,7 @@ import { onUpdateGame } from '../../graphql/subscriptions';
 import { clearScreenDown } from 'readline';
 import { Position } from '../../AmazeOnlineModels/position';
 import AmazePlayerComponent from './AmazePlayerComponent';
-import { addPoints, moveDown, moveLeft, moveRight, moveUp, playerState } from '../../AmazeOnlineStateSlices/amaze-player-slice';
+import { addPoints, moveDown, moveLeft, moveRight, moveUp, playerState, setPoints, teleprtTo } from '../../AmazeOnlineStateSlices/amaze-player-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { countDown, gameState, setGameMatchTime, setGameState } from '../../AmazeOnlineStateSlices/amaze-game-slice';
 import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
@@ -110,10 +110,19 @@ import renderTime from '../TimerHookUitil';
     const startMatch = () =>
     {
       setCurrentTime(gameinfo.match_time);
-      dispatch(addPoints(4500));
+      dispatch(setPoints(4500));
       dispatch(setGameState(1));
       setIsLoading(true);
       setInterval(() => {setIsLoading(false)} , 3000);
+    }
+
+    const restartMatch = () =>
+    {
+      setCurrentTime(gameinfo.match_time);
+      dispatch(setPoints(4500));
+      dispatch(setGameState(0));
+      //teleprtTo
+      dispatch(teleprtTo({x: 0 , y: 0} as Position));
     }
 
     const HandleMoveRight = () =>
@@ -157,7 +166,7 @@ import renderTime from '../TimerHookUitil';
 
     const detectFailure = () =>
         {
-          if(currentTime <= 0)
+          if(currentTime <= 0 && gameinfo.game_state || playerinfo.player.points < 0 && gameinfo.game_state )
           {
             dispatch(setGameState(3));
           }
@@ -234,7 +243,7 @@ import renderTime from '../TimerHookUitil';
                     <br/>
                     <Button variant="contained"  className={classes.button_for_up} onClick={HandleMoveUp}  > <b>A B O R T</b>  </Button>
                     <br/>
-                    <Button variant="contained"  className={classes.button_for_down} onClick={ startMatch}  > <b>R E S t a r t </b>  </Button>
+                    <Button variant="contained"  className={classes.button_for_down} onClick={ restartMatch}  > <b>R E S t a r t </b>  </Button>
                   </div>
           </div>
           
@@ -254,7 +263,7 @@ import renderTime from '../TimerHookUitil';
                     <Button variant="contained"  className={classes.button_for_up} onClick={HandleMoveUp}  > <b>A B O R T</b>  </Button>
                       <br/>
                       <br/>
-                      <Button variant="contained"  className={classes.button_for_down} onClick={startMatch}  > <b>R E S t a r t </b>  </Button>
+                      <Button variant="contained"  className={classes.button_for_down} onClick={restartMatch}  > <b>R E S t a r t </b>  </Button>
                     </div>
             </div>
             </>

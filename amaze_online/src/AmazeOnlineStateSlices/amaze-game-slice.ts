@@ -109,12 +109,24 @@ export const gameSlice = createSlice({
             
         },
         setRandomDestination: (state) =>{
-            let min : number =           Math.ceil(1);
-            let max : number =           Math.floor(20);
+            let min : number      =      Math.ceil(1);
+            let max : number      =      Math.floor(20);
             let random_y : number =      Math.floor(Math.random() * ( max - min ) + min) * 25;
             let random_x : number =      Math.floor(Math.random() * ( max - min ) + min) * 25;
+            state.destination     =      {x: random_x , y: random_y } as Position ;
+
             console.log( 'random x', random_x , ' random y ',  random_y);
-            state.destination =          {x: random_x , y: random_y } as Position ;
+
+            for(let position = 0 ; position < state.game_map.length ; position++)
+            {
+                
+                if(state.destination.x == state.game_map[position].coordinates.x && state.destination.y == state.game_map[position].coordinates.y)
+                {
+                    console.log( 'destintation ', state.game_map[position].coordinates.x ,  state.game_map[position].coordinates.y , ' replaced');
+                    state.game_map[position].visited = true;
+                }
+            }
+            
         },
         setGameState: (state , action) =>{
             state.game_state = action.payload;
