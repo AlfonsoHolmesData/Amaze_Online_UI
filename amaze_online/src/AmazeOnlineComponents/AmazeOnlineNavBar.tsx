@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
-import { appState } from '../AmazeOnlineStateSlices/app-state-slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { appState, changeToPReGameDisplay } from '../AmazeOnlineStateSlices/app-state-slice';
 import { AppBar, Box, Container, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import App from '../App';
@@ -12,13 +12,22 @@ import FingerprintOutlinedIcon from '@material-ui/icons/FingerprintOutlined';
 import DetailsRoundedIcon from '@material-ui/icons/DetailsRounded';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+import HelpOutlinedIcon from '@material-ui/icons/HelpOutlined';
+import SportsEsportsOutlinedIcon from '@material-ui/icons/SportsEsportsOutlined';
 import { useStopwatch } from 'react-timer-hook';
+import { useHistory } from 'react-router';
 
 function NavigationBar (props : any) {
+    const history = useHistory();
     const app_state = useSelector(appState);
     const gameinfo = useSelector(gameState);
     const [isAuth , setISAuth] = useState(false)
-
+    const dispatch = useDispatch();
+    const switch_to_game = (e:any) => {
+      dispatch(changeToPReGameDisplay);
+        history.push('/creategame');
+    }
+    
     const useStyles = makeStyles((theme) => ({
       root: {
         textAlign : 'center',
@@ -108,7 +117,7 @@ function NavigationBar (props : any) {
                             <ListItemText primary="Login" />
                         </ListItem>
 
-                        <ListItem button>
+                        <ListItem button >
                             <ListItemIcon>
                                 <PersonAddOutlinedIcon/>
                             </ListItemIcon>
@@ -117,11 +126,35 @@ function NavigationBar (props : any) {
                             
                             
                         </>
+
+
                        
                         }
+                        <ListItem button onClick={(e) => {switch_to_game(e)}}>
+                            <ListItemIcon >
+                                <SportsEsportsOutlinedIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Amaze Online" />
+                        </ListItem>
+
+                        <ListItem button>
+                            <ListItemIcon>
+                                <HelpOutlinedIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="How To Play" />
+                        </ListItem>
                      
                     </List>
 
+          
+                 <footer style={{ position : 'relative', top: '40%'  }}>
+                    <Divider />
+                    <IconButton style={{  color:'black'  }}>
+                        <HelpOutlinedIcon/>
+                    </IconButton>
+                    
+
+                 </footer>
             
             </AppBar>
 

@@ -19,9 +19,10 @@ import { appState, changeToPReGameDisplay } from '../AmazeOnlineStateSlices/app-
 
     const useStyles = makeStyles((theme) => ({
       root: {
-        background: 'orange',
+        background: 'white',
         alignContent : 'center',
         textAlign : 'center',
+        zIndex: 0, 
         marginTop:'10%'
       },
       welcome_page: {
@@ -49,11 +50,7 @@ import { appState, changeToPReGameDisplay } from '../AmazeOnlineStateSlices/app-
       <>
       { 
         <div className={classes.root}>
-            <Button variant="contained"  className={classes.button_for_Home} > <b>A b <span className={classes.display_span} > O</span> u t</b>  </Button>
-            <br/>
-            <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={switch_to_game} > <b>A m a z e  <span className={classes.display_span} >O</span> n l i n e</b>  </Button>
-            <br/>
-            <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}> <b>H <span className={classes.display_span} >O</span> w T <span className={classes.display_span} >O</span> P l a y</b>  </Button>
+          <img src='maze-clipart-clip-art-15.png' width='300' />
         </div>
         
         }
