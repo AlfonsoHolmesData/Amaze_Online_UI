@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
@@ -114,6 +114,7 @@ import renderTime from '../TimerHookUitil';
       dispatch(setGameState(1));
       setIsLoading(true);
       setInterval(() => {setIsLoading(false)} , 3000);
+      dispatch(teleprtTo({x: 0 , y: 0} as Position));
     }
 
     const restartMatch = () =>
@@ -122,8 +123,8 @@ import renderTime from '../TimerHookUitil';
       dispatch(setPoints(4500));
       dispatch(setGameState(0));
       //teleprtTo
-      dispatch(teleprtTo({x: 0 , y: 0} as Position));
-    }
+      
+    } 
 
     const HandleMoveRight = () =>
     {
@@ -172,7 +173,7 @@ import renderTime from '../TimerHookUitil';
           }
         }
 
-    detectFailure();
+        detectFailure();
 
     const renderGame = (gameState : number) =>{
       switch(gameState)

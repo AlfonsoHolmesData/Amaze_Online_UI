@@ -39,42 +39,32 @@ export const playerSlice = createSlice({
         // Used used to move player right by specified step
         moveRight: (state , action :PayloadAction<number>) => {
             // state = action.payload;
-            state.head = state.bodyTranslate[state.bodyTranslate.length - 1];
-            state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x  + action.payload ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y } as Position;
-            state.player.current_position = state.head;
-            state.bodyTranslate.push(state.head);
-            state.bodyTranslate.shift();
+            state.player.current_position.x = state.player.current_position.x + action.payload;
 
             
         },
         // Used used to move player left by specified step
         moveLeft: (state , action :PayloadAction<number>) => {
             // state = action.payload;
-            state.head = state.bodyTranslate[state.bodyTranslate.length - 1];
-            state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x  - action.payload ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y } as Position;
-            state.player.current_position = state.head;
-            state.bodyTranslate.push(state.head);
-            state.bodyTranslate.shift();
+            state.player.current_position.x = state.player.current_position.x - action.payload;
+        
 
             
         },
         // Used used to move player  up by specified step
         moveUp: (state,  action :PayloadAction<number>) => {
-            // state = action.payload;
-            state.head = state.bodyTranslate[state.bodyTranslate.length - 1];
-            state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y  + action.payload  } as Position;
-            state.player.current_position = state.head;
-            state.bodyTranslate.push(state.head);
-            state.bodyTranslate.shift();
+            // state  action.payload;
+            
+            state.player.current_position.y = state.player.current_position.y + action.payload;
+
+           
         }, 
         // Used used to move down player by specified step 
         moveDown: (state,  action :PayloadAction<number>) => {
             // state = action.payload;
-            state.head = state.bodyTranslate[state.bodyTranslate.length - 1];
-            state.head = {x : state.bodyTranslate[state.bodyTranslate.length - 1].x ,  y : state.bodyTranslate[state.bodyTranslate.length - 1].y  - action.payload } as Position;
-            state.player.current_position = state.head;
-            state.bodyTranslate.push(state.head);
-            state.bodyTranslate.shift();
+            
+            state.player.current_position.y = state.player.current_position.y - action.payload;
+      
         }, 
         addPoints: (state,  action :PayloadAction<number>) => {
             // state = action.payload;
@@ -88,6 +78,10 @@ export const playerSlice = createSlice({
             // state = action.payload;
             state.player.points = action.payload;
         }, 
+        revivePlayer: (state) => {
+            // state = action.payload;
+            
+        }, 
       
         setIsEleminated: (state,  action :PayloadAction<boolean>) => {
             // state = action.payload;
@@ -96,6 +90,7 @@ export const playerSlice = createSlice({
         // Used when resetting the state
         teleprtTo: (state , action) => {
             state.player.current_position = {x: action.payload.x , y: action.payload.y} as Position;
+     
         
         }
     }
@@ -103,7 +98,7 @@ export const playerSlice = createSlice({
 
 // Export the actions/reducers to be imported into a component and dispatched from component
 export const {
-    moveRight,
+     moveRight,
      moveLeft, 
      moveDown, 
      moveUp, 

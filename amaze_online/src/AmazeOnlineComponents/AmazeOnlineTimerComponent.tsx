@@ -53,6 +53,7 @@ interface ITimerProps{
       start();
      
     }, [])
+    
       return(
         <>
         { seconds > 0 ? <h1 className={classes.labels}  >Timer : {seconds}</h1> : <h1 className={classes.labels}  >Timer : 0</h1> }
