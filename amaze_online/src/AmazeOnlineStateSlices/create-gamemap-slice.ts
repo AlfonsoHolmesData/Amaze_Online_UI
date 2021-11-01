@@ -60,6 +60,8 @@ export const createMapSlice = createSlice({
                   });
                
             state.cleared = true;
+            state.special_selected = 0;
+            state.amount_selected  = 0;
         },
         renderMap: (state ) => {
             
@@ -69,6 +71,7 @@ export const createMapSlice = createSlice({
             });
          
       state.cleared = false;
+      
   },
         appendStickerToGameMap: (state , action : PayloadAction<FlaggedSticker>) => {
             if(state.game_map?.length < 20 * 20)
