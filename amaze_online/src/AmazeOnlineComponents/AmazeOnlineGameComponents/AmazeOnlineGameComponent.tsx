@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify';
-import { onUpdateGame } from '../../graphql/subscriptions';
+
 import { clearScreenDown } from 'readline';
 import { Position } from '../../AmazeOnlineModels/position';
 import AmazePlayerComponent from './AmazePlayerComponent';
@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { countDown, gameState, setGameMatchTime, setGameState } from '../../AmazeOnlineStateSlices/amaze-game-slice';
 import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
 import Timer from '../AmazeOnlineTimerComponent';
-import renderTime from '../TimerHookUitil';
+import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
 
 
  function GameComponent (this: any, props : any) {
@@ -22,6 +22,8 @@ import renderTime from '../TimerHookUitil';
   const playerinfo = useSelector(playerState);
   const [isloading , setIsLoading] = useState(false);
   const [currentTime , setCurrentTime] = useState(60);
+  const global_time = useSelector(timeState);
+
   const [buttonDown , setButtonDown] = useState(false);
   let t = 60;
 
@@ -167,7 +169,8 @@ import renderTime from '../TimerHookUitil';
 
     const detectFailure = () =>
         {
-          if(currentTime <= 0 && gameinfo.game_state || playerinfo.player.points < 0 && gameinfo.game_state )
+          console.log(global_time.current_ime);
+          if(global_time.current_ime < 0 && gameinfo.game_state || playerinfo.player.points < 0 && gameinfo.game_state == 1 )
           {
             dispatch(setGameState(3));
           }

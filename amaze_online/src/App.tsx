@@ -14,6 +14,7 @@ import { COGNITO } from './config/aws';
 import AuthComponent from './AmazeOnlineComponents/AmazeOnineAuthComponent';
 import awsmobile from './aws-exports';
 import NavigationBar from './AmazeOnlineComponents/AmazeOnlineNavBar';
+import DashBoardComponent from './AmazeOnlineComponents/AmazeOnlineUserDashBoard';
 
 Amplify.configure({
   aws_cognito_region: COGNITO.REGION,
@@ -37,7 +38,13 @@ function App() {
           <Switch>
 
               <Route path = "/login">
+              <BackGroundDisply />  
                 <AuthComponent />
+              </Route>
+
+              <Route path = "/dashboard">
+              <BackGroundDisply />  
+                <DashBoardComponent />
               </Route>
 
               <Route exact path = "/">

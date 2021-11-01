@@ -18,7 +18,7 @@ import LeaderBoardModal from '../AmazeOnlineLeaderBoardModal';
   const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({
       root: {
-        background: 'blue',
+        background: 'white',
         alignContent : 'center',
         textAlign : 'center',
         marginTop:'10%'

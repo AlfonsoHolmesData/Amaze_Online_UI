@@ -21,12 +21,23 @@ function NavigationBar (props : any) {
     const history = useHistory();
     const app_state = useSelector(appState);
     const gameinfo = useSelector(gameState);
-    const [isAuth , setISAuth] = useState(false)
+    const [isAuth , setISAuth] = useState(true)
     const dispatch = useDispatch();
+
     const switch_to_game = (e:any) => {
       dispatch(changeToPReGameDisplay);
         history.push('/creategame');
     }
+
+    const switch_to_Register = (e:any) => {
+        dispatch(changeToPReGameDisplay);
+          history.push('/login');
+      }
+
+      const switch_to_home = (e:any) => {
+        dispatch(changeToPReGameDisplay);
+          history.push('/dashboard');
+      }
     
     const useStyles = makeStyles((theme) => ({
       root: {
@@ -91,10 +102,10 @@ function NavigationBar (props : any) {
                         { isAuth ?
                         <>
                         
-                        <ListItem button>
+                        <ListItem button onClick={(e) => {switch_to_home(e)}}>
                                 <ListItemIcon>
                                     <DetailsRoundedIcon/>
-                                </ListItemIcon>
+                                </ListItemIcon >
                                 <ListItemText primary="Home" />
                             </ListItem>
 
@@ -117,7 +128,7 @@ function NavigationBar (props : any) {
                             <ListItemText primary="Login" />
                         </ListItem>
 
-                        <ListItem button >
+                        <ListItem button onClick={(e) => {switch_to_Register(e)}}>
                             <ListItemIcon>
                                 <PersonAddOutlinedIcon/>
                             </ListItemIcon>

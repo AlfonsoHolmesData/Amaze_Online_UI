@@ -63,6 +63,7 @@ interface iGameSettingsModal {
       button_for_Home: {
         background: 'blue',
         color:'white',
+        fontFamily: 'Poiret One',
         margin: '.5em'
       },
       display_span : {
