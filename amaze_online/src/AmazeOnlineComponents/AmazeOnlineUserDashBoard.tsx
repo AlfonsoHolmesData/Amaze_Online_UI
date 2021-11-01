@@ -4,6 +4,8 @@ import FmdGoodRoundedIcon from '@mui/icons-material/FmdGoodRounded';
 import FlashOnRoundedIcon from '@mui/icons-material/FlashOnRounded';
 import WrongLocationRoundedIcon from '@mui/icons-material/WrongLocationRounded';
 import LayersClearRoundedIcon from '@mui/icons-material/LayersClearRounded';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import DoneIcon from '@material-ui/icons/Done';
 import { makeStyles } from "@material-ui/styles";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
@@ -17,7 +19,7 @@ import { FlaggedSticker } from "../AmazeOnlineModels/grid-sticker-checked";
 
 function DashBoardComponent (props : any)  {
     const [screen , setScreen] = useState('create map');
-    const [board , setBoard] = useState([] as Sticker[]);
+    const [done , setDone] = useState(false);
     const playerinfo = useSelector(playerState);
     const gameinfo = useSelector(gameState);
     const create = useSelector(createMapState);
@@ -99,10 +101,13 @@ function DashBoardComponent (props : any)  {
                    { create.amount_selected > 0 ? <div style={{  color : 'red' }}><IconButton onClick={clearPath} ><DeleteRoundedIcon  style={{  color : 'red' }} /></IconButton> {create.amount_selected} </div> :<div style={{  color : 'grey' }}><IconButton  ><DeleteRoundedIcon   /></IconButton> {create.amount_selected} </div> }
             </div>
             <div  style={{ position : 'relative',   top : '-3%' , left: '60%'  }}>
-                   { (create.amount_selected > 0 && create.amount_selected <= 3) && create.special_selected < create.max_amount_of_special_spaces ? <div style={{  color : 'blue' }}><IconButton onClick={anoint} ><FmdGoodRoundedIcon  style={{  color : 'blue' }} /></IconButton> {create.special_selected} </div> :<div style={{  color : 'grey' }}><IconButton  ><WrongLocationRoundedIcon   /></IconButton> - </div> }
+                   { (create.amount_selected > 0 && create.amount_selected <= 3) && create.special_selected < create.max_amount_of_special_spaces ? <div style={{  color : 'blue' }}><IconButton onClick={anoint} ><FmdGoodRoundedIcon  style={{  color : 'blue' }} /></IconButton> {create.amount_selected} </div> :<div style={{  color : 'grey' }}><IconButton  ><WrongLocationRoundedIcon   /></IconButton> - </div> }
             </div>
             <div  style={{ position : 'relative',   top : '-3%' , left: '60%'  }}>
                    { !create.cleared ? <div style={{  color : '#EF8D22' }}><IconButton onClick={clearBoard} ><LayersClearRoundedIcon  style={{  color : '#EF8D22' }} /></IconButton> ! </div> : <div style={{  color : 'blue' }}><IconButton onClick={resetBoard} ><FlashOnRoundedIcon  style={{  color : 'blue' }} /></IconButton> + </div> }
+            </div>
+            <div  style={{ position : 'relative',   top : '-3%' , left: '59%'  }}>
+                   { create.cleared ? <div style={{  color : 'green' }}><IconButton onClick={clearBoard}  ><CloudUploadIcon  style={{  color : 'green' }} /></IconButton></div> : <div style={{  color : 'blue' }}><IconButton onClick={resetBoard} ><CloudUploadIcon  style={{  color : 'grey' }} /></IconButton>  </div> }
             </div>
           {create.game_map.map((S : FlaggedSticker , index) =>{
             
@@ -123,7 +128,9 @@ function DashBoardComponent (props : any)  {
           
           })
           }
-        
+          <div  style={{ position : 'relative',   top : '0%' , left: '0%' }}>
+          { done ? <Button variant="contained" style={{  background: 'green' , fontFamily: 'Poiret One',  boxShadow: 'black 20px 10px 50px'}}> <b>U p l o a d   M A P </b></Button> : <></>}
+           </div>
           </>
           );
         

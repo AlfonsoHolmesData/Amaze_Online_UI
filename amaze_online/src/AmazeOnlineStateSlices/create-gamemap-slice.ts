@@ -56,6 +56,7 @@ export const createMapSlice = createSlice({
                   state.game_map.forEach((s) => {
                        s.selected = false;
                        s.visited = true;
+                       s.img = 'Rectangular-Block-Wall-1.jpg';
                   });
                
             state.cleared = true;
@@ -104,7 +105,8 @@ export const createMapSlice = createSlice({
                    
                 }
             })
- 
+
+                state.amount_selected = 0; 
             
         },
         selectSticker: (state , action : PayloadAction<number>) => {
