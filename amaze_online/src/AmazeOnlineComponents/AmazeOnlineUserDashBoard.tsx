@@ -14,14 +14,15 @@ import { StickerDTO } from "../AmazeOnlineModels/grid-sticker-DTO";
 import { Position } from "../AmazeOnlineModels/position";
 import { appendStickerToGameMap, gameState, generateRandomizedMap, replaceStickerOnMap, setDestination, setRandomDestination } from "../AmazeOnlineStateSlices/amaze-game-slice";
 import {  playerSlice, playerState } from "../AmazeOnlineStateSlices/amaze-player-slice"
-import { anointSelectedStickers, clearMap, clearSelected, createMapState, fillMap, renderMap, selectSticker } from "../AmazeOnlineStateSlices/create-gamemap-slice";
+import { anointSelectedStickers, clearMap, clearSelected, createMapState, eraseMap, fillMap, renderMap, selectSticker } from "../AmazeOnlineStateSlices/create-gamemap-slice";
 import { FlaggedSticker } from "../AmazeOnlineModels/grid-sticker-checked";
+import { UnpackedSticker } from "../AmazeOnlineModels/grid-sticker-requst-model";
+import { UploadMap } from "../AmazeOnlineRemoteClient/User-service";
 
 function DashBoardComponent (props : any)  {
     const [screen , setScreen] = useState('create map');
     const [done , setDone] = useState(false);
-    const playerinfo = useSelector(playerState);
-    const gameinfo = useSelector(gameState);
+    const [isLoading , setIsLoading] = useState(false);
     const create = useSelector(createMapState);
     const dispatch = useDispatch();
     let mapRoute : any  = "create map";
@@ -89,6 +90,36 @@ function DashBoardComponent (props : any)  {
     const resetBoard = () => { dispatch(renderMap()); }
     const generateBoard = () => { dispatch(fillMap()); }
 
+
+    const finish = () => { 
+      setDone(true);
+     }
+
+     const  UplaodCustomeMap = async function (){
+       let mapToSave : UnpackedSticker[] = [];
+
+       // unpack sticker for save
+       create.game_map.forEach((e : FlaggedSticker) => {
+         
+         mapToSave.push({ x : e.coordinates.x , y : e.coordinates.y , image : e.img , width_percentage : e.width_percentage , hieght_percentage : e.hieght_percentage , position_type : 'absolute'  , visited : e.visited } as UnpackedSticker)
+       })
+
+       setIsLoading(true);
+       try{
+
+         let savedMap : UnpackedSticker[] | undefined = await UploadMap('fonsolo' , mapToSave );  
+         console.log(savedMap);
+
+          dispatch(eraseMap());
+
+       }catch(e : any){
+          console.log(e);
+       }
+       
+       setIsLoading(false);
+       setDone(false);
+     }
+
      function render (){
        
      
@@ -100,14 +131,17 @@ function DashBoardComponent (props : any)  {
             <div  style={{ position : 'relative',   top : '-3%' , left: '60%'  }}>
                    { create.amount_selected > 0 ? <div style={{  color : 'red' }}><IconButton onClick={clearPath} ><DeleteRoundedIcon  style={{  color : 'red' }} /></IconButton> {create.amount_selected} </div> :<div style={{  color : 'grey' }}><IconButton  ><DeleteRoundedIcon   /></IconButton> {create.amount_selected} </div> }
             </div>
+
             <div  style={{ position : 'relative',   top : '-3%' , left: '60%'  }}>
                    { (create.amount_selected > 0 && create.amount_selected <= 3) && create.special_selected < create.max_amount_of_special_spaces ? <div style={{  color : 'blue' }}><IconButton onClick={anoint} ><FmdGoodRoundedIcon  style={{  color : 'blue' }} /></IconButton> {create.amount_selected} </div> :<div style={{  color : 'grey' }}><IconButton  ><WrongLocationRoundedIcon   /></IconButton> - </div> }
             </div>
+
             <div  style={{ position : 'relative',   top : '-3%' , left: '60%'  }}>
                    { !create.cleared ? <div style={{  color : '#EF8D22' }}><IconButton onClick={clearBoard} ><LayersClearRoundedIcon  style={{  color : '#EF8D22' }} /></IconButton> ! </div> : <div style={{  color : 'blue' }}><IconButton onClick={resetBoard} ><FlashOnRoundedIcon  style={{  color : 'blue' }} /></IconButton> + </div> }
             </div>
+
             <div  style={{ position : 'relative',   top : '-3%' , left: '59%'  }}>
-                   { create.cleared ? <div style={{  color : 'green' }}><IconButton onClick={clearBoard}  ><CloudUploadIcon  style={{  color : 'green' }} /></IconButton></div> : <div style={{  color : 'blue' }}><IconButton onClick={resetBoard} ><CloudUploadIcon  style={{  color : 'grey' }} /></IconButton>  </div> }
+                   { create.changes_made > 60 && create.special_selected == create.max_amount_of_special_spaces ? <div style={{  color : 'green' }}><IconButton onClick={finish}  ><CloudUploadIcon  style={{  color : 'green' }} /></IconButton></div> : <div style={{  color : 'blue' }}><IconButton ><CloudUploadIcon  style={{  color : 'grey' }} /></IconButton>  </div> }
             </div>
           {create.game_map.map((S : FlaggedSticker , index) =>{
             
@@ -129,7 +163,15 @@ function DashBoardComponent (props : any)  {
           })
           }
           <div  style={{ position : 'relative',   top : '0%' , left: '0%' }}>
-          { done ? <Button variant="contained" style={{  background: 'green' , fontFamily: 'Poiret One',  boxShadow: 'black 20px 10px 50px'}}> <b>U p l o a d   M A P </b></Button> : <></>}
+          { !done ? 
+          <></> 
+          :
+          
+           !isLoading  ? 
+
+           <Button variant="contained" style={{  background: 'green' , fontFamily: 'Poiret One',  boxShadow: 'black 20px 10px 50px'}} onClick={UplaodCustomeMap}> <b>U p l o a d   M A P </b></Button> 
+           : 
+           <Button variant="contained" style={{  background: 'green' , fontFamily: 'Poiret One',  boxShadow: 'black 20px 10px 50px'}} > <p>Saving...</p><img src='loading.gif' width='40' /></Button> }
            </div>
           </>
           );

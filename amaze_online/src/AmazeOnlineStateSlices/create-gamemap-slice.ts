@@ -15,6 +15,7 @@ interface State {
 	game_map:            FlaggedSticker[],
     amount_selected: number,
     special_selected: number,
+    changes_made: number,
     cleared: boolean,
     max_amount_of_special_spaces: number
 
@@ -25,6 +26,7 @@ const initialState: State = {
 	game_map:            [] as FlaggedSticker[],
     amount_selected: 0,
     special_selected: 0,
+    changes_made: 0,
     cleared: false,
     max_amount_of_special_spaces: 3
    
@@ -51,6 +53,14 @@ export const createMapSlice = createSlice({
               }
               state.cleared = false;
         },
+        eraseMap: (state ) => {
+           
+            state.game_map = [];
+            state.cleared = true;
+            state.special_selected = 0;
+            state.amount_selected  = 0;
+            state.changes_made = 0;
+        },
         clearMap: (state ) => {
             
                   state.game_map.forEach((s) => {
@@ -62,6 +72,7 @@ export const createMapSlice = createSlice({
             state.cleared = true;
             state.special_selected = 0;
             state.amount_selected  = 0;
+            state.changes_made = 0;
         },
         renderMap: (state ) => {
             
@@ -108,7 +119,7 @@ export const createMapSlice = createSlice({
                    
                 }
             })
-
+                state.changes_made += state.special_selected;
                 state.amount_selected = 0; 
             
         },
@@ -130,7 +141,7 @@ export const createMapSlice = createSlice({
                   s.selected = false;
                }
            })
-
+           state.changes_made += state.amount_selected
            state.amount_selected = 0;
             
         },
@@ -148,6 +159,7 @@ export const createMapSlice = createSlice({
 // Export the actions/reducers to be imported into a component and dispatched from component
 export const {
     fillMap,
+    eraseMap,
     clearMap,
     renderMap,
     selectSticker,
