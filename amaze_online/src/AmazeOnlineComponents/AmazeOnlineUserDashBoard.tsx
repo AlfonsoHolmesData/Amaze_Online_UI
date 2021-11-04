@@ -21,6 +21,7 @@ import { anointSelectedStickers, clearMap, clearSelected, createMapState, eraseM
 import { FlaggedSticker } from "../AmazeOnlineModels/grid-sticker-checked";
 import { UnpackedSticker } from "../AmazeOnlineModels/grid-sticker-requst-model";
 import { UploadMap } from "../AmazeOnlineRemoteClient/User-service";
+import { UploadMapDTO } from "../AmazeOnlineModels/custom-game-map-request-model";
 
 function DashBoardComponent (props : any)  {
     const [screen , setScreen] = useState('');
@@ -99,19 +100,26 @@ function DashBoardComponent (props : any)  {
       setDone(true);
      }
 
-     const  UplaodCustomeMap = async function (){
+     const  UplaodCustomeMap = async  () => {
        let mapToSave : UnpackedSticker[] = [];
 
        // unpack sticker for save
        
        create.game_map.forEach((e : FlaggedSticker , i) => {
-         mapToSave.push({ x : e.coordinates.x , y : e.coordinates.y , image : e.img , width_percentage : e.width_percentage , height_percentage : e.hieght_percentage , position_type : 'absolute'  , visited : e.visited } as UnpackedSticker)
+         mapToSave.push({ x : e.coordinates.x ,
+                          y : e.coordinates.y ,
+                          image : e.img , 
+                          width_percentage : e.width_percentage ,
+                          height_percentage : e.hieght_percentage ,
+                          position_type : 'absolute'  ,
+                          visited : e.visited
+       } as UnpackedSticker);
        })
 
        setIsLoading(true);
        try{
 
-         let savedMap : UnpackedSticker[] | undefined = await UploadMap( 'igiugiuk' ,  'Fonsolo' ,  mapToSave as [] );  
+         let savedMap : UploadMapDTO | undefined = await UploadMap( {id : '' , creator : 'Fansolo' ,  blueprint : mapToSave as []} );  
          console.log(savedMap);
 
           dispatch(eraseMap());
@@ -185,10 +193,13 @@ function DashBoardComponent (props : any)  {
             return(
               <div style={{fontFamily: 'Poiret One'}}>
                 <h1>U s e r <span className={classes.display_span} >S t a t s</span></h1>  
+              
+                <br/><br/>
+                <br/>
                   <p style={{textAlign : "center"}}>
-                    <b>  win% <CircularProgress variant="determinate" value={63} /></b> <br/><br/>
-                    <b>  winsv: 600</b> <br/> 
-                    <b>  total wins : 1200</b> <br/>
+                    <b>  win% <CircularProgress variant="determinate" value={34} /></b> <br/><br/>
+                    <b>  winsv: <span className={classes.display_span} >600</span></b> <br/> 
+                    <b>  total wins :  <span className={classes.display_span} >1200</span></b> <br/>
                     <b>  losses : 600 </b>  <br/>
                     <b>  total losses : 600</b>  
                   </p>
@@ -201,6 +212,7 @@ function DashBoardComponent (props : any)  {
             <div className={classes.root}>
          
             <h1>U s e r <span className={classes.display_span} >H o m e</span></h1>  
+            <br/>
               <p>
                 <b>Welcome  <span className={classes.display_span} >U s e r</span> ,
                 this is the wonderfull and fun-filled Amaze Dashboard.
@@ -218,8 +230,7 @@ function DashBoardComponent (props : any)  {
      
     return(
         <>   
-         <BottomNavigation
-              >
+         <BottomNavigation >
                 <BottomNavigationAction label="Recents" icon={<DonutSmallIcon />} onClick={() => {setScreen("veiw stats"); }} />
                 <BottomNavigationAction label="Favorites" icon={<DetailsRoundedIcon />} onClick={() => { setScreen('default');}} />
                 <BottomNavigationAction label="Nearby" icon={<FormatPaintIcon />} onClick={() => { setScreen('create map');}}/>

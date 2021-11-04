@@ -99,7 +99,7 @@ export const createMapSlice = createSlice({
                     let ran = Math.floor(Math.random() * ( mx - mn ) + mn)
                    switch (ran) {
                        case 1:
-                           s.img = 'robot.gif';   
+                           s.img = 'loading.gif';   
                            s.selected = false;
                            state.special_selected++;
                            break;

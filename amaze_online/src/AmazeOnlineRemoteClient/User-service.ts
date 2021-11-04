@@ -1,4 +1,5 @@
 import { AxiosRequestConfig } from "axios";
+import { UploadMapDTO } from "../AmazeOnlineModels/custom-game-map-request-model";
 import { Sticker } from "../AmazeOnlineModels/grid-sticker";
 import { UnpackedSticker } from "../AmazeOnlineModels/grid-sticker-requst-model";
 import { User } from "../AmazeOnlineModels/user";
@@ -20,29 +21,33 @@ export const GetUserRecords = async () =>{
 
 }
 
-export const UploadMap = async (id : string , username : string ,  mapToSave : []) =>{
+export const UploadMap = async (gameMap : UploadMapDTO ) =>{
 
-    console.log(id , username , mapToSave);
+    console.log(gameMap);
   
-    let  response = await  AmazeClient.post('/maps' , {username , id , mapToSave});
+    let  response = await  AmazeClient.post('/users/maps' ,  {
+        id:  gameMap.id,
+        creator: gameMap.creator,
+        blueprint : gameMap.blueprint
+     } );
     
      let errorProjectile = {
          status : response.status ,
                             body : {
-                                id,
-                                username,
-                                mapToSave
+                               id:  gameMap.id,
+                               creator: gameMap.creator,
+                               blueprint : gameMap.blueprint
                             } ,
                             message : '400 error has been thrown'
                                         }
        if(response.status >= 400 )
        {
-        console.log( "RESPONSOE FROM UPLAOD MAP METHOD :", response , ' GAME MAP :' , mapToSave );
+        console.log( "RESPONSOE FROM UPLAOD MAP METHOD :", response , ' GAME MAP :' , gameMap );
            throw errorProjectile;
        }
    
-       console.log( "RESPONSOE FROM UPLAOD MAP METHOD :", response , ' GAME MAP :' , mapToSave );
-        let map : UnpackedSticker[]  = response.data;
+       console.log( "RESPONSOE FROM UPLAOD MAP METHOD :", response , ' GAME MAP :' , gameMap );
+        let map : UploadMapDTO  = response.data;
    
         return map;
    

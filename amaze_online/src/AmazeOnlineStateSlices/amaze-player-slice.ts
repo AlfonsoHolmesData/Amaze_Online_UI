@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
-import { RunTimePlayer } from "../AmazeOnlineAPI/API";
 import { Position } from "../AmazeOnlineModels/position";
 import { RunTimePlayerModelDTO } from "../AmazeOnlineModels/run-time-player-DTO";
 import { Player } from "./amaze-game-slice";
