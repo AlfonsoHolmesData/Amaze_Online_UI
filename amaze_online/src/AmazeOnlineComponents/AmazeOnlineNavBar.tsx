@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { appState, changeToPReGameDisplay } from '../AmazeOnlineStateSlices/app-state-slice';
-import { AppBar, Box, Container, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@material-ui/core';
+import { AccordionDetails, AppBar, Box, Container, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import App from '../App';
 import { gameState } from '../AmazeOnlineStateSlices/amaze-game-slice';
@@ -14,8 +14,11 @@ import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import HelpOutlinedIcon from '@material-ui/icons/HelpOutlined';
 import SportsEsportsOutlinedIcon from '@material-ui/icons/SportsEsportsOutlined';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useStopwatch } from 'react-timer-hook';
 import { useHistory } from 'react-router';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
 
 function NavigationBar (props : any) {
     const history = useHistory();
@@ -101,13 +104,15 @@ function NavigationBar (props : any) {
 
                         { isAuth ?
                         <>
-                        
-                        <ListItem button onClick={(e) => {switch_to_home(e)}}>
+                       
+                            <ListItem button onClick={(e) => {switch_to_home(e)}}>
                                 <ListItemIcon>
                                     <DetailsRoundedIcon/>
                                 </ListItemIcon >
-                                <ListItemText primary="Home" />
+                                <ListItemText primary="Home" />  
                             </ListItem>
+                                  
+                      
 
                             <ListItem button>
                                 <ListItemIcon>

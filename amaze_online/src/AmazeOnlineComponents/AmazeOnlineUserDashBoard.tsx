@@ -1,10 +1,13 @@
-import { Button, IconButton } from "@material-ui/core";
+import { BottomNavigation, BottomNavigationAction, Button, CircularProgress, IconButton } from "@material-ui/core";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import FmdGoodRoundedIcon from '@mui/icons-material/FmdGoodRounded';
 import FlashOnRoundedIcon from '@mui/icons-material/FlashOnRounded';
 import WrongLocationRoundedIcon from '@mui/icons-material/WrongLocationRounded';
 import LayersClearRoundedIcon from '@mui/icons-material/LayersClearRounded';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import DonutSmallIcon from '@material-ui/icons/DonutSmall';
+import FormatPaintIcon from '@material-ui/icons/FormatPaint';
+import DetailsRoundedIcon from '@material-ui/icons/DetailsRounded';
 import DoneIcon from '@material-ui/icons/Done';
 import { makeStyles } from "@material-ui/styles";
 import { useEffect, useState } from "react";
@@ -20,7 +23,7 @@ import { UnpackedSticker } from "../AmazeOnlineModels/grid-sticker-requst-model"
 import { UploadMap } from "../AmazeOnlineRemoteClient/User-service";
 
 function DashBoardComponent (props : any)  {
-    const [screen , setScreen] = useState('create map');
+    const [screen , setScreen] = useState('');
     const [done , setDone] = useState(false);
     const [isLoading , setIsLoading] = useState(false);
     const create = useSelector(createMapState);
@@ -36,6 +39,7 @@ function DashBoardComponent (props : any)  {
         root: {
           position: 'relative',
           background: 'white',
+          color: '#DBDFE7',
           boxShadow: 'black 20px 10px 50px',
           fontFamily: 'Poiret One',
           alignContent : 'center',
@@ -99,15 +103,15 @@ function DashBoardComponent (props : any)  {
        let mapToSave : UnpackedSticker[] = [];
 
        // unpack sticker for save
-       create.game_map.forEach((e : FlaggedSticker) => {
-         
-         mapToSave.push({ x : e.coordinates.x , y : e.coordinates.y , image : e.img , width_percentage : e.width_percentage , hieght_percentage : e.hieght_percentage , position_type : 'absolute'  , visited : e.visited } as UnpackedSticker)
+       
+       create.game_map.forEach((e : FlaggedSticker , i) => {
+         mapToSave.push({ x : e.coordinates.x , y : e.coordinates.y , image : e.img , width_percentage : e.width_percentage , height_percentage : e.hieght_percentage , position_type : 'absolute'  , visited : e.visited } as UnpackedSticker)
        })
 
        setIsLoading(true);
        try{
 
-         let savedMap : UnpackedSticker[] | undefined = await UploadMap('fonsolo' , mapToSave );  
+         let savedMap : UnpackedSticker[] | undefined = await UploadMap( 'igiugiuk' ,  'Fonsolo' ,  mapToSave as [] );  
          console.log(savedMap);
 
           dispatch(eraseMap());
@@ -171,7 +175,7 @@ function DashBoardComponent (props : any)  {
 
            <Button variant="contained" style={{  background: 'green' , fontFamily: 'Poiret One',  boxShadow: 'black 20px 10px 50px'}} onClick={UplaodCustomeMap}> <b>U p l o a d   M A P </b></Button> 
            : 
-           <Button variant="contained" style={{  background: 'green' , fontFamily: 'Poiret One',  boxShadow: 'black 20px 10px 50px'}} > <p>Saving...</p><img src='loading.gif' width='40' /></Button> }
+           <Button variant="contained" style={{  background: 'green' , fontFamily: 'Poiret One',  boxShadow: 'black 20px 10px 50px'}} > <img src='loading.gif' width='40' /></Button> }
            </div>
           </>
           );
@@ -179,12 +183,32 @@ function DashBoardComponent (props : any)  {
           break;
           case "veiw stats":
             return(
-              <img src='Rectangular-Block-Wall-1.jpg' width='20'/>
+              <div style={{fontFamily: 'Poiret One'}}>
+                <h1>U s e r <span className={classes.display_span} >S t a t s</span></h1>  
+                  <p style={{textAlign : "center"}}>
+                    <b>  win% <CircularProgress variant="determinate" value={63} /></b> <br/><br/>
+                    <b>  winsv: 600</b> <br/> 
+                    <b>  total wins : 1200</b> <br/>
+                    <b>  losses : 600 </b>  <br/>
+                    <b>  total losses : 600</b>  
+                  </p>
+                  <img src='loading.gif' width='45' />
+               </div> 
               );
             break;
         default:
           return(
-            <img src='portal.gif' width='10'/>
+            <div className={classes.root}>
+         
+            <h1>U s e r <span className={classes.display_span} >H o m e</span></h1>  
+              <p>
+                <b>Welcome  <span className={classes.display_span} >U s e r</span> ,
+                this is the wonderfull and fun-filled Amaze Dashboard.
+                Here you can view your stats, create new maps , and you can come back here any time to view this message , Happy Hunting!
+                </b> 
+              </p>
+              <img src='loading.gif' width='45' />
+               </div> 
             );
           break;
       }
@@ -193,10 +217,20 @@ function DashBoardComponent (props : any)  {
 
      
     return(
-        <>
+        <>   
+         <BottomNavigation
+              >
+                <BottomNavigationAction label="Recents" icon={<DonutSmallIcon />} onClick={() => {setScreen("veiw stats"); }} />
+                <BottomNavigationAction label="Favorites" icon={<DetailsRoundedIcon />} onClick={() => { setScreen('default');}} />
+                <BottomNavigationAction label="Nearby" icon={<FormatPaintIcon />} onClick={() => { setScreen('create map');}}/>
+              </BottomNavigation>
           <div   className={classes.root_canvas}>
+
               {render()}
-          </div>
+            
+           
+          </div>  
+       
         
         </>
     );
