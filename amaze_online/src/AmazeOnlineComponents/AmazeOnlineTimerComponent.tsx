@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { appState } from '../AmazeOnlineStateSlices/app-state-slice';
 import { useTimer } from 'react-timer-hook';
 import renderTime from './TimerHookUitil';
+import { gameState } from '../AmazeOnlineStateSlices/amaze-game-slice';
 
 interface RemainingTime {
   remainingTime: number
@@ -16,6 +17,7 @@ interface ITimerProps{
  function Timer (props : ITimerProps) {
    const {isRunning , start , stop , seconds} = renderTime(props.start);
 
+   const gameinfo = useSelector(gameState);
     const app_state = useSelector(appState);
     const useStyles = makeStyles((theme) => ({
       root: {
@@ -50,9 +52,10 @@ interface ITimerProps{
     
     const classes = useStyles();
     useEffect(()=>{
+      if(gameinfo.game_set == true)
       start();
      
-    }, [])
+    }, [gameinfo.game_set])
     
       return(
         <>

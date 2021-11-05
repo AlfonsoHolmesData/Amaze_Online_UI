@@ -3,6 +3,7 @@ import { RootState } from "../store/store";
 import { Position } from "../AmazeOnlineModels/position";
 import { Sticker } from "../AmazeOnlineModels/grid-sticker";
 import { StickerDTO } from "../AmazeOnlineModels/grid-sticker-DTO";
+import { UnpackedSticker } from "../AmazeOnlineModels/grid-sticker-requst-model";
 
 
 export interface Player {
@@ -76,6 +77,23 @@ export const gameSlice = createSlice({
             state.match_time = action.payload.match_time;
             console.log('Setting ', state, ' to ', action.payload)
         },
+        setGameMap:  (state , action : PayloadAction<UnpackedSticker[]>) =>{
+            state.game_map = [];
+            let inMap : UnpackedSticker[] = action.payload;
+            let copiedMap :Sticker[] = [];
+            inMap.forEach((e , i) => {
+                copiedMap.push({
+                    coordinates : {x : e.x , y : e.y } as Position,
+                    image : e.image , 
+                    width_percentage : e.width_percentage ,
+                    hieght_percentage : e.height_percentage ,
+                    position_type : 'absolute'  ,
+                    visited : e.visited} as Sticker)
+                
+            })
+
+            state.game_map = copiedMap;
+        },
         countDown: (state) => {
             // state = action.payload;
             if(state.match_time > 0)
@@ -128,8 +146,14 @@ export const gameSlice = createSlice({
             }
             
         },
-        setGameState: (state , action) =>{
+        setGameState: (state , action ) =>{
             state.game_state = action.payload;
+
+        },
+        // flag that game has started or stoped
+        setGameSet: (state , action ) =>{
+            state.game_set = action.payload;
+
         },
 
         /**
@@ -191,7 +215,7 @@ export const gameSlice = createSlice({
             for(let i = 0 ; i < 20 ; i++){
 
                 if(rsm[i] == 1)
-                generated_map.push({coordinates : {x: i * 25 , y: target_y } as Position , image : ' ' , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false});
+                generated_map.push({coordinates : {x: i * 25 , y: target_y } as Position , image : 'Rectangular-Block-Wall-1.jpg' , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false});
                 else 
                 generated_map.push({coordinates : {x: i * 25 , y: target_y } as Position , image : ' ' , width_percentage : 5 , hieght_percentage : 5 , position_type : 'null'  , visited : true});
             }
@@ -227,6 +251,8 @@ export const gameSlice = createSlice({
 // Export the actions/reducers to be imported into a component and dispatched from component
 export const {
     setGame,
+    setGameMap,
+    setGameSet,
     resetGame,
     countDown,
     appendStickerToGameMap,

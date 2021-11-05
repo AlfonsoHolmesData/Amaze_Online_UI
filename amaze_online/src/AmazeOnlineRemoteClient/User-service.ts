@@ -27,6 +27,7 @@ export const UploadMap = async (gameMap : UploadMapDTO ) =>{
   
     let  response = await  AmazeClient.post('/users/maps' ,  {
         id:  gameMap.id,
+        name: gameMap.name,
         creator: gameMap.creator,
         blueprint : gameMap.blueprint
      } );
@@ -35,6 +36,7 @@ export const UploadMap = async (gameMap : UploadMapDTO ) =>{
          status : response.status ,
                             body : {
                                id:  gameMap.id,
+                               name: gameMap.name,
                                creator: gameMap.creator,
                                blueprint : gameMap.blueprint
                             } ,
@@ -48,6 +50,32 @@ export const UploadMap = async (gameMap : UploadMapDTO ) =>{
    
        console.log( "RESPONSOE FROM UPLAOD MAP METHOD :", response , ' GAME MAP :' , gameMap );
         let map : UploadMapDTO  = response.data;
+   
+        return map;
+   
+   
+   }
+
+   export const downloadUserMaps = async (creator : string ) =>{
+
+  
+    let  response = await  AmazeClient.get(`/users/maps?creator=${creator}`);
+    
+     let errorProjectile = {
+         status : response.status ,
+                            body : {
+                               creator: creator
+                            } ,
+                            message : '400 error has been thrown'
+                                        }
+       if(response.status >= 400 )
+       {
+        console.log( "RESPONSOE FROM UPLAOD MAP METHOD :", response , ' GAME MAP :' , creator );
+           throw errorProjectile;
+       }
+   
+       console.log( "RESPONSOE FROM UPLAOD MAP METHOD :", response , ' GAME MAP :' , creator );
+        let map : UploadMapDTO[]  = response.data;
    
         return map;
    

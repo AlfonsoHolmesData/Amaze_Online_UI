@@ -53,12 +53,14 @@ function PlayerComponent (props : any)  {
         
 
         for (let x = 0; x < gameinfo.game_map.length - 1 ; x++) {
-          if(gameinfo.game_map[x].image == 'question-mark.gif' ||  gameinfo.game_map[x].image == 'gadgetboy.gif' || gameinfo.game_map[x].image == 'loading.gif'){ 
+
+          let playerIsIntersecting : boolean = gameinfo.game_map[x].coordinates.x == playerinfo.player.current_position.x && gameinfo.game_map[x].coordinates.y == playerinfo.player.current_position.y;
+          if( playerIsIntersecting && gameinfo.game_map[x].image == 'question-mark.gif' || playerIsIntersecting && gameinfo.game_map[x].image == 'gadgetboy.gif' || playerIsIntersecting && gameinfo.game_map[x].image == 'loading.gif'){ 
             if(!gameinfo.game_map[x].visited){
-            dispatch(addPoints(250)); 
+            dispatch(addPoints(1200)); 
             }
            }
-          if(gameinfo.game_map[x].coordinates.x == playerinfo.player.current_position.x && gameinfo.game_map[x].coordinates.y == playerinfo.player.current_position.y )
+          if(playerIsIntersecting  )
           {
             if(!gameinfo.game_map[x].visited)
             {

@@ -1,4 +1,4 @@
-import { BottomNavigation, BottomNavigationAction, Button, CircularProgress, IconButton } from "@material-ui/core";
+import { BottomNavigation, BottomNavigationAction, Button, CircularProgress, IconButton, TextField } from "@material-ui/core";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import FmdGoodRoundedIcon from '@mui/icons-material/FmdGoodRounded';
 import FlashOnRoundedIcon from '@mui/icons-material/FlashOnRounded';
@@ -22,11 +22,15 @@ import { FlaggedSticker } from "../AmazeOnlineModels/grid-sticker-checked";
 import { UnpackedSticker } from "../AmazeOnlineModels/grid-sticker-requst-model";
 import { UploadMap } from "../AmazeOnlineRemoteClient/User-service";
 import { UploadMapDTO } from "../AmazeOnlineModels/custom-game-map-request-model";
+import { ThemeContext } from "@mui/styled-engine";
 
 function DashBoardComponent (props : any)  {
     const [screen , setScreen] = useState('');
     const [done , setDone] = useState(false);
     const [isLoading , setIsLoading] = useState(false);
+    const [mapName , setMapName] = useState('');
+
+    const gameinfo = useSelector(gameState);
     const create = useSelector(createMapState);
     const dispatch = useDispatch();
     let mapRoute : any  = "create map";
@@ -119,7 +123,7 @@ function DashBoardComponent (props : any)  {
        setIsLoading(true);
        try{
 
-         let savedMap : UploadMapDTO | undefined = await UploadMap( {id : '' , creator : 'Fansolo' ,  blueprint : mapToSave as []} );  
+         let savedMap : UploadMapDTO | undefined = await UploadMap( {id : '' , name : mapName , creator : 'Fansolo' ,  blueprint : mapToSave as []} );  
          console.log(savedMap);
 
           dispatch(eraseMap());
@@ -155,6 +159,7 @@ function DashBoardComponent (props : any)  {
             <div  style={{ position : 'relative',   top : '-3%' , left: '59%'  }}>
                    { create.changes_made > 60 && create.special_selected == create.max_amount_of_special_spaces ? <div style={{  color : 'green' }}><IconButton onClick={finish}  ><CloudUploadIcon  style={{  color : 'green' }} /></IconButton></div> : <div style={{  color : 'blue' }}><IconButton ><CloudUploadIcon  style={{  color : 'grey' }} /></IconButton>  </div> }
             </div>
+           
           {create.game_map.map((S : FlaggedSticker , index) =>{
             
             return( 
@@ -180,9 +185,12 @@ function DashBoardComponent (props : any)  {
           :
           
            !isLoading  ? 
-
+            <>
+           <TextField color='primary' id="standard-basic" label="Standard" variant="filled" value={mapName} onChange={(e) => { setMapName(e.target.value); }} />
+             <br/>
            <Button variant="contained" style={{  background: 'green' , fontFamily: 'Poiret One',  boxShadow: 'black 20px 10px 50px'}} onClick={UplaodCustomeMap}> <b>U p l o a d   M A P </b></Button> 
-           : 
+           </>
+           :   
            <Button variant="contained" style={{  background: 'green' , fontFamily: 'Poiret One',  boxShadow: 'black 20px 10px 50px'}} > <img src='loading.gif' width='40' /></Button> }
            </div>
           </>

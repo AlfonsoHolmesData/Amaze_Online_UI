@@ -7,11 +7,14 @@ import AmazeOnlineGameSettingsModal from './AmazeOnlineGameSettingsModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { appState, changeToGameDisplay } from '../../AmazeOnlineStateSlices/app-state-slice';
 import LeaderBoardModal from '../AmazeOnlineLeaderBoardModal';
+import MapSelectionModal from './AmazeOnlineMapSelectionModal';
 
  function CreateGameComponent (props : any) {
   const history = useHistory();
   const [Modal_IsOpen , SetModal_IsOpen] = useState(false);
   const [leaderBoardModal_IsOpen , SetLeaderBoardModal_IsOpen] = useState(false);
+  const [selectMapModal_IsOpen , SetSelectMapModal_IsOpen] = useState(false);
+
   const [gameName , setGameName] = useState('');
   const [matchTime , setMatchTime] = useState(60);
   const app_state = useSelector(appState);
@@ -50,11 +53,18 @@ import LeaderBoardModal from '../AmazeOnlineLeaderBoardModal';
   const toggelLeaderBoardModal = () => {
     SetLeaderBoardModal_IsOpen(!leaderBoardModal_IsOpen);
  }
+ const toggelSelectMapModal = () => {
+  SetSelectMapModal_IsOpen(!selectMapModal_IsOpen);
+}
 
     const switch_to_game = () => {
       dispatch(changeToGameDisplay);
       history.push('/game');
   }
+  const switch_to_mapselect = () => {
+    dispatch(changeToGameDisplay);
+    history.push('/selectmap');
+}
 
     return(
       <>
@@ -82,7 +92,8 @@ import LeaderBoardModal from '../AmazeOnlineLeaderBoardModal';
                   <LeaderBoardModal IsOpen={leaderBoardModal_IsOpen}  />
               </Modal>
             <br/>
-            <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}> <b>Map Select</b>  </Button>
+            <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={switch_to_mapselect} > <b>Map Select</b>  </Button>
+        
         </div>
       </>
     );

@@ -1,43 +1,60 @@
 import { makeStyles } from "@material-ui/styles";
-import { useSelector } from "react-redux";
-import { gameState } from "../../AmazeOnlineStateSlices/amaze-game-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { gameState, setGameMap } from "../../AmazeOnlineStateSlices/amaze-game-slice";
 import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { useState } from "react";
 import { Sticker } from "../../AmazeOnlineModels/grid-sticker";
 import { UploadMapDTO } from "../../AmazeOnlineModels/custom-game-map-request-model";
 import { render } from "enzyme";
+import { downloadUserMaps } from "../../AmazeOnlineRemoteClient/User-service";
+import { UnpackedSticker } from "../../AmazeOnlineModels/grid-sticker-requst-model";
+import { Button, List, ListItem } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
-function MapSelectionModal(props: any){
+export interface IMapSelectionModal {
+  IsOpen : boolean
+}
+function MapSelectionModal(props:IMapSelectionModal ){
+  const dispatch = useDispatch();
   const gameinfo = useSelector(gameState);
-  const [playerMaps , SetPlayerMaps] = useState([]);
+  const [isLoading , setIsLoading] = useState(false);
+  const [mapIsSelected , setMapIsSelected] = useState(false);
+  const [playerMaps , SetPlayerMaps] = useState([] as UploadMapDTO[]);
+  const [currentMap , setCurrentMap] = useState(0);
+  const history = useHistory();
+  
   const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'space-around',
-      overflow: 'hidden',
-      backgroundColor: 'white',
+      justifyContent: 'center',
+      backgroundColor: 'white'
     },
     root_canvas: {
-        position: 'relative',
-        background: 'black',
-        color: 'white',
-        boxShadow: 'black 20px 10px 50px',
-        boarder: ' solid 2em red ',
-        alignContent : 'center',
-        textAlign : 'center',
-        width : '200px',
-        height : '200px',
-        margin:'50px auto'
+       background: 'black',
+        width : '500px',
+        height : '500px'
+     
       },
-    imageList: {
-      flexWrap: 'nowrap',
+      button_for_Home: {
+        background: 'blue',
+        fontFamily: 'Poiret One',
+        color:'white',
+        margin: '.5em'
+      },
+    select: {
+      textAlign : 'center',
+      color:'#DBDFE7',
+      fontFamily: 'Poiret One',
+      fontSize:'1em',
+   
       // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-      transform: 'translateZ(0)',
     },
     title: {
       color: 'white',
@@ -48,48 +65,70 @@ function MapSelectionModal(props: any){
     },
   }));
   const classes = useStyles();
+ 
+  const selectMap = (e: any  , key : number) =>{
+      dispatch(setGameMap(playerMaps[key].blueprint));
+      console.log(playerMaps[key]);
+
+      setCurrentMap(key);
+  }
+  const downloadMyMaps = async () => {
+    setIsLoading(true);
+    if(playerMaps.length < 1)
+    {
+        try{
+        let myMaps = await downloadUserMaps('Fansolo');
+        SetPlayerMaps(myMaps);
+      }catch(err : any)
+      {
+      
+        console.log(err);
+      }
+    }
+    setIsLoading(false);
+  }
 
   return (
     <div className={classes.root}>
-      <ImageList className={classes.imageList} cols={2.5}>
-        {playerMaps.map((M : UploadMapDTO) => {
+       
+      <List  style={{ left: '35%' }}  >
+        {playerMaps.map((M : UploadMapDTO , index) => {
             return(
-                <ImageListItem key={M.id}>
-                <div className={classes.root_canvas}>
-                    {M.blueprint.map((S : Sticker , index) =>{
+                <ListItem key={M.id}>
+                <div className={classes.root_canvas}  >
+                <ImageListItemBar title={`- - - ${M.name} By ${M.creator}`}  style={{zIndex: 2, width: '35%' }} />
+                    {M.blueprint.map((S : UnpackedSticker | undefined , index) =>{
             
                         return( 
                         
-                            <div key={index} style={{ position : 'absolute',  width :` ${S.width_percentage}%`, height : ` ${S.hieght_percentage}%`, top : S.coordinates.y , left: S.coordinates.x }} >
+                          <div key={index} style={{ position : 'absolute',  width :` 22%`, height : ` 22%`, top : S?.y , left: S?.x }} >
                             
-                            {
-                                gameinfo.destination.x == S.coordinates.x && gameinfo.destination.y == S.coordinates.y 
-                            ?  // if current node == destination distinguish it as a destination
-                                <>  <img src={S.image} width='5%'/>   </> // invader emoji
-                            :// else
-                                S.visited == true 
+                            {   S?.visited == true 
                             ?  // if current node == has been visited by the player , dont render it
                                 <b></b> 
                             : // else  render 
-                            <img src='Rectangular-Block-Wall-1.jpg' width='5%'/>
+                            <img src={S?.image} width='5%'/>
                             }
                             </div>     )})}
-            <ImageListItemBar
-              title={M.creator}
-              classes={{
-                root: classes.titleBar,
-                title: classes.title,
-                      }} />
-              actionIcon={
-                <IconButton aria-label={`star ${M.creator}`}>
-                  <StarBorderIcon className={classes.title} />
-                </IconButton>
-                      } 
+          
+               { index == currentMap ? 
+                 <CheckCircleIcon style={{ position : 'relative',  color:'green', width :` 100px`, height : ` 100px` , top: '50%'}} />
+               :
+                 <IconButton onClick={(e) =>{selectMap(e , index)}}><CheckCircleOutlineIcon  style={{ position : 'relative',  color:'grey', width :` 100px`, height : ` 100px` , top: '50%'}}/> </IconButton> }
+                      <br/>
                       </div>
-          </ImageListItem>
+          </ListItem>
+          
                               )})}
        
-      </ImageList>
+      </List>
+      <div style={{justifyContent: 'center',}}> 
+                  { playerMaps.length > 0 ? 
+                  
+                  <> <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}  onClick={() => { history.push('/game')}}> {isLoading ? <img src='loading.gif' width='40'/>  :<b>Play</b>}  </Button></> 
+                  :
+                  <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}  onClick={downloadMyMaps}> {isLoading ? <img src='loading.gif' width='40'/>  :<b>Load Maps</b>}  </Button> } 
+               </div>
        </div>     
    
   );

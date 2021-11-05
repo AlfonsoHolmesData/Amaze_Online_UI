@@ -9,7 +9,7 @@ import { Position } from '../../AmazeOnlineModels/position';
 import AmazePlayerComponent from './AmazePlayerComponent';
 import { addPoints, moveDown, moveLeft, moveRight, moveUp, playerState, setPoints, teleprtTo } from '../../AmazeOnlineStateSlices/amaze-player-slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { countDown, gameState, setGameMatchTime, setGameState } from '../../AmazeOnlineStateSlices/amaze-game-slice';
+import { countDown, gameState, setGameMatchTime, setGameSet, setGameState } from '../../AmazeOnlineStateSlices/amaze-game-slice';
 import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
 import Timer from '../AmazeOnlineTimerComponent';
 import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
@@ -111,16 +111,19 @@ import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
 
     const startMatch = () =>
     {
+
+      console.log(gameinfo.game_map);
       setCurrentTime(gameinfo.match_time);
       dispatch(setPoints(4500));
       dispatch(setGameState(1));
-      setIsLoading(true);
-      setInterval(() => {setIsLoading(false)} , 3000);
+    
       dispatch(teleprtTo({x: 0 , y: 0} as Position));
     }
 
     const restartMatch = () =>
     {
+      
+      setCurrentTime(60);
       setCurrentTime(gameinfo.match_time);
       dispatch(setPoints(4500));
       dispatch(setGameState(0));
@@ -169,10 +172,15 @@ import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
 
     const detectFailure = () =>
         {
-          console.log(global_time.current_ime);
           if(global_time.current_ime < 0 && gameinfo.game_state || playerinfo.player.points < 0 && gameinfo.game_state == 1 )
-          {
+          { 
+            
+            dispatch(setGameSet(false));
+               setIsLoading(true);
+               setInterval(() => {setIsLoading(false)} , 3000);
             dispatch(setGameState(3));
+             // trigger game to stop timer
+             
           }
         }
 
@@ -211,7 +219,7 @@ import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
       
                   {/*this is the player avitar */ }
                   <AmazePlayerComponent/> 
-                 { !isloading ? <BoardGeneratorComponent /> : <div style={{ position : 'relative', left: '0%' , top: '36%'  }}> <p>Generating...</p><img src='loading.gif' width='100' /></div> }
+                  <BoardGeneratorComponent /> 
                   <div className={classes.button_div}  > 
                   <h1 className={classes.labels}>C o n t r o l s :</h1>
                     <Button variant="contained"  className={classes.button_for_up} onClick={HandleMoveUp}  > <b>U p</b>  </Button>
@@ -285,7 +293,11 @@ import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
 
     return(
       <>
-         {renderGame(gameinfo.game_state)}
+         { !isloading ?  
+         renderGame(gameinfo.game_state)
+        :
+        <div style={{ position : 'relative', left: '0%' , top: '36%'  }}> <p>Generating...</p><img src='loading.gif' width='100' /></div>
+        }
       </>
     );
 
