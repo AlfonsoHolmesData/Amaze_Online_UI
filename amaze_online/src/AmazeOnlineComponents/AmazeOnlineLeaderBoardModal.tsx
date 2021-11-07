@@ -7,7 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User } from "../AmazeOnlineModels/user";
 import { Button } from "@material-ui/core";
 import { UserDTO } from "../AmazeOnlineModels/user-dto";
@@ -17,6 +17,11 @@ function LeaderBoardModal (props : any) {
 
     const [users , SetUsers] = useState([] as UserDTO[]);
     const [isloading , setIsLoading] = useState(false);
+
+    useEffect(() => {
+       if(users.length == 0)
+       getUsers();
+    }, [])
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -31,7 +36,7 @@ function LeaderBoardModal (props : any) {
           margin:'50px auto'
         },
         modal_template: {
-            boarder: 'solid 2em blue',
+            borderRadius : '1em',
             position: 'relative',
             background: 'white',
             boxShadow: 'black 20px 10px 50px',
@@ -124,10 +129,10 @@ function LeaderBoardModal (props : any) {
     return(
         <>
         
-        { users.length == 0
-            ?
-               <div  className={classes.modal_template}> 
-                   <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={getUsers}> {isloading ? <img src='loading.gif' width='40'/>  :<b>Load LeaderBoard</b>}  </Button>
+        { isloading 
+        ?
+               <div   className={classes.modal_template}> 
+                  <img src='loading.gif' width='50'style={{position : 'absolute' , top: '40%' , left : '47%'}}/>
                </div>
             :
         <>

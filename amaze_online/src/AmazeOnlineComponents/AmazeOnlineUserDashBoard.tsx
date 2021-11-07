@@ -37,7 +37,10 @@ function DashBoardComponent (props : any)  {
     let statRoute : any  = "veiw stats";
     let defaultRoute : any  = "default";
     let questionmark_gif : any  = "question-mark.gif";
-  
+    let user1  =  'Fansolo';
+    let user2  =  'GlobZilla_22';
+    let user3  =  'HellaCole';
+    
    
 
     const useStyles = makeStyles((theme) => ({
@@ -123,7 +126,7 @@ function DashBoardComponent (props : any)  {
        setIsLoading(true);
        try{
 
-         let savedMap : UploadMapDTO | undefined = await UploadMap( {id : '' , name : mapName , creator : 'Fansolo' ,  blueprint : mapToSave as []} );  
+         let savedMap : UploadMapDTO | undefined = await UploadMap( {id : '' , name : mapName , creator : user2 ,  blueprint : mapToSave as []} );  
          console.log(savedMap);
 
           dispatch(eraseMap());

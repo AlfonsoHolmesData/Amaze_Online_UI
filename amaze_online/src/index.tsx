@@ -5,6 +5,10 @@ import { Provider } from "react-redux";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store/store';
+import Amplify from '@aws-amplify/core';
+import config from './aws-exports';
+
+Amplify.configure(config);
 
 ReactDOM.render(
   <React.StrictMode>

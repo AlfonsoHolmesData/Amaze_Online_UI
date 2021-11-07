@@ -43,7 +43,8 @@ interface iGameSettingsModal {
   };
     const useStyles = makeStyles((theme) => ({
       modal_template: {
-        boarder: 'solid 2em blue',
+        boarder: ' 2em solid blue',
+        borderRadius : '1em',
         position: 'relative',
         background: 'white',
         boxShadow: 'black 20px 10px 50px',

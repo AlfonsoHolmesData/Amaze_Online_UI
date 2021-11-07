@@ -21,6 +21,7 @@ export interface Player {
 
 interface State {
     id:                  string,
+    host:                string,
     has_navigator:       boolean,
 	has_runner:          boolean,
 	game_set:            boolean,
@@ -36,6 +37,7 @@ interface State {
 
 const initialState: State = {
     id:                  '',
+    host:                '',
     has_navigator:       false,
 	has_runner:          false,
 	game_set:            false,
@@ -65,6 +67,7 @@ export const gameSlice = createSlice({
         setGame: (state, action) => {
             // state = action.payload;
             state.id = action.payload.id;
+            state.host = action.payload.host;
             state.has_navigator  = action.payload.has_navigator;
             state.has_runner = action.payload.has_runner;
             state.game_set = action.payload.game_set;
@@ -153,6 +156,10 @@ export const gameSlice = createSlice({
         // flag that game has started or stoped
         setGameSet: (state , action ) =>{
             state.game_set = action.payload;
+
+        },
+        setHost: (state , action ) =>{
+            state.host = action.payload;
 
         },
 
@@ -253,6 +260,7 @@ export const {
     setGame,
     setGameMap,
     setGameSet,
+    setHost,
     resetGame,
     countDown,
     appendStickerToGameMap,

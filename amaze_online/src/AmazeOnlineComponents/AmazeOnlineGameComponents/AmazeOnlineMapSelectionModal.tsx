@@ -10,7 +10,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sticker } from "../../AmazeOnlineModels/grid-sticker";
 import { UploadMapDTO } from "../../AmazeOnlineModels/custom-game-map-request-model";
 import { render } from "enzyme";
@@ -28,8 +28,17 @@ function MapSelectionModal(props:IMapSelectionModal ){
   const [isLoading , setIsLoading] = useState(false);
   const [mapIsSelected , setMapIsSelected] = useState(false);
   const [playerMaps , SetPlayerMaps] = useState([] as UploadMapDTO[]);
-  const [currentMap , setCurrentMap] = useState(0);
+  const [currentMap , setCurrentMap] = useState(83);
   const history = useHistory();
+  let user1  =  'Fansolo';
+  let user2  =  'GlobZilla_22';
+  let user3  =  'HellaCole';
+  let emptyUser  =  '';
+
+  useEffect(() => {
+    if(playerMaps.length == 0)
+    downloadMyMaps();
+ }, [])
   
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,7 +63,6 @@ function MapSelectionModal(props:IMapSelectionModal ){
       fontFamily: 'Poiret One',
       fontSize:'1em',
    
-      // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     },
     title: {
       color: 'white',
@@ -67,6 +75,10 @@ function MapSelectionModal(props:IMapSelectionModal ){
   const classes = useStyles();
  
   const selectMap = (e: any  , key : number) =>{
+    if(playerMaps.length == 0)
+    {
+      dispatch(setGameMap(playerMaps[0].blueprint));
+    }
       dispatch(setGameMap(playerMaps[key].blueprint));
       console.log(playerMaps[key]);
 
@@ -77,7 +89,7 @@ function MapSelectionModal(props:IMapSelectionModal ){
     if(playerMaps.length < 1)
     {
         try{
-        let myMaps = await downloadUserMaps('Fansolo');
+        let myMaps = await downloadUserMaps(emptyUser);
         SetPlayerMaps(myMaps);
       }catch(err : any)
       {
@@ -123,11 +135,11 @@ function MapSelectionModal(props:IMapSelectionModal ){
        
       </List>
       <div style={{justifyContent: 'center',}}> 
-                  { playerMaps.length > 0 ? 
+                  { !isLoading ? 
                   
                   <> <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}  onClick={() => { history.push('/game')}}> {isLoading ? <img src='loading.gif' width='40'/>  :<b>Play</b>}  </Button></> 
                   :
-                  <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}  onClick={downloadMyMaps}> {isLoading ? <img src='loading.gif' width='40'/>  :<b>Load Maps</b>}  </Button> } 
+                  <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}  onClick={downloadMyMaps}> <img src='loading.gif' width='40'/> </Button> } 
                </div>
        </div>     
    

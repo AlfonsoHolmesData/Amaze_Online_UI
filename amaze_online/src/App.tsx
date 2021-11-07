@@ -16,6 +16,9 @@ import awsmobile from './aws-exports';
 import NavigationBar from './AmazeOnlineComponents/AmazeOnlineNavBar';
 import DashBoardComponent from './AmazeOnlineComponents/AmazeOnlineUserDashBoard';
 import MapSelectionModal from './AmazeOnlineComponents/AmazeOnlineGameComponents/AmazeOnlineMapSelectionModal';
+import { DataStore } from '@aws-amplify/datastore';
+import { Match } from './models';
+import FindGameComponent from './AmazeOnlineComponents/AmazeOnlineGameComponents/AmazeOnlineFindGamesComponent';
 
 Amplify.configure({
   aws_cognito_region: COGNITO.REGION,
@@ -58,6 +61,11 @@ function App() {
                 <BackGroundDisply />  
                 <MapSelectionModal IsOpen={false} />
               </Route>
+
+              <Route  path = "/findgame">
+                <FindGameComponent />
+              </Route>
+              
               
               <Route  path = "/game">
                 <GameComponent />

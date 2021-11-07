@@ -13,7 +13,8 @@ import { countDown, gameState, setGameMatchTime, setGameSet, setGameState } from
 import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
 import Timer from '../AmazeOnlineTimerComponent';
 import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
-
+import { DataStore } from '@aws-amplify/datastore';
+import { Match } from '../../models';
 
  function GameComponent (this: any, props : any) {
   const history = useHistory();
@@ -22,8 +23,8 @@ import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
   const playerinfo = useSelector(playerState);
   const [isloading , setIsLoading] = useState(false);
   const [currentTime , setCurrentTime] = useState(60);
+  const [matches , setMatches] = useState([] as Match[]);
   const global_time = useSelector(timeState);
-
   const [buttonDown , setButtonDown] = useState(false);
   let t = 60;
 
@@ -109,6 +110,18 @@ import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
     }));
     const classes = useStyles();
 
+
+    useEffect(() => {
+      // TODO: finish setup 
+     const sub = DataStore.observe(Match).subscribe(() => {});
+      return() =>  sub.unsubscribe();
+    } , [])
+
+
+    const fetchMatche = async function ()  {
+      let liveMatches : Match[] = await DataStore.query(Match);
+      setMatches(liveMatches);
+  }
     const startMatch = () =>
     {
 
