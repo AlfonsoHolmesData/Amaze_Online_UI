@@ -24,8 +24,10 @@ function NavigationBar (props : any) {
     const history = useHistory();
     const app_state = useSelector(appState);
     const gameinfo = useSelector(gameState);
-    const [isAuth , setISAuth] = useState(true)
+    const [isAuth , setISAuth] = useState(true);
     const dispatch = useDispatch();
+    const [sidebarWidth , setSidebarWidth] = useState(20);
+    const [sidebarClosed , setSidebarClosed] = useState(false);
 
     const switch_to_game = (e:any) => {
       dispatch(changeToPReGameDisplay);
@@ -45,14 +47,15 @@ function NavigationBar (props : any) {
     const useStyles = makeStyles((theme) => ({
       root: {
         textAlign : 'center',
-        color:'#DBDFE7',
+        color:'white',
         fontFamily: 'Poiret One',
         fontSize:'2em'
      
       },
       sideBar: {
-          background:'white',
-          width: '20%',
+          border: ' 1px solid white', 
+          background:'#DBDFE7',
+          width: `${sidebarClosed? 3.5 : 19.5}%`,
           height: '100%',
           zIndex: 1, 
           left: '0%',
@@ -95,9 +98,9 @@ function NavigationBar (props : any) {
 
             <AppBar  className={classes.sideBar}>
                 <Toolbar className={classes.root}>
-                    <IconButton color='inherit' >
+                    <IconButton style={{ position:'relative', left : '-10%'}}color='inherit' onClick={() => {setSidebarClosed(!sidebarClosed) }} >
                         <MenuIcon />
-                    </IconButton> <h6>A m a z e  <span className={classes.display_span} >O</span> n l i n e</h6> 
+                    </IconButton>{sidebarClosed? <><br/> <br/> <br/></>: <h6>A m a z e  <span className={classes.display_span} >O</span> n l i n e</h6> } 
                 </Toolbar>
                 <Divider />
                     <List>
@@ -109,7 +112,7 @@ function NavigationBar (props : any) {
                                 <ListItemIcon>
                                     <DetailsRoundedIcon/>
                                 </ListItemIcon >
-                                <ListItemText primary="Home" />  
+                                <ListItemText primary={sidebarClosed? "" : "Home"} />  
                             </ListItem>
                                   
                       
@@ -118,7 +121,7 @@ function NavigationBar (props : any) {
                                 <ListItemIcon>
                                     <ExitToAppOutlinedIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="Logout" />
+                                <ListItemText primary={sidebarClosed? "" : "Logout"}  />
                             </ListItem>
 
                             
@@ -130,14 +133,14 @@ function NavigationBar (props : any) {
                             <ListItemIcon>
                                 <FingerprintOutlinedIcon/>
                             </ListItemIcon>
-                            <ListItemText primary="Login" />
+                            <ListItemText primary={sidebarClosed? "" : "Login"} />
                         </ListItem>
 
                         <ListItem button onClick={(e) => {switch_to_Register(e)}}>
                             <ListItemIcon>
                                 <PersonAddOutlinedIcon/>
                             </ListItemIcon>
-                            <ListItemText primary="Register" />
+                            <ListItemText primary={sidebarClosed? "" : "Register"} />
                         </ListItem>
                             
                             
@@ -150,20 +153,20 @@ function NavigationBar (props : any) {
                             <ListItemIcon >
                                 <SportsEsportsOutlinedIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Amaze Online" />
+                            <ListItemText primary= {sidebarClosed? "" : "Amaze Online"}/>
                         </ListItem>
 
                         <ListItem button>
                             <ListItemIcon>
                                 <HelpOutlinedIcon/>
                             </ListItemIcon>
-                            <ListItemText primary="How To Play" />
+                            <ListItemText primary={sidebarClosed? "" : "How To Play"} />
                         </ListItem>
                      
                     </List>
 
           
-                 <footer style={{ position : 'relative', top: '40%'  }}>
+                 <footer style={{ position : 'relative', top: '30%'  }}>
                     <Divider />
                     <IconButton style={{  color:'black'  }}>
                         <HelpOutlinedIcon/>

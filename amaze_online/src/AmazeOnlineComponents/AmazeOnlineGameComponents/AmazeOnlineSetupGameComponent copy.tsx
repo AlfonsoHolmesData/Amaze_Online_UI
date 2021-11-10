@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import ForwardIcon from '@material-ui/icons/Forward';
 import { useHistory } from 'react-router-dom';
-import { AccordionDetails, AccordionSummary, CardMedia, Modal, TextField } from '@material-ui/core';
+import { AccordionDetails, AccordionSummary, CardMedia, FormHelperText, InputLabel, Modal, NativeSelect, TextField } from '@material-ui/core';
 import AmazeOnlineGameSettingsModal from './AmazeOnlineGameSettingsModal';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -14,12 +14,17 @@ import LeaderBoardModal from '../AmazeOnlineLeaderBoardModal';
 import SearchIcon from '@material-ui/icons/Search';
 import MapSelectionModal from './AmazeOnlineMapSelectionModal';
 import { Accordion, Box, Card, Divider, Fab, Tooltip, Typography } from '@mui/material';
+import { gameState } from '../../AmazeOnlineStateSlices/amaze-game-slice';
+import { DataStore } from '@aws-amplify/datastore';
+import { Match, Player } from '../../models';
 
- function CreateGameComponent (props : any) {
+ function GameSetUpComponent (props : any) {
   const history = useHistory();
   const [Modal_IsOpen , SetModal_IsOpen] = useState(false);
   const [leaderBoardModal_IsOpen , SetLeaderBoardModal_IsOpen] = useState(false);
   const [selectMapModal_IsOpen , SetSelectMapModal_IsOpen] = useState(false);
+  const [mT , SetMT] = useState(30);
+  const gameinfo = useSelector(gameState);
 
   const [gameName , setGameName] = useState('');
   const [matchTime , setMatchTime] = useState(60);
@@ -27,17 +32,13 @@ import { Accordion, Box, Card, Divider, Fab, Tooltip, Typography } from '@mui/ma
   const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({
       root: {
-        background: 'white',
+        background: 'black',
         alignContent : 'center',
         fontFamily: 'Poiret One',
-        boxShadow: 'black 20px 10px 50px',
-        border: ' 2px solid black', 
-        borderRadius : '.3em',
         fontSize:'2em',
-        color: 'grey',
-        padding: '1em',
+        color: 'blue',
         width:'30%',
-        height:'40%',
+       
         left: '35%',
         textAlign : 'center',
         position: 'absolute'
@@ -74,59 +75,70 @@ import { Accordion, Box, Card, Divider, Fab, Tooltip, Typography } from '@mui/ma
   SetSelectMapModal_IsOpen(!selectMapModal_IsOpen);
 }
 
-    const switch_to_game = () => {
+    const switch_to_game = async function ()  {
       dispatch(changeToGameDisplay());
-      history.push('/setGame');
-  }
+    
 
+        await DataStore.save(new Match({  
+        name: "ggoood",
+        matchTime: 60,
+         closed: false
+      
+       } ))
+  
+      history.push('/game');
+  }
+  const switch_to_mapselect = () => {
+    dispatch(changeToHomeDisplay());
+    history.push('/selectmap');
+ }
  const switch_to_findgame = () => {
   dispatch(changeToGameDisplay);
   history.push('/findgame');
 }
 
+const SetMatchTime = (e : any) => {
+  SetMT(e.target.value);
+}
     return(
       <>
-      <div className={classes.root}>
+      <div style={{left: '40%' , alignContent:'center'}}>
       
-        <Box  >
-          <h2><b><span className={classes.display_span} >M</span> e n u </b></h2>
+    
+          <h2 style={{color: 'black' }}><span className={classes.display_span} >S</span> e t t i n g s </h2>
         <Divider variant="middle" />
         <br/>
-        <Tooltip title="Play"color="primary">
+        <Tooltip title="Play Online"color="primary">
           <Fab className={classes.button_for_Home} aria-label="add" onClick={switch_to_game} >
               <ForwardIcon />
           </Fab>
       
         </Tooltip>  
-     -
-        <Tooltip title="LeaderBoard" >
-          <Fab className={classes.button_for_Home} aria-label="add" onClick={toggelLeaderBoardModal} >
-            <EqualizerIcon />
-          </Fab>
-        </Tooltip>
         -
-              <Modal
-                      open={leaderBoardModal_IsOpen}
-                      onClose={() => {
-                        SetLeaderBoardModal_IsOpen(false);
-                      }}
-                  >
-                      <LeaderBoardModal IsOpen={leaderBoardModal_IsOpen}  />
+        <Tooltip title="Game Settings">
+           <Fab className={classes.button_for_Home} aria-label="add" onClick={toggelModal} >
+              <SettingsIcon />
+          </Fab>  
+        </Tooltip>
+        
+          <Modal
+                        open={Modal_IsOpen}
+                        onClose={() => {
+                            SetModal_IsOpen(false);
+                        }}
+                    >
+                      <AmazeOnlineGameSettingsModal gameName={gameName} match_time={matchTime} IsOpen={SetModal_IsOpen} setGameName={setGameName}/>
               </Modal>
-
-   
-          <Tooltip title="Find Match" style={{background: 'white' }}>
-          <Fab className={classes.button_for_Home} aria-label="add"  onClick={switch_to_findgame} >
-             <SearchIcon />
-          </Fab>
-          </Tooltip>
-          <br/>
-          <br/>
+              <br/>
+                    
+              <br/>
+                  
+                    <h2 style={{color: 'black' }}><span className={classes.display_span} >M</span>aps </h2>
+               <MapSelectionModal IsOpen={false}/>
      
-        </Box>
         </div>
       </>
     );
 };
 
-export default CreateGameComponent;
+export default GameSetUpComponent;

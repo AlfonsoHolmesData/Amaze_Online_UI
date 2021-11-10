@@ -14,7 +14,8 @@ import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
 import Timer from '../AmazeOnlineTimerComponent';
 import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
 import { DataStore } from '@aws-amplify/datastore';
-import { Match } from '../../models';
+import { Match, Player } from '../../models';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
  function GameComponent (this: any, props : any) {
   const history = useHistory();
@@ -24,23 +25,22 @@ import { Match } from '../../models';
   const [isloading , setIsLoading] = useState(false);
   const [currentTime , setCurrentTime] = useState(60);
   const [matches , setMatches] = useState([] as Match[]);
+  const [players , setPlayers] = useState([] as Player[]);
   const global_time = useSelector(timeState);
   const [buttonDown , setButtonDown] = useState(false);
   let t = 60;
 
     const useStyles = makeStyles((theme) => ({
-      root: {
-        position: 'absolute',
-        top: '40%',
-        background: 'green',
-        boarder: ' solid 2em red ',
-        boxShadow: 'black 20px 10px 50px',
-        textAlign : 'center',
+      playerTable: {
+        position: 'relative',
+        top: '4%',
+        left: '80%',
+        background: 'white',
+      
+
         color:'#DBDFE7',
         fontFamily: 'Poiret One',
-        width : '200px',
-        height : '100px',
-        marginTop:'3%'
+         width: '200px'
        
       },
       root_timer: {
@@ -206,6 +206,7 @@ import { Match } from '../../models';
           return(
             <>
             <div >
+      
             <h1 className={classes.labels}  >W E L C O M E _ T R A V E L E R</h1>
             
               <div id="gameCanvas"   className={classes.root_canvas} >
@@ -245,7 +246,7 @@ import { Match } from '../../models';
       
               
                 
-                <div id="gameCanvas"   className={classes.root} > 
+                <div id="gameCanvas"   className={classes.playerTable} > 
                     <h1>U P</h1>
                 </div>
              
@@ -306,6 +307,26 @@ import { Match } from '../../models';
 
     return(
       <>
+              <div className={classes.playerTable}>
+            <h1 className={classes.labels}>Players</h1>
+            <Table  >
+              <TableHead>
+                <TableRow >
+                  <TableCell className={classes.labels}>name</TableCell>
+                  <TableCell className={classes.labels}>points</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {players.map((p : Player , index ) => (
+                  <TableRow key={index}  >
+                    <TableCell  > {p.username} </TableCell>
+                    <TableCell >{p.points}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        
          { !isloading ?  
          renderGame(gameinfo.game_state)
         :

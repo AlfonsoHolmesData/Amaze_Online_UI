@@ -16,6 +16,10 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import { Sticker } from '../../AmazeOnlineModels/grid-sticker';
+import { UploadMapDTO } from '../../AmazeOnlineModels/custom-game-map-request-model';
+import { downloadUserMaps } from '../../AmazeOnlineRemoteClient/User-service';
+import { FixedSizeList, ListChildComponentProps } from 'react-window';
+
 
 interface iGameSettingsModal {
   gameName: string,
@@ -27,6 +31,8 @@ interface iGameSettingsModal {
  function GameSettingsModal (props : iGameSettingsModal) {
   const history = useHistory();
   const [mT , SetMT] = useState(30);
+  const [gameMaps , setGameMaps] = useState([] as UploadMapDTO[]);
+ // const []
   const dispatch = useDispatch();
   let default_settings = {
     id:                  '9907-hb86f-98f8f8c-89gyb',
@@ -52,7 +58,7 @@ interface iGameSettingsModal {
         alignContent : 'center',
         textAlign : 'center',
         width : '500px',
-        height : '500px',
+        height : '600px',
         margin:'50px auto'
       },
       form_setting: {
@@ -89,20 +95,24 @@ interface iGameSettingsModal {
    setTimeout(() => {
      props.IsOpen(false);
    } , 500);
-   
-   
+}
+
+const getMaps = async function() {
+ let maps : UploadMapDTO[] = await downloadUserMaps('');
+ setGameMaps(maps);
+
 }
 
     return(
       <>
+
+      
         <Container className={classes.modal_template}>
         <br/>
         <br/>
             <h1>Game Settings</h1>
         
             <TextField id="standard-basic" label="Game Name" className={classes.form_setting} />
-              
-         
                 <FormControl className={classes.form_setting}>
                   <InputLabel htmlFor="age-native-helper">Match Time (secs)</InputLabel>
                     <NativeSelect
@@ -122,7 +132,7 @@ interface iGameSettingsModal {
                     </NativeSelect>
                   <FormHelperText>how long you would like the round to last?</FormHelperText>
               </FormControl>
-            <br/>
+            <br/> 
             <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={createGame}> <b>Create</b>  </Button>
         </Container>
       </>

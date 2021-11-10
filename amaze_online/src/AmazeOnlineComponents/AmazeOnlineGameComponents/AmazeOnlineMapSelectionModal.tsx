@@ -67,11 +67,21 @@ function MapSelectionModal(props:IMapSelectionModal ){
     title: {
       color: 'white',
     },
+    imageList: {
+      position: 'absolute',
+      width: 1000,
+      height: 700,
+      // Promote the list into its own layer in Chrome. This cost memory, but helps keep FPS high.
+      transform: 'translateZ(0)',
+    },
+
     titleBar: {
       background:
-        'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-    },
-  }));
+        'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
+        'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+    }
+  }
+  ));
   const classes = useStyles();
  
   const selectMap = (e: any  , key : number) =>{
@@ -102,18 +112,32 @@ function MapSelectionModal(props:IMapSelectionModal ){
 
   return (
     <div className={classes.root}>
-       
-      <List  style={{ left: '35%' }}  >
+        <div style={{justifyContent: 'center'}}> 
+                  { !isLoading ? 
+                  
+                  <> </> 
+                  :
+                  <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}  onClick={downloadMyMaps}> <img src='loading.gif' width='40'/> </Button> } 
+               </div>
+      <ImageList  rowHeight={400} gap={1} className={classes.imageList} style={{  left: '20%'  }}  >
         {playerMaps.map((M : UploadMapDTO , index) => {
             return(
-                <ListItem key={M.id}>
+                <ImageListItem    key={M.id}>
                 <div className={classes.root_canvas}  >
-                <ImageListItemBar title={`- - - ${M.name} By ${M.creator}`}  style={{zIndex: 2, width: '35%' }} />
+                <ImageListItemBar title={`- - - ${M.name} By ${M.creator}`}  style={{zIndex: 2 , background: 'blue' , opacity: '85%'}} position="top"
+              actionIcon={
+                <IconButton >
+                   { index == currentMap ? 
+                 <CheckCircleIcon style={{  color:'green', width :` 40px`, height : ` 40px` }} />
+               :
+                 <IconButton onClick={(e) =>{selectMap(e , index)}}><CheckCircleOutlineIcon  style={{  color:'grey', width :` 40px`, height : ` 40px` }}/> </IconButton> }
+                </IconButton>
+              } />
                     {M.blueprint.map((S : UnpackedSticker | undefined , index) =>{
             
                         return( 
                         
-                          <div key={index} style={{ position : 'absolute',  width :` 22%`, height : ` 22%`, top : S?.y , left: S?.x }} >
+                          <div key={index} style={{ position : 'absolute',  width :` 60%`, height : ` 60%`, top : S?.y , left: S?.x }} >
                             
                             {   S?.visited == true 
                             ?  // if current node == has been visited by the player , dont render it
@@ -123,24 +147,15 @@ function MapSelectionModal(props:IMapSelectionModal ){
                             }
                             </div>     )})}
           
-               { index == currentMap ? 
-                 <CheckCircleIcon style={{ position : 'relative',  color:'green', width :` 100px`, height : ` 100px` , top: '50%'}} />
-               :
-                 <IconButton onClick={(e) =>{selectMap(e , index)}}><CheckCircleOutlineIcon  style={{ position : 'relative',  color:'grey', width :` 100px`, height : ` 100px` , top: '50%'}}/> </IconButton> }
+              
                       <br/>
                       </div>
-          </ListItem>
+          </ImageListItem >
           
                               )})}
        
-      </List>
-      <div style={{justifyContent: 'center',}}> 
-                  { !isLoading ? 
-                  
-                  <> <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}  onClick={() => { history.push('/game')}}> {isLoading ? <img src='loading.gif' width='40'/>  :<b>Play</b>}  </Button></> 
-                  :
-                  <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}  onClick={downloadMyMaps}> <img src='loading.gif' width='40'/> </Button> } 
-               </div>
+      </ImageList>
+     
        </div>     
    
   );

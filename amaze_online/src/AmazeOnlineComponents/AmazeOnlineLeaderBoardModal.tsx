@@ -40,6 +40,7 @@ function LeaderBoardModal (props : any) {
             position: 'relative',
             background: 'white',
             boxShadow: 'black 20px 10px 50px',
+            border: ' 5px solid black', 
             fontFamily: 'Poiret One',
             alignContent : 'center',
             textAlign : 'center',

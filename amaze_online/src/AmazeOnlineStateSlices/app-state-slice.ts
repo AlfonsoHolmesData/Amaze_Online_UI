@@ -24,7 +24,7 @@ export const  appSlice = createSlice({
    reducers: {
      changeToGameDisplay: (state)=>{
          state.app_state = 2;
-         state.app_title_color = 'green';
+         state.app_title_color = 'blue';
      },
     changeToHomeDisplay: (state)=>{
         state.app_state = 0;
