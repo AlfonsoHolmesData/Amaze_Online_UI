@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import { Modal, Table, TableBody, TableCell, TableContainer, TableRow } from '@material-ui/core';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+
 import AmazeOnlineGameSettingsModal from './AmazeOnlineGameSettingsModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { appState, changeToGameDisplay } from '../../AmazeOnlineStateSlices/app-state-slice';
@@ -27,20 +29,23 @@ import { DataStore } from '@aws-amplify/datastore';
 
     const useStyles = makeStyles((theme) => ({
       root: {
+        position: 'absolute',
         background: 'white',
         alignContent : 'center',
+        width: '75%',
+        left: '23%',
         textAlign : 'center',
         marginTop:'10%'
       }, 
       table_cell: {
-        background: 'blue',
+        background: 'black',
         textAlign : 'center',
         fontFamily: 'Poiret One',
         opacity : '100%',
         color:'white '
       },
       table_rowd: {
-        background: '#DBDFE7',
+        background: '#252526',
         textAlign : 'center',
         fontFamily: 'Poiret One',
         opacity : '98%',
@@ -74,10 +79,25 @@ import { DataStore } from '@aws-amplify/datastore';
     history.push('/selectmap');
 }
 
+const deleteMatch = async function ( e: any ,  M : any)  {
+
+   await DataStore.delete(M);
+  
+  console.log(matches);
+
+}
 
 const fetchMatches = async function ()  {
+
+  try{
     let liveMatches : Match[] = await DataStore.query(Match);
     setMatches(liveMatches);
+    console.log( " RESULT : " ,liveMatches );
+  }catch(err: any){
+    console.log( " RESULT : " ,matches ," REASON : " ,err);
+  }
+    
+    
 
 }
 
@@ -99,9 +119,9 @@ const fetchMatches = async function ()  {
                 {matches.map((M : Match , index ) => (
                   <TableRow key={M.id}  >
                     <TableCell className={classes.table_rowd} > {M.name} </TableCell>
-                    <TableCell className={classes.table_rowd}>{gameinfo.host}</TableCell>
+                    <TableCell className={classes.table_rowd}>{M.player1?.username}</TableCell>
                     <TableCell className={classes.table_rowd}>{M.matchTime}</TableCell>
-                    <TableCell className={classes.table_rowd}>{M.closed ? <span>Closed</span> :<span>Open</span> }</TableCell>
+                    <TableCell className={classes.table_rowd}>{M.closed ? <span>Closed</span> :<span>Open</span> }<DeleteRoundedIcon onClick={(e) => deleteMatch(e , M )}/></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

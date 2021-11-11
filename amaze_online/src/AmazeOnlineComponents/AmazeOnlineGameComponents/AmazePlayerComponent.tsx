@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { StickerDTO } from "../../AmazeOnlineModels/grid-sticker-DTO";
 import { gameState, removeStickerFromGameMap, setRandomDestination } from "../../AmazeOnlineStateSlices/amaze-game-slice";
 import {  addPoints, playerSlice, playerState, setIsEleminated, subtractPoints } from "../../AmazeOnlineStateSlices/amaze-player-slice"
-
+import { DataStore } from '@aws-amplify/datastore';
 function PlayerComponent (props : any)  {
     
     const playerinfo = useSelector(playerState);

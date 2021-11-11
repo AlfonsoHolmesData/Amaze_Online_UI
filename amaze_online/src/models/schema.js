@@ -17,12 +17,49 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "host": {
+                    "name": "host",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Player"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "player1": {
+                    "name": "player1",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Player"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "player2": {
+                    "name": "player2",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Player"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "matchTime": {
                     "name": "matchTime",
                     "isArray": false,
                     "type": "Int",
                     "isRequired": false,
                     "attributes": []
+                },
+                "gameMap": {
+                    "name": "gameMap",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Sticker"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": false
                 },
                 "closed": {
                     "name": "closed",
@@ -56,88 +93,13 @@ export const schema = {
                     "properties": {}
                 }
             ]
-        },
-        "Player": {
-            "name": "Player",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "username": {
-                    "name": "username",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "color": {
-                    "name": "color",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "points": {
-                    "name": "points",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "isDead": {
-                    "name": "isDead",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "isHost": {
-                    "name": "isHost",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Players",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                }
-            ]
-        },
+        }
+    },
+    "enums": {},
+    "nonModels": {
         "Position": {
             "name": "Position",
             "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "x": {
                     "name": "x",
                     "isArray": false,
@@ -151,32 +113,8 @@ export const schema = {
                     "type": "Int",
                     "isRequired": false,
                     "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
                 }
-            },
-            "syncable": true,
-            "pluralName": "Positions",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                }
-            ]
+            }
         },
         "Sticker": {
             "name": "Sticker",
@@ -186,6 +124,15 @@ export const schema = {
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "position": {
+                    "name": "position",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Position"
+                    },
+                    "isRequired": false,
                     "attributes": []
                 },
                 "image": {
@@ -222,35 +169,65 @@ export const schema = {
                     "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
                 }
-            },
-            "syncable": true,
-            "pluralName": "Stickers",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
+            }
+        },
+        "Player": {
+            "name": "Player",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "username": {
+                    "name": "username",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "color": {
+                    "name": "color",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "location": {
+                    "name": "location",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Position"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "points": {
+                    "name": "points",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "isDead": {
+                    "name": "isDead",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "isHost": {
+                    "name": "isHost",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
                 }
-            ]
+            }
         }
     },
-    "enums": {},
-    "nonModels": {},
-    "version": "0756feeb6c27a27164adf287146909f3"
+    "version": "34ca7594fe804f46abc112981211b7e6"
 };

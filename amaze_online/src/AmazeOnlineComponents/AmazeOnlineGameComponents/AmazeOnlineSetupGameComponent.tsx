@@ -16,7 +16,7 @@ import MapSelectionModal from './AmazeOnlineMapSelectionModal';
 import { Accordion, Box, Card, Divider, Fab, Tooltip, Typography } from '@mui/material';
 import { gameState } from '../../AmazeOnlineStateSlices/amaze-game-slice';
 import { DataStore } from '@aws-amplify/datastore';
-import { Match, Player } from '../../models';
+import { playerState } from '../../AmazeOnlineStateSlices/amaze-player-slice';
 
  function GameSetUpComponent (props : any) {
   const history = useHistory();
@@ -25,6 +25,7 @@ import { Match, Player } from '../../models';
   const [selectMapModal_IsOpen , SetSelectMapModal_IsOpen] = useState(false);
   const [mT , SetMT] = useState(30);
   const gameinfo = useSelector(gameState);
+  const playerinfo = useSelector(playerState);
 
   const [gameName , setGameName] = useState('');
   const [matchTime , setMatchTime] = useState(60);
@@ -75,17 +76,38 @@ import { Match, Player } from '../../models';
   SetSelectMapModal_IsOpen(!selectMapModal_IsOpen);
 }
 
+
+
     const switch_to_game = async function ()  {
       dispatch(changeToGameDisplay());
-    
-
-        await DataStore.save(new Match({  
-        name: "ggoood",
-        matchTime: 60,
-         closed: false
-      
-       } ))
-  
+    //  let stickerTransferArray : Sticker[] = [];
+      try{
+        
+          //   // create player
+          //   await DataStore.save(new Player({ username: "Fonsolo", color: "blue", location: playerinfo.player.current_position as Position, points: 0, isDead: false, isHost: true   } ));
+          //   let newPlayer  =  await DataStore.query(Player , "Fonsolo");
+          //   console.log(newPlayer);
+          //   // create match
+            
+          //   // gameinfo.game_map.forEach((element)=> {
+          //   //     stickerTransferArray.push(new Sticker({
+          //   //       position: element.coordinates as Position ,
+          //   //       image: element.image ,
+          //   //       width_percentage: element.width_percentage ,
+          //   //       height_percentage: element.hieght_percentage ,
+          //   //       position_type: element.position_type ,
+          //   //       visited: element.visited ,
+          //   //       matchGameMapId: ""  }))
+          //   // }); 
+          //   //  await DataStore.save(new Match({  name: "Cave Carver", matchTime: gameinfo.match_time , player1: newPlayer, player2: undefined, gameMap: [], closed: false } ));   
+          //   //  let newmatch = await DataStore.query(Match , "Cave Carver");
+             
+          //  // await DataStore.save( Match.copyOf( newmatch as Match , updated => { updated.gameMap  = stickerTransferArray as Sticker[] | [] }  ));
+          //   // console.log(newmatch);
+            }catch(eer: any){
+              console.log(eer);
+            }
+        
       history.push('/game');
   }
   const switch_to_mapselect = () => {

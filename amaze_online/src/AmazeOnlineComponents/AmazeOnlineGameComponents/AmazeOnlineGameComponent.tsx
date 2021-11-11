@@ -111,17 +111,26 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
     const classes = useStyles();
 
 
-    useEffect(() => {
+   // useEffect(() => {
       // TODO: finish setup 
-     const sub = DataStore.observe(Match).subscribe(() => {});
-      return() =>  sub.unsubscribe();
-    } , [])
+  //    const sub = DataStore.observe(Match).subscribe(() => {});
+  //    const sub1 = DataStore.observe(Player).subscribe(() => {fetchPlayers();});
+  //     return() => {
+  //       sub.unsubscribe();
+  //       sub1.unsubscribe();
+  //     } 
+  //   } , [])
 
 
-    const fetchMatche = async function ()  {
-      let liveMatches : Match[] = await DataStore.query(Match);
-      setMatches(liveMatches);
-  }
+  //   const fetchMatche = async function ()  {
+  //     let liveMatches : Match[] = await DataStore.query(Match);
+  //     setMatches(liveMatches);
+  // }
+  // const fetchPlayers = async function ()  {
+  //   let livePlayers : Player[] = await DataStore.query(Player);
+  //   setPlayers(livePlayers);
+//}
+
     const startMatch = () =>
     {
 

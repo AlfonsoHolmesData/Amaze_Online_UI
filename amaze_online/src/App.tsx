@@ -19,7 +19,7 @@ import MapSelectionModal from './AmazeOnlineComponents/AmazeOnlineGameComponents
 import { DataStore } from '@aws-amplify/datastore';
 import { Match } from './models';
 import FindGameComponent from './AmazeOnlineComponents/AmazeOnlineGameComponents/AmazeOnlineFindGamesComponent';
-import GameSetUpComponent from './AmazeOnlineComponents/AmazeOnlineGameComponents/AmazeOnlineSetupGameComponent copy';
+import GameSetUpComponent from './AmazeOnlineComponents/AmazeOnlineGameComponents/AmazeOnlineSetupGameComponent';
 
 Amplify.configure({
   aws_cognito_region: COGNITO.REGION,

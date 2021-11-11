@@ -1,33 +1,39 @@
-type Match @model {
+type Position  {
+  x: Int
+  y: Int
+}
+
+type Sticker {
   id: ID!
-  name: String
-  host: Player
-  player1: Player
-  player2: Player
-  matchTime:Int
-  gameMap: [Sticker]
-  closed: Boolean 
-}
-
-type Player @model  {
-  username: String 
-  color : String 
-  location: Position
-  points: Int
-  isDead: Boolean
-  isHost: Boolean
-}
-
-type Sticker @model {
-  position: Position
+  position: Position 
   image: String
   width_percentage : Int
   height_percentage : Int
   position_type : String
   visited : Boolean
+
 }
 
-type Position @model {
-  x: Int
-  y: Int
+
+
+type Player   {
+  id: ID!
+  username: String 
+  color : String 
+  location: Position 
+  points: Int
+  isDead: Boolean
+  isHost: Boolean
+}
+
+
+type Match @model {
+  id: ID!
+  name: String
+  host: Player 
+  player1: Player 
+  player2: Player 
+  matchTime:Int
+  gameMap: [Sticker]! 
+  closed: Boolean 
 }
