@@ -86,16 +86,20 @@ export const gameSlice = createSlice({
             let copiedMap :Sticker[] = [];
             inMap.forEach((e , i) => {
                 copiedMap.push({
-                    coordinates : {x : e.x , y : e.y } as Position,
+                    position : {x : e.x , y : e.y } as Position,
                     image : e.image , 
                     width_percentage : e.width_percentage ,
-                    hieght_percentage : e.height_percentage ,
+                    height_percentage : e.height_percentage ,
                     position_type : 'absolute'  ,
                     visited : e.visited} as Sticker)
                 
             })
 
             state.game_map = copiedMap;
+        },
+        setGameID:  (state , action ) =>{
+            state.id = action.payload;
+           
         },
         countDown: (state) => {
             // state = action.payload;
@@ -141,9 +145,9 @@ export const gameSlice = createSlice({
             for(let position = 0 ; position < state.game_map.length ; position++)
             {
                 
-                if(state.destination.x == state.game_map[position].coordinates.x && state.destination.y == state.game_map[position].coordinates.y)
+                if(state.destination.x == state.game_map[position].position.x && state.destination.y == state.game_map[position].position.y)
                 {
-                    console.log( 'destintation ', state.game_map[position].coordinates.x ,  state.game_map[position].coordinates.y , ' replaced');
+                    console.log( 'destintation ', state.game_map[position].position.x ,  state.game_map[position].position.y , ' replaced');
                     state.game_map[position].visited = true;
                 }
             }
@@ -222,9 +226,9 @@ export const gameSlice = createSlice({
             for(let i = 0 ; i < 20 ; i++){
 
                 if(rsm[i] == 1)
-                generated_map.push({coordinates : {x: i * 25 , y: target_y } as Position , image : 'Rectangular-Block-Wall-1.jpg' , width_percentage : 5 , hieght_percentage : 5 , position_type : 'absolute'  , visited : false});
+                generated_map.push({position : {x: i * 25 , y: target_y } as Position , image : 'Rectangular-Block-Wall-1.jpg' , width_percentage : 5 , height_percentage : 5 , position_type : 'absolute'  , visited : false});
                 else 
-                generated_map.push({coordinates : {x: i * 25 , y: target_y } as Position , image : ' ' , width_percentage : 5 , hieght_percentage : 5 , position_type : 'null'  , visited : true});
+                generated_map.push({position : {x: i * 25 , y: target_y } as Position , image : ' ' , width_percentage : 5 , height_percentage : 5 , position_type : 'null'  , visited : true});
             }
          }
               /*
@@ -258,6 +262,7 @@ export const gameSlice = createSlice({
 // Export the actions/reducers to be imported into a component and dispatched from component
 export const {
     setGame,
+    setGameID,
     setGameMap,
     setGameSet,
     setHost,

@@ -10,9 +10,14 @@ export class User{
     wins : number;
     win_percentage : number;
     total_games_played : number;
+    firstname : string ;
+    lastname : string ;
+    email : string ;
+  
+  
 
 
-    constructor( username: string , password: string , rank: string , games_as_navigator : number , games_as_runner : number , wins : number , win_percentage : number , total_games_played : number)
+    constructor( username: string , password: string , rank: string , games_as_navigator : number , games_as_runner : number , wins : number , win_percentage : number , total_games_played : number , firstname : string , lastname : string ,  email : string  )
     {
         this.username = username;
         this.password = password;
@@ -22,5 +27,8 @@ export class User{
         this.wins = wins;
         this.win_percentage = win_percentage;
         this.total_games_played = total_games_played;
+        this.firstname = firstname;
+        this.email = email;
+        this.lastname = lastname;
     }
 }

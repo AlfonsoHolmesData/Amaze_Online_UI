@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../AmazeOnlineModels/user";
 import { RootState } from "../store/store";
 
@@ -6,10 +6,12 @@ import { RootState } from "../store/store";
 
 interface state  {
    user:  User
+   isAuthenticated : boolean
 }
 
 const initialState = {
-    user: {username: 'fonsolo' , password: 'waba' , rank: 'Elite' , games_as_navigator : 100 , games_as_runner : 300 , wins : 379 , win_percentage : 89 , total_games_played : 400} as User
+    user: {username: 'fonsolo' , password: 'waba' , rank: 'Elite' , games_as_navigator : 100 , games_as_runner : 300 , wins : 379 , win_percentage : 89 , total_games_played : 400  ,firstname : '' , lastname : '' , email : '' } as User,
+    isAuthenticated : false
 }
 export const authSlice = createSlice({
 
@@ -19,11 +21,13 @@ export const authSlice = createSlice({
      initialState,
   //create reducers
      reducers : {
-       login: (state) =>  {
-           state.user = {username: 'fonsolo' , password: 'waba' , rank: 'Elite' , games_as_navigator : 100 , games_as_runner : 300 , wins : 379 , win_percentage : 89 , total_games_played : 400} as User;
+       login: (state , action : PayloadAction<User>) =>  {
+           state.user =  action.payload 
+           state.isAuthenticated = true;
        },
        logout: (state) =>  {
         state.user = {username: '' , password: '' , rank: '' , games_as_navigator : 0 , games_as_runner : 0 , wins : 0 , win_percentage : 0 , total_games_played : 0} as User;
+        state.isAuthenticated = false;
        }
 
 

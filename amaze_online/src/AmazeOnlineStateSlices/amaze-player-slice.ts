@@ -81,6 +81,10 @@ export const playerSlice = createSlice({
             // state = action.payload;
             
         }, 
+        setUsername: (state,  action :PayloadAction<string>) => {
+            // state = action.payload;
+            state.player.username = action.payload;
+        }, 
       
         setIsEleminated: (state,  action :PayloadAction<boolean>) => {
             // state = action.payload;
@@ -105,6 +109,7 @@ export const {
      setIsEleminated,
      subtractPoints,
      setPoints,
+     setUsername,
      teleprtTo
 } = playerSlice.actions;
 

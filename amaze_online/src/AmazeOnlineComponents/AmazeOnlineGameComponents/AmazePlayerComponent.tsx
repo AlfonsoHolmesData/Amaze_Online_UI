@@ -5,7 +5,13 @@ import { StickerDTO } from "../../AmazeOnlineModels/grid-sticker-DTO";
 import { gameState, removeStickerFromGameMap, setRandomDestination } from "../../AmazeOnlineStateSlices/amaze-game-slice";
 import {  addPoints, playerSlice, playerState, setIsEleminated, subtractPoints } from "../../AmazeOnlineStateSlices/amaze-player-slice"
 import { DataStore } from '@aws-amplify/datastore';
-function PlayerComponent (props : any)  {
+import { Position } from "../../models";
+
+interface iPlayerComponent {
+  position: Position
+  color: string
+}
+function PlayerComponent (props : iPlayerComponent)  {
     
     const playerinfo = useSelector(playerState);
     const gameinfo = useSelector(gameState);
@@ -26,7 +32,7 @@ function PlayerComponent (props : any)  {
             position : 'absolute',
             width : '5%',
             height : '5%',
-            background:' green'
+            background:`${props.color}`
           },  
         form_setting: {
           alignContent : 'center',
@@ -54,7 +60,7 @@ function PlayerComponent (props : any)  {
 
         for (let x = 0; x < gameinfo.game_map.length - 1 ; x++) {
 
-          let playerIsIntersecting : boolean = gameinfo.game_map[x].coordinates.x == playerinfo.player.current_position.x && gameinfo.game_map[x].coordinates.y == playerinfo.player.current_position.y;
+          let playerIsIntersecting : boolean = gameinfo.game_map[x].position.x == props.position.x && gameinfo.game_map[x].position.y == props.position.y;
           if( playerIsIntersecting && gameinfo.game_map[x].image == 'question-mark.gif' || playerIsIntersecting && gameinfo.game_map[x].image == 'gadgetboy.gif' || playerIsIntersecting && gameinfo.game_map[x].image == 'loading.gif'){ 
             if(!gameinfo.game_map[x].visited){
             dispatch(addPoints(1200)); 
@@ -72,12 +78,12 @@ function PlayerComponent (props : any)  {
           }
             
       }
-        if(gameinfo.destination.x == playerinfo.player.current_position.x && gameinfo.destination.y == playerinfo.player.current_position.y )
+        if(gameinfo.destination.x == props.position.x && gameinfo.destination.y == props.position.y )
         {
           dispatch(addPoints(500));
            dispatch(setRandomDestination());
         }
-        if(gameinfo.destination.x == playerinfo.player.current_position.x && gameinfo.destination.y == playerinfo.player.current_position.y ){ dispatch(addPoints(500));  }
+        if(gameinfo.destination.x == props.position.x && gameinfo.destination.y == props.position.y ){ dispatch(addPoints(500));  }
        
     }
       check_position();

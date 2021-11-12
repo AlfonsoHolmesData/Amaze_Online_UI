@@ -20,6 +20,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Match } from './models';
 import FindGameComponent from './AmazeOnlineComponents/AmazeOnlineGameComponents/AmazeOnlineFindGamesComponent';
 import GameSetUpComponent from './AmazeOnlineComponents/AmazeOnlineGameComponents/AmazeOnlineSetupGameComponent';
+import LoginComponent from './AmazeOnlineComponents/AmazeOnineLoginComponent';
 
 Amplify.configure({
   aws_cognito_region: COGNITO.REGION,
@@ -38,9 +39,14 @@ function App() {
        
           <Switch>
 
-              <Route path = "/login">
+              <Route path = "/Register">
               <BackGroundDisply />  
                 <AuthComponent />
+              </Route>
+
+              <Route path = "/login">
+              <BackGroundDisply />  
+                <LoginComponent />
               </Route>
 
               <Route path = "/dashboard">

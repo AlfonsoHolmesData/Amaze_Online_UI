@@ -1,18 +1,18 @@
 import { Position } from "./position";
 
 export class Sticker{
-    coordinates : Position;
+    position : Position;
     image : any;
     width_percentage : number;
-    hieght_percentage : number;
+    height_percentage : number;
     position_type : string;
     visited : boolean;
 
-    constructor(coordinates : Position , image : any , width_percentage : number , hieght_percentage : number , position_type : string  , visited : boolean){
-        this.coordinates = coordinates;
+    constructor(position : Position , image : any , width_percentage : number , height_percentage : number , position_type : string  , visited : boolean){
+        this.position = position;
         this.image = image;
         this.width_percentage = width_percentage;
-        this.hieght_percentage = hieght_percentage;
+        this.height_percentage = height_percentage;
         this.position_type = position_type;
         this.visited = visited
        

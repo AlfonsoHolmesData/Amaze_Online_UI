@@ -16,16 +16,28 @@ import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
 import { DataStore } from '@aws-amplify/datastore';
 import { Match, Player } from '../../models';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
 
  function GameComponent (this: any, props : any) {
   const history = useHistory();
   const dispatch = useDispatch();
   const gameinfo = useSelector(gameState);
   const playerinfo = useSelector(playerState);
+  const Auth_ = useSelector(authState);
   const [isloading , setIsLoading] = useState(false);
   const [currentTime , setCurrentTime] = useState(60);
-  const [matches , setMatches] = useState([] as Match[]);
-  const [players , setPlayers] = useState([] as Player[]);
+  const [match , setMatch] = useState({
+                                        id:'',
+                                        name: '',
+                                        host: {username: "" , color: "" ,  location: {x: 20, y: 20} as Position,  points: 0 ,  isDead: false ,  isHost: true } as Player,
+                                        player1: {username: "" , color: "" ,  location: {x: 20, y: 20} as Position,  points: 0 ,  isDead: false ,  isHost: true } as Player,
+                                        player2: {username: "" , color: "" ,  location: {x: 20, y: 20} as Position,  points: 0 ,  isDead: false ,  isHost: true } as Player,
+                                        matchTime: 60,
+                                        gameMap: [],
+                                        closed: false
+                                      } as Match );
+
+  const [players , setPlayers] = useState([] as (Player | undefined)[] );
   const global_time = useSelector(timeState);
   const [buttonDown , setButtonDown] = useState(false);
   let t = 60;
@@ -111,25 +123,30 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
     const classes = useStyles();
 
 
-   // useEffect(() => {
-      // TODO: finish setup 
-  //    const sub = DataStore.observe(Match).subscribe(() => {});
-  //    const sub1 = DataStore.observe(Player).subscribe(() => {fetchPlayers();});
-  //     return() => {
-  //       sub.unsubscribe();
-  //       sub1.unsubscribe();
-  //     } 
-  //   } , [])
+   useEffect(() => {
+    //  TODO: finish setup 
+     const sub = DataStore.observe(Match).subscribe(() => {fetchMatch();});
+     
+      return() => {
+        sub.unsubscribe();
+
+      } 
+    } , [])
 
 
-  //   const fetchMatche = async function ()  {
-  //     let liveMatches : Match[] = await DataStore.query(Match);
-  //     setMatches(liveMatches);
-  // }
-  // const fetchPlayers = async function ()  {
-  //   let livePlayers : Player[] = await DataStore.query(Player);
-  //   setPlayers(livePlayers);
-//}
+    const fetchMatch = async function ()  {
+      let currentMatch = await DataStore.query(gameinfo.id as any);
+      console.log(currentMatch);
+      setMatch(currentMatch as any  );
+      let playerArr : (Player | undefined)[]  = [];
+      playerArr.push(match?.player1);
+      console.log( "Player 1 ",currentMatch);
+      playerArr.push(match?.player2);
+      console.log( "Player 2 ", currentMatch);
+      setPlayers(playerArr);
+     
+  }
+
 
     const startMatch = () =>
     {
@@ -153,32 +170,126 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
       
     } 
 
-    const HandleMoveRight = () =>
-    {
-     
-      dispatch(moveRight(25));
+    const HandleMoveRight = async function()  {
+      if(match.host?.username == Auth_.user.username )
+      {
+        dispatch(moveRight(25));
+        const original   = await DataStore.query(Match , gameinfo.id);
+        DataStore.save(
+          Match.copyOf(original as Match , updated =>{ 
+            if(updated.player1)
+            {
+              updated.player1.location = playerinfo.player.current_position;
+            }
+            
+          })) ;
+        
+      }else{
+        dispatch(moveRight(25));
+        const original   = await DataStore.query(Match , gameinfo.id);
+        DataStore.save(
+          Match.copyOf(original as Match , updated =>{ 
+            if(updated.player2)
+            {
+              updated.player2.location = playerinfo.player.current_position;
+            }
+            
+          })) ;
+      }
+      
       console.log(playerinfo.player.current_position , 'pos');
      
     }
-    const HandleMoveLeft= () =>
-    {
-     
-      dispatch(moveLeft(25));
+    const HandleMoveLeft  = async function()  {
+      if(match.host?.username == Auth_.user.username )
+      {
+        dispatch(moveLeft(25));
+        const original   = await DataStore.query(Match , gameinfo.id);
+        DataStore.save(
+          Match.copyOf(original as Match , updated =>{ 
+            if(updated.player1)
+            {
+              updated.player1.location = playerinfo.player.current_position;
+            }
+            
+          })) ;
+        
+      }else{
+       dispatch(moveLeft(25));
+        const original   = await DataStore.query(Match , gameinfo.id);
+        DataStore.save(
+          Match.copyOf(original as Match , updated =>{ 
+            if(updated.player2)
+            {
+              updated.player2.location = playerinfo.player.current_position;
+            }
+            
+          })) ;
+      }
       console.log(playerinfo.player.current_position , 'pos');
      
     }
 
-    const HandleMoveUp = () =>
-    {
+    const HandleMoveUp  = async function()  {
      
-      dispatch(moveDown(25));
+      if(match.host?.username == Auth_.user.username )
+      {
+         dispatch(moveDown(25));
+        const original   = await DataStore.query(Match , gameinfo.id);
+        DataStore.save(
+          Match.copyOf(original as Match , updated =>{ 
+            if(updated.player1)
+            {
+              updated.player1.location = playerinfo.player.current_position;
+            }
+            
+          })) ;
+        
+      }else{
+        dispatch(moveDown(25));
+        const original   = await DataStore.query(Match , gameinfo.id);
+        DataStore.save(
+          Match.copyOf(original as Match , updated =>{ 
+            if(updated.player2)
+            {
+              updated.player2.location = playerinfo.player.current_position;
+            }
+            
+          })) ;
+      }
+     
       console.log(playerinfo.player.current_position , 'pos');
      
     }
-    const HandleMoveDown= () =>
-    {
+    const HandleMoveDown = async function()  {
+
+      if(match.host?.username == Auth_.user.username )
+      {
+        dispatch(moveUp(25));
+        const original   = await DataStore.query(Match , gameinfo.id);
+        DataStore.save(
+          Match.copyOf(original as Match , updated =>{ 
+            if(updated.player1)
+            {
+              updated.player1.location = playerinfo.player.current_position;
+            }
+            
+          })) ;
+        
+      }else{
+        dispatch(moveUp(25));
+        const original   = await DataStore.query(Match , gameinfo.id);
+        DataStore.save(
+          Match.copyOf(original as Match , updated =>{ 
+            if(updated.player2)
+            {
+              updated.player2.location = playerinfo.player.current_position;
+            }
+            
+          })) ;
+      }
       //because the player style cooordinates are set to top and left we need to "move up" to go down  
-      dispatch(moveUp(25));
+      
       console.log(playerinfo.player.current_position , 'pos');
      
     }
@@ -326,12 +437,17 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
                 </TableRow>
               </TableHead>
               <TableBody>
-                {players.map((p : Player , index ) => (
-                  <TableRow key={index}  >
-                    <TableCell  > {p.username} </TableCell>
-                    <TableCell >{p.points}</TableCell>
+               
+                  <TableRow  >
+                    <TableCell  > {players[0]?.username} </TableCell>
+                    <TableCell >{players[0]?.points}</TableCell>
                   </TableRow>
-                ))}
+                  <TableRow   >
+                    <TableCell  > {players[1]?.username} </TableCell>
+                    <TableCell >{players[1]?.points}</TableCell>
+                  </TableRow>
+               
+               
               </TableBody>
             </Table>
           </div>

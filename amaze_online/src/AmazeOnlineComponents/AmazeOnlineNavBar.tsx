@@ -19,12 +19,15 @@ import { useStopwatch } from 'react-timer-hook';
 import { useHistory } from 'react-router';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import Auth from '@aws-amplify/auth';
+import { authState, logout } from '../AmazeOnlineStateSlices/auth-slice';
 
 function NavigationBar (props : any) {
     const history = useHistory();
     const app_state = useSelector(appState);
     const gameinfo = useSelector(gameState);
-    const [isAuth , setISAuth] = useState(true);
+    const [isAuth , setISAuth] = useState(false);
+    const Auth_ = useSelector(authState);
     const dispatch = useDispatch();
     const [sidebarWidth , setSidebarWidth] = useState(20);
     const [sidebarClosed , setSidebarClosed] = useState(false);
@@ -35,6 +38,10 @@ function NavigationBar (props : any) {
     }
 
     const switch_to_Register = (e:any) => {
+        dispatch(changeToPReGameDisplay);
+          history.push('/Register');
+      }
+      const switch_to_login = (e:any) => {
         dispatch(changeToPReGameDisplay);
           history.push('/login');
       }
@@ -105,7 +112,7 @@ function NavigationBar (props : any) {
                 <Divider />
                     <List>
 
-                        { isAuth ?
+                        { Auth_.isAuthenticated ?
                         <>
                        
                             <ListItem button onClick={(e) => {switch_to_home(e)}}>
@@ -117,7 +124,8 @@ function NavigationBar (props : any) {
                                   
                       
 
-                            <ListItem button>
+                            <ListItem button onClick={(e) => {dispatch(logout()) 
+                             history.push('/login');}}>
                                 <ListItemIcon>
                                     <ExitToAppOutlinedIcon/>
                                 </ListItemIcon>
@@ -129,7 +137,7 @@ function NavigationBar (props : any) {
                         :
                         <>
                             
-                        <ListItem button>
+                        <ListItem button onClick={(e) => {switch_to_login(e) }} >
                             <ListItemIcon>
                                 <FingerprintOutlinedIcon/>
                             </ListItemIcon>

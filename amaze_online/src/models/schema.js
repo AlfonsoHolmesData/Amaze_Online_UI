@@ -119,13 +119,6 @@ export const schema = {
         "Sticker": {
             "name": "Sticker",
             "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "position": {
                     "name": "position",
                     "isArray": false,
@@ -175,13 +168,6 @@ export const schema = {
         "Player": {
             "name": "Player",
             "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "username": {
                     "name": "username",
                     "isArray": false,
@@ -229,5 +215,5 @@ export const schema = {
             }
         }
     },
-    "version": "34ca7594fe804f46abc112981211b7e6"
+    "version": "7666eecd95d1e6a579f4c2f7f2dda17e"
 };

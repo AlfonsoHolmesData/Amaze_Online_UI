@@ -90,6 +90,9 @@ interface iGameSettingsModal {
   const SetMatchTime = (e : any) => {
     SetMT(e.target.value);
 }
+const SetMatchName = (e : any) => {
+  props.setGameName(e.target.value);
+}
   const createGame = () => {
    dispatch(setGame(default_settings));
    setTimeout(() => {
@@ -106,13 +109,13 @@ const getMaps = async function() {
     return(
       <>
 
-      
+
         <Container className={classes.modal_template}>
         <br/>
         <br/>
             <h1>Game Settings</h1>
         
-            <TextField id="standard-basic" label="Game Name" className={classes.form_setting} />
+            <TextField id="standard-basic" label="Game Name" className={classes.form_setting} value={props.gameName} onChange={SetMatchName}/>
                 <FormControl className={classes.form_setting}>
                   <InputLabel htmlFor="age-native-helper">Match Time (secs)</InputLabel>
                     <NativeSelect

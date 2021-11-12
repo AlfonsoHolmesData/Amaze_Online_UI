@@ -130,10 +130,10 @@ function BoardGeneratorComponent (props : any)  {
           
                         return( 
                         
-                          <div key={index} style={{ position : 'absolute',  width :` ${S.width_percentage}%`, height : ` ${S.hieght_percentage}%`, top : S.coordinates.y , left: S.coordinates.x }} >
+                          <div key={index} style={{ position : 'absolute',  width :` ${S.width_percentage}%`, height : ` ${S.height_percentage}%`, top : S.position.y , left: S.position.x }} >
                             
                              {
-                                gameinfo.destination.x == S.coordinates.x && gameinfo.destination.y == S.coordinates.y 
+                                gameinfo.destination.x == S.position.x && gameinfo.destination.y == S.position.y 
                              ?  // if current node == destination distinguish it as a destination
                                 <>  <img src={robot_gif} width='20'/>   </> // invader emoji
                              :// else

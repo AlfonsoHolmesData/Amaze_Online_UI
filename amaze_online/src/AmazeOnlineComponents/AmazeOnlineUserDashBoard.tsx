@@ -23,6 +23,7 @@ import { UnpackedSticker } from "../AmazeOnlineModels/grid-sticker-requst-model"
 import { UploadMap } from "../AmazeOnlineRemoteClient/User-service";
 import { UploadMapDTO } from "../AmazeOnlineModels/custom-game-map-request-model";
 import { ThemeContext } from "@mui/styled-engine";
+import { authState } from "../AmazeOnlineStateSlices/auth-slice";
 
 function DashBoardComponent (props : any)  {
     const [screen , setScreen] = useState('');
@@ -32,6 +33,7 @@ function DashBoardComponent (props : any)  {
 
     const gameinfo = useSelector(gameState);
     const create = useSelector(createMapState);
+    const Auth_ = useSelector(authState);
     const dispatch = useDispatch();
     let mapRoute : any  = "create map";
     let statRoute : any  = "veiw stats";
@@ -203,7 +205,7 @@ function DashBoardComponent (props : any)  {
           case "veiw stats":
             return(
               <div style={{fontFamily: 'Poiret One'}}>
-                <h1>U s e r <span className={classes.display_span} >S t a t s</span></h1>  
+                <h1>{Auth_.user.username}'s <span className={classes.display_span} >S t a t s</span></h1>  
               
                 <br/><br/>
                 <br/>
@@ -222,10 +224,10 @@ function DashBoardComponent (props : any)  {
           return(
             <div className={classes.root}>
          
-            <h1>U s e r <span className={classes.display_span} >H o m e</span></h1>  
+            <h1>{Auth_.user.username}'s  <span className={classes.display_span} >H o m e</span></h1>  
             <br/>
               <p>
-                <b>Welcome  <span className={classes.display_span} >U s e r</span> ,
+                <b>Welcome  <span className={classes.display_span} >{Auth_.user.username} </span> ,
                 this is the wonderfull and fun-filled Amaze Dashboard.
                 Here you can view your stats, create new maps , and you can come back here any time to view this message , Happy Hunting!
                 </b> 

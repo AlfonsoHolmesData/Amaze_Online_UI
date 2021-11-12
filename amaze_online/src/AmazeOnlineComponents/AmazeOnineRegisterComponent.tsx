@@ -6,13 +6,15 @@ import { appState } from '../AmazeOnlineStateSlices/app-state-slice';
 import { TextField } from '@material-ui/core';
 import {Auth} from 'aws-amplify';
 import { authState } from '../AmazeOnlineStateSlices/auth-slice';
-import { Authenticate, Register } from '../AmazeOnlineRemoteClient/Auth-service';
+import { Authenticate, RegisterDynamoDB } from '../AmazeOnlineRemoteClient/Auth-service';
 import ErrorAlert from './ErrorComponent';
+import { useHistory } from 'react-router-dom';
 
  function RegisterComponent (props : any) {
-    
+  const history = useHistory();
     const app_state = useSelector(appState);
     const auth_slice = useSelector(authState);
+    const [loading , setLoading] = useState(false);
     const [errorAlertStatus , SetErrorAlertStatus] = useState(false);
     const [errorDuration , SetErrorDuration] = useState(0);
     const [errorMessage , SetErrorMessage] = useState('');
@@ -47,6 +49,13 @@ import ErrorAlert from './ErrorComponent';
         alignContent : 'center',
         textAlign : 'center'
       },  
+      labels: {
+        textAlign : 'center',
+        color:'#DBDFE7',
+        fontFamily: 'Poiret One',
+        fontSize : "3em"
+      },
+     
       button_for_Home: {
         background:'orange',
         textAlign : 'center',
@@ -67,7 +76,12 @@ import ErrorAlert from './ErrorComponent';
 
  const register = async () => {
           try{
-            Register(newUser);
+                
+            setLoading(true);
+            RegisterDynamoDB(newUser);
+                
+            setLoading(false);
+            history.push('/login');
           }catch(err: any)
           {
            
@@ -81,7 +95,10 @@ import ErrorAlert from './ErrorComponent';
 
     return(
       <>
+      
+      <h1 className={classes.labels} > <span className={classes.display_span} ></span > R E G I S T E R A T I O N  </h1> 
         <div >
+         
         <TextField label="firstname" 
                        id="firstname" 
                        name="firstname" 
@@ -118,7 +135,7 @@ import ErrorAlert from './ErrorComponent';
                        placeholder="Enter your password" 
                        className={classes.form_setting} value={newUser.password} onChange={handleChange} />
             <br/>
-            <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={register}> <b>Register</b>  </Button>
+            {loading ? <img src='loading.gif' width='40'/> : <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home} onClick={register}> <b>Register</b>  </Button>}
 
             <ErrorAlert isOpen={errorAlertStatus} duration={3000} message={errorMessage} SetStatusOnClose={SetErrorAlertStatus}  />
         </div> 

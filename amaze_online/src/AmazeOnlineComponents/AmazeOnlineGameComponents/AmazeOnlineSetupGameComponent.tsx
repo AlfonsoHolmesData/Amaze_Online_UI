@@ -14,9 +14,11 @@ import LeaderBoardModal from '../AmazeOnlineLeaderBoardModal';
 import SearchIcon from '@material-ui/icons/Search';
 import MapSelectionModal from './AmazeOnlineMapSelectionModal';
 import { Accordion, Box, Card, Divider, Fab, Tooltip, Typography } from '@mui/material';
-import { gameState } from '../../AmazeOnlineStateSlices/amaze-game-slice';
+import { gameState, setGameID } from '../../AmazeOnlineStateSlices/amaze-game-slice';
 import { DataStore } from '@aws-amplify/datastore';
 import { playerState } from '../../AmazeOnlineStateSlices/amaze-player-slice';
+import { Match, Player, Position, Sticker } from '../../models';
+import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
 
  function GameSetUpComponent (props : any) {
   const history = useHistory();
@@ -27,6 +29,7 @@ import { playerState } from '../../AmazeOnlineStateSlices/amaze-player-slice';
   const gameinfo = useSelector(gameState);
   const playerinfo = useSelector(playerState);
 
+  const Auth_ = useSelector(authState);
   const [gameName , setGameName] = useState('');
   const [matchTime , setMatchTime] = useState(60);
   const app_state = useSelector(appState);
@@ -80,30 +83,15 @@ import { playerState } from '../../AmazeOnlineStateSlices/amaze-player-slice';
 
     const switch_to_game = async function ()  {
       dispatch(changeToGameDisplay());
-    //  let stickerTransferArray : Sticker[] = [];
+    
       try{
-        
-          //   // create player
-          //   await DataStore.save(new Player({ username: "Fonsolo", color: "blue", location: playerinfo.player.current_position as Position, points: 0, isDead: false, isHost: true   } ));
-          //   let newPlayer  =  await DataStore.query(Player , "Fonsolo");
-          //   console.log(newPlayer);
-          //   // create match
-            
-          //   // gameinfo.game_map.forEach((element)=> {
-          //   //     stickerTransferArray.push(new Sticker({
-          //   //       position: element.coordinates as Position ,
-          //   //       image: element.image ,
-          //   //       width_percentage: element.width_percentage ,
-          //   //       height_percentage: element.hieght_percentage ,
-          //   //       position_type: element.position_type ,
-          //   //       visited: element.visited ,
-          //   //       matchGameMapId: ""  }))
-          //   // }); 
-          //   //  await DataStore.save(new Match({  name: "Cave Carver", matchTime: gameinfo.match_time , player1: newPlayer, player2: undefined, gameMap: [], closed: false } ));   
-          //   //  let newmatch = await DataStore.query(Match , "Cave Carver");
-             
-          //  // await DataStore.save( Match.copyOf( newmatch as Match , updated => { updated.gameMap  = stickerTransferArray as Sticker[] | [] }  ));
-          //   // console.log(newmatch);
+            let newPlayer : Player = {  username: Auth_.user.username , color: "blue" ,  location: {x: 0, y:0} as Position,  points: 0 ,  isDead: false ,  isHost: true };
+            let newPlayer2 : Player = { username: "" , color: "" ,  location: {x: 20, y: 20} as Position,  points: 0 ,  isDead: false ,  isHost: true };
+            let time : number = gameinfo.match_time as number;
+
+           let newMatch : Match = await DataStore.save(new Match({  name: gameName, host: newPlayer , matchTime: 60, player1: newPlayer, player2 : newPlayer2, gameMap: gameinfo.game_map as Sticker[] | [], closed: false } ));   
+           dispatch(setGameID(newMatch.id));
+            console.log("New Match : ", newMatch.name , " created at : " ,newMatch.createdAt , " Host : " ,  newMatch.host?.username ," Map Payload : " , newMatch.gameMap );
             }catch(eer: any){
               console.log(eer);
             }

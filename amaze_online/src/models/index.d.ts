@@ -9,7 +9,6 @@ export declare class Position {
 }
 
 export declare class Sticker {
-  readonly id: string;
   readonly position?: Position;
   readonly image?: string;
   readonly width_percentage?: number;
@@ -20,7 +19,6 @@ export declare class Sticker {
 }
 
 export declare class Player {
-  readonly id: string;
   readonly username?: string;
   readonly color?: string;
   readonly location?: Position;
