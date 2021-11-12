@@ -10,7 +10,7 @@ interface state  {
 }
 
 const initialState = {
-    user: {username: 'fonsolo' , password: 'waba' , rank: 'Elite' , games_as_navigator : 100 , games_as_runner : 300 , wins : 379 , win_percentage : 89 , total_games_played : 400  ,firstname : '' , lastname : '' , email : '' } as User,
+    user: {username: '' , password: '' , rank: '' , games_as_navigator : 0 , games_as_runner : 0 , wins : 0 , win_percentage : 0 , total_games_played : 0  ,firstname : '' , lastname : '' , email : '' } as User,
     isAuthenticated : false
 }
 export const authSlice = createSlice({

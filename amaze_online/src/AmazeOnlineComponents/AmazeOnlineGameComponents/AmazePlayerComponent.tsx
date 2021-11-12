@@ -3,9 +3,10 @@ import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux"
 import { StickerDTO } from "../../AmazeOnlineModels/grid-sticker-DTO";
 import { gameState, removeStickerFromGameMap, setRandomDestination } from "../../AmazeOnlineStateSlices/amaze-game-slice";
-import {  addPoints, playerSlice, playerState, setIsEleminated, subtractPoints } from "../../AmazeOnlineStateSlices/amaze-player-slice"
+import {  addPoints, playerSlice, playerState, setIsEleminated, setPoints, subtractPoints } from "../../AmazeOnlineStateSlices/amaze-player-slice"
 import { DataStore } from '@aws-amplify/datastore';
-import { Position } from "../../models";
+import { Match, Player, Position, Sticker } from "../../models";
+import { useState } from "react";
 
 interface iPlayerComponent {
   position: Position
@@ -16,6 +17,7 @@ function PlayerComponent (props : iPlayerComponent)  {
     const playerinfo = useSelector(playerState);
     const gameinfo = useSelector(gameState);
     const dispatch = useDispatch();
+    const [playerPos , setPlayerPos] = useState({x: 0, y: 0} as Position);
     const useStyles = makeStyles((theme) => ({
         root: {
           position: 'relative',
@@ -54,7 +56,7 @@ function PlayerComponent (props : iPlayerComponent)  {
       }));
       const classes = useStyles();
     
-      function check_position(){ 
+      async function check_position(){ 
         
         
 
@@ -63,7 +65,26 @@ function PlayerComponent (props : iPlayerComponent)  {
           let playerIsIntersecting : boolean = gameinfo.game_map[x].position.x == props.position.x && gameinfo.game_map[x].position.y == props.position.y;
           if( playerIsIntersecting && gameinfo.game_map[x].image == 'question-mark.gif' || playerIsIntersecting && gameinfo.game_map[x].image == 'gadgetboy.gif' || playerIsIntersecting && gameinfo.game_map[x].image == 'loading.gif'){ 
             if(!gameinfo.game_map[x].visited){
-            dispatch(addPoints(1200)); 
+              
+              dispatch(addPoints(1200)); 
+              
+                // const original = await DataStore.query(Match , gameinfo.id);
+                //                 DataStore.save(
+                //                   Match.copyOf(original as Match , updated =>{ 
+                //                     if(updated.player1?.username == playerinfo.player.username )
+                //                     {
+                //                       if(updated.player1)
+                //                       {
+                //                         updated.player1 = new Player({username: playerinfo.player.username , color: 'orange',  location: {x: 20, y: 20} as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: true });
+                //                       }
+                //                     }else{
+                //                         if(updated.player2)
+                //                       {
+                //                         updated.player2 = new Player({username: playerinfo.player.username , color: 'orange',  location: {x: 20, y: 20} as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: false });
+                //                       }
+                //                     }
+                                    
+                //               }));
             }
            }
           if(playerIsIntersecting  )
@@ -72,6 +93,40 @@ function PlayerComponent (props : iPlayerComponent)  {
             {
               dispatch(subtractPoints(450));
               dispatch(removeStickerFromGameMap(x));
+              // update match
+            //   const original = await DataStore.query(Match , gameinfo.id);
+            //   DataStore.save(
+            //     Match.copyOf(original as Match , updated =>{ 
+            //       if(updated.player1?.username == playerinfo.player.username )
+            //       {
+            //         if(updated.player1)
+            //         {
+            //           updated.player1 = new Player({username: playerinfo.player.username , color: 'orange',  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: true });
+                      
+            //         }
+            //       }else{
+            //           if(updated.player2)
+            //         {
+            //           updated.player2 = new Player({username: playerinfo.player.username , color: 'orange',  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: false });
+            //         }
+            //       }
+            //       let convertedMap : Sticker[] = [];
+            //       // convert UnpackedSticker to  RunTimeSticker
+            //       updated?.gameMap.forEach((e) => {
+            //                   convertedMap.push({  
+            //                      position : { x: e?.position?.x , y : e?.position?.y} as Position ,
+            //                      image : e?.image , 
+            //                      width_percentage : e?.width_percentage ,
+            //                      height_percentage : e?.height_percentage ,
+            //                      position_type : 'absolute'  ,
+            //                      visited : e?.visited
+            //                    } as Sticker) 
+            //       });
+            
+                
+            
+            //       updated.gameMap =   convertedMap as Sticker[] | [];
+            // }));
             }
 
            
@@ -89,12 +144,13 @@ function PlayerComponent (props : iPlayerComponent)  {
       check_position();
      
     return(
-        <>
-        {playerinfo.player.current_position.x >= 500 ||  playerinfo.player.current_position.y >= 500 || playerinfo.player.current_position.x < 0 ||  playerinfo.player.current_position.y < 0
+        <>                                               
+        {                                                //@ts-ignore
+        props.position.x >= 500 ||  props.position.y >= 500 || props.position.x < 0 ||  props.position.y  < 0
          ?
             <div className={classes.player} style={{top : 0, left: 0}}>&#x2620;</div>
          :
-            <div className={classes.player}  style={{ top : playerinfo.player.current_position.y , left: playerinfo.player.current_position.x}}>&#x1F451;</div>
+            <div className={classes.player}  style={{ top : props.position.y , left: props.position.x}}>&#x1F451;</div>
         }
       
         </>

@@ -11,8 +11,8 @@ import { appState, changeToGameDisplay } from '../../AmazeOnlineStateSlices/app-
 import LeaderBoardModal from '../AmazeOnlineLeaderBoardModal';
 import MapSelectionModal from './AmazeOnlineMapSelectionModal';
 import { TableHead } from '@mui/material';
-import { Match } from '../../models';
-import { gameState, setGameMap } from '../../AmazeOnlineStateSlices/amaze-game-slice';
+import { Match, Player, Position } from '../../models';
+import { gameState, setGameID, setGameMap } from '../../AmazeOnlineStateSlices/amaze-game-slice';
 import { DataStore } from '@aws-amplify/datastore';
 import { playerState, setUsername } from '../../AmazeOnlineStateSlices/amaze-player-slice';
 import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
@@ -97,12 +97,13 @@ const deleteMatch = async function ( e: any ,  M : any)  {
 const joinMatch = async  ( e: any ,  M : any) => {
 
   const original = await DataStore.query(Match , M.id);
+  dispatch(setGameID(M.id))
   dispatch(setUsername(Auth_.user.username));
   DataStore.save(
     Match.copyOf(original as Match , updated =>{ 
       if(updated.player2)
       {
-        updated.player2 = playerinfo.player;
+        updated.player2 = new Player({username: Auth_.user.username , color: 'orange',  location: {x: 20, y: 20} as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: false });
       }
  }));
  let convertedMap : UnpackedSticker[] = [];
@@ -132,15 +133,15 @@ const fetchMatches = async function ()  {
   try{
     setLoading(true);
     let liveMatches : Match[] = await DataStore.query(Match);
+
+       
     setMatches(liveMatches);
     console.log( " RESULT : " ,liveMatches );
      setLoading(false);
   }catch(err: any){
     console.log( " RESULT : " , matches ," REASON : " ,err);
   }
-    
- 
-
+  
 }
 
     return(
@@ -185,6 +186,7 @@ const fetchMatches = async function ()  {
               </TableBody>
             </Table>
           </TableContainer>
+          <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}  onClick={fetchMatches}> Refresh </Button>
             
         
         </div>

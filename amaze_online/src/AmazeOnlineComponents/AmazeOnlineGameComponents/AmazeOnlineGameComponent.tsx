@@ -14,9 +14,10 @@ import BoardGeneratorComponent from './AmazeBoardGeneratorComponent';
 import Timer from '../AmazeOnlineTimerComponent';
 import { timeState } from '../../AmazeOnlineStateSlices/global-time-slice';
 import { DataStore } from '@aws-amplify/datastore';
-import { Match, Player } from '../../models';
+import { Match, Player, Sticker } from '../../models';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
+import { UnpackedSticker } from '../../AmazeOnlineModels/grid-sticker-requst-model';
 
  function GameComponent (this: any, props : any) {
   const history = useHistory();
@@ -83,6 +84,16 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
         color:'#DBDFE7',
         fontFamily: 'Poiret One'
       },
+      pointsHigh: {
+        textAlign : 'center',
+        color:'green',
+        fontFamily: 'Poiret One'
+      },
+      pointsMedium: {
+        textAlign : 'center',
+        color:'blue',
+        fontFamily: 'Poiret One'
+      },
      
       welcome_page: {
         alignContent : 'center',
@@ -125,25 +136,85 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
 
    useEffect(() => {
     //  TODO: finish setup 
+      
      const sub = DataStore.observe(Match).subscribe(() => {fetchMatch();});
      
       return() => {
         sub.unsubscribe();
 
       } 
-    } , [])
+    } , [playerinfo.player.location])
 
 
     const fetchMatch = async function ()  {
-      let currentMatch = await DataStore.query(gameinfo.id as any);
-      console.log(currentMatch);
-      setMatch(currentMatch as any  );
-      let playerArr : (Player | undefined)[]  = [];
-      playerArr.push(match?.player1);
-      console.log( "Player 1 ",currentMatch);
-      playerArr.push(match?.player2);
-      console.log( "Player 2 ", currentMatch);
-      setPlayers(playerArr);
+      if(match.name == '' || match.id == '' )
+      {
+         const currentMatch  = await DataStore.query(Match , gameinfo.id);
+      console.log( 'match from database : ',currentMatch);
+      let convertedMap : Sticker[] = [];
+      // convert UnpackedSticker to  RunTimeSticker
+      currentMatch?.gameMap.forEach((e) => {
+                  convertedMap.push({  
+                     position : { x: e?.position?.x , y : e?.position?.y} as Position ,
+                     image : e?.image , 
+                     width_percentage : e?.width_percentage ,
+                     height_percentage : e?.height_percentage ,
+                     position_type : 'absolute'  ,
+                     visited : e?.visited
+                   } as Sticker) 
+      });
+
+      let inMatch = new Match({  name: currentMatch?.name, 
+        host: currentMatch?.host , 
+        matchTime: 60, 
+        player1: currentMatch?.player1, 
+        player2 : currentMatch?.player2,
+         gameMap: convertedMap as Sticker[] | [],
+          closed: currentMatch?.closed } );
+          setMatch(inMatch as any  );
+
+      }else{
+        const original   = await DataStore.query(Match , gameinfo.id);
+        let inMatch = new Match(new Match({  name: original?.name, host: original?.host , matchTime: 60, player1: original?.player1, player2 : original?.player2, gameMap: original?.gameMap as Sticker[] | [], closed: original?.closed } ));
+        DataStore.save(
+          Match.copyOf(inMatch as Match , updated =>{ 
+            if(updated.player1)
+            {
+              updated.player1 =  new Player({username: Auth_.user.username , color: "blue" ,  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: true });
+            }
+
+            if(updated.player2)
+            {
+              updated.player2 = new Player({username: Auth_.user.username , color: "orange" ,  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: false });
+            }
+              let convertedMap : Sticker[] = [];
+                  // convert UnpackedSticker to  RunTimeSticker
+                  updated?.gameMap.forEach((e) => {
+                              convertedMap.push(new Sticker({  
+                                 position : { x: e?.position?.x , y : e?.position?.y} as Position ,
+                                 image : e?.image , 
+                                 width_percentage : e?.width_percentage ,
+                                 height_percentage : e?.height_percentage ,
+                                 position_type : 'absolute'  ,
+                                 visited : e?.visited
+                               } )) 
+                  });
+
+                  updated.gameMap =   convertedMap as Sticker[] | [];
+          })) ;
+          setMatch(inMatch as any  ); 
+          console.log( "Player 1 ",match?.player1);
+ 
+      console.log( "Player 2 ", match?.player2);
+     
+    
+    
+    }
+     
+      
+
+     
+     
      
   }
 
@@ -175,11 +246,12 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
       {
         dispatch(moveRight(25));
         const original   = await DataStore.query(Match , gameinfo.id);
+        let inMatch = new Match(new Match({  name: original?.name, host: original?.host , matchTime: 60, player1: original?.player1, player2 : original?.player2, gameMap: original?.gameMap as Sticker[] | [], closed: original?.closed } ));
         DataStore.save(
-          Match.copyOf(original as Match , updated =>{ 
+          Match.copyOf(inMatch as Match , updated =>{ 
             if(updated.player1)
             {
-              updated.player1.location = playerinfo.player.current_position;
+              updated.player1 =  new Player({username: Auth_.user.username , color: "blue" ,  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: true });
             }
             
           })) ;
@@ -191,15 +263,20 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
           Match.copyOf(original as Match , updated =>{ 
             if(updated.player2)
             {
-              updated.player2.location = playerinfo.player.current_position;
+              updated.player2 = new Player({username: Auth_.user.username , color: "orange" ,  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: false });
             }
             
           })) ;
       }
       
-      console.log(playerinfo.player.current_position , 'pos');
+
+      let updatedMap = await DataStore.query(Match , gameinfo.id);
+      setMatch(updatedMap as any  );
+
+      console.log(playerinfo.player.location , 'pos');
      
     }
+
     const HandleMoveLeft  = async function()  {
       if(match.host?.username == Auth_.user.username )
       {
@@ -209,7 +286,7 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
           Match.copyOf(original as Match , updated =>{ 
             if(updated.player1)
             {
-              updated.player1.location = playerinfo.player.current_position;
+              updated.player1 =  new Player({username: Auth_.user.username , color: "blue" ,  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: true });
             }
             
           })) ;
@@ -221,13 +298,14 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
           Match.copyOf(original as Match , updated =>{ 
             if(updated.player2)
             {
-              updated.player2.location = playerinfo.player.current_position;
+              updated.player2 = new Player({username: Auth_.user.username , color: "orange" ,  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: false });
             }
             
           })) ;
       }
-      console.log(playerinfo.player.current_position , 'pos');
-     
+      console.log(playerinfo.player.location , 'pos');
+     let updatedMap = await DataStore.query(Match , gameinfo.id);
+      setMatch(updatedMap as any  );
     }
 
     const HandleMoveUp  = async function()  {
@@ -240,7 +318,7 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
           Match.copyOf(original as Match , updated =>{ 
             if(updated.player1)
             {
-              updated.player1.location = playerinfo.player.current_position;
+              updated.player1 =  new Player({username: Auth_.user.username , color: "blue" ,  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: true });
             }
             
           })) ;
@@ -252,13 +330,14 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
           Match.copyOf(original as Match , updated =>{ 
             if(updated.player2)
             {
-              updated.player2.location = playerinfo.player.current_position;
+              updated.player2 = new Player({username: Auth_.user.username , color: "orange" ,  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: false }); 
             }
             
           })) ;
       }
-     
-      console.log(playerinfo.player.current_position , 'pos');
+     let updatedMap = await DataStore.query(Match , gameinfo.id);
+      setMatch(updatedMap as any  );
+      console.log(playerinfo.player.location , 'pos');
      
     }
     const HandleMoveDown = async function()  {
@@ -271,7 +350,7 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
           Match.copyOf(original as Match , updated =>{ 
             if(updated.player1)
             {
-              updated.player1.location = playerinfo.player.current_position;
+              updated.player1 =  new Player({username: Auth_.user.username , color: "blue" ,  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: true });
             }
             
           })) ;
@@ -283,14 +362,15 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
           Match.copyOf(original as Match , updated =>{ 
             if(updated.player2)
             {
-              updated.player2.location = playerinfo.player.current_position;
+              updated.player2 = new Player({username: Auth_.user.username , color: "orange" ,  location: playerinfo.player.location as Position,  points: playerinfo.player.points ,  isDead: playerinfo.player.isDead ,  isHost: false });
             }
             
           })) ;
       }
       //because the player style cooordinates are set to top and left we need to "move up" to go down  
-      
-      console.log(playerinfo.player.current_position , 'pos');
+      let updatedMap = await DataStore.query(Match , gameinfo.id);
+      setMatch(updatedMap as any  );
+      console.log(playerinfo.player.location , 'pos');
      
     }
 
@@ -351,8 +431,22 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
             <Timer SetCurrentTime={setCurrentTime} onTimeout={() =>{console.log("TIME UP")}} start={gameinfo.match_time}/>
               <div id="gameCanvas"   className={classes.root_canvas} >
       
-                  {/*this is the player avitar */ }
-                  <AmazePlayerComponent/> 
+                  
+
+                  {
+                     /*check who the host is */ 
+                    match.host?.username == Auth_.user.username ?
+                        <>   {/*if this account is host then they are player 1 and player 2 will be controlled by the remote player */ }
+                            <AmazePlayerComponent position={playerinfo.player.location}  color={match.player1?.color as string}/> 
+                            <AmazePlayerComponent position={match.player2?.location as Position}  color={match.player2?.color as string }/> 
+                        </> 
+                      : 
+                        <> {/*if this account is not host then they are player 2 and plyer 1 will be controlled by the remote player */ }
+                            <AmazePlayerComponent position={playerinfo.player.location}  color={match.player2?.color as string}/> 
+                            <AmazePlayerComponent position={match.player1?.location as Position}  color={match.player1?.color as string }/>
+                        </>
+                    }
+                
                   <BoardGeneratorComponent /> 
                   <div className={classes.button_div}  > 
                   <h1 className={classes.labels}>C o n t r o l s :</h1>
@@ -439,12 +533,12 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
               <TableBody>
                
                   <TableRow  >
-                    <TableCell  > {players[0]?.username} </TableCell>
-                    <TableCell >{players[0]?.points}</TableCell>
+                    <TableCell  > {match.player1?.username} </TableCell>
+                    <TableCell className={classes.pointsMedium}>{match.player1?.points}</TableCell>
                   </TableRow>
                   <TableRow   >
-                    <TableCell  > {players[1]?.username} </TableCell>
-                    <TableCell >{players[1]?.points}</TableCell>
+                    <TableCell  > {match.player2?.username} </TableCell>
+                    <TableCell className={classes.pointsHigh}>{match.player2?.points}</TableCell>
                   </TableRow>
                
                

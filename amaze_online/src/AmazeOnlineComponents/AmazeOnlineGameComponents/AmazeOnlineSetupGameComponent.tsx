@@ -85,8 +85,8 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
       dispatch(changeToGameDisplay());
     
       try{
-            let newPlayer : Player = {  username: Auth_.user.username , color: "blue" ,  location: {x: 0, y:0} as Position,  points: 0 ,  isDead: false ,  isHost: true };
-            let newPlayer2 : Player = { username: "" , color: "" ,  location: {x: 20, y: 20} as Position,  points: 0 ,  isDead: false ,  isHost: true };
+            let newPlayer : Player = new Player({  username: Auth_.user.username , color: "blue" ,  location: {x: 0, y:0} as Position,  points: 0 ,  isDead: false ,  isHost: true });
+            let newPlayer2 : Player = new Player({ username: "" , color: "red" ,  location: {x: 20, y: 20} as Position,  points: 0 ,  isDead: false ,  isHost: true });
             let time : number = gameinfo.match_time as number;
 
            let newMatch : Match = await DataStore.save(new Match({  name: gameName, host: newPlayer , matchTime: 60, player1: newPlayer, player2 : newPlayer2, gameMap: gameinfo.game_map as Sticker[] | [], closed: false } ));   

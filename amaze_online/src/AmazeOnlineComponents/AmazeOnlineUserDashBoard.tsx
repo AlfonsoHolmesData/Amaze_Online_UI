@@ -128,7 +128,7 @@ function DashBoardComponent (props : any)  {
        setIsLoading(true);
        try{
 
-         let savedMap : UploadMapDTO | undefined = await UploadMap( {id : '' , name : mapName , creator : user2 ,  blueprint : mapToSave as []} );  
+         let savedMap : UploadMapDTO | undefined = await UploadMap( {id : '' , name : mapName , creator : Auth_.user.username ,  blueprint : mapToSave as []} );  
          console.log(savedMap);
 
           dispatch(eraseMap());
@@ -210,11 +210,11 @@ function DashBoardComponent (props : any)  {
                 <br/><br/>
                 <br/>
                   <p style={{textAlign : "center"}}>
-                    <b>  win% <CircularProgress variant="determinate" value={34} /></b> <br/><br/>
-                    <b>  winsv: <span className={classes.display_span} >600</span></b> <br/> 
-                    <b>  total wins :  <span className={classes.display_span} >1200</span></b> <br/>
-                    <b>  losses : 600 </b>  <br/>
-                    <b>  total losses : 600</b>  
+                    <b>  win% <CircularProgress variant="determinate" value={(Auth_.user.wins/ Auth_.user.total_games_played*100) } /></b> <br/><br/>
+                    <b>  wins: <span className={classes.display_span} >{Auth_.user.wins}</span></b> <br/> 
+                    <b>  total games played :  <span className={classes.display_span} >{Auth_.user.total_games_played}</span></b> <br/>
+                    <b>  losses : {Auth_.user.total_games_played - Auth_.user.wins} </b>  <br/>
+                    <b>  Favorite Role : {Auth_.user.games_as_navigator < Auth_.user.games_as_runner ? <><span className={classes.display_span} >Runner</span> {Auth_.user.games_as_runner} Games</> : <><span className={classes.display_span} >Navigator</span> {Auth_.user.games_as_navigator} Games </>}</b>  
                   </p>
                   <img src='loading.gif' width='45' />
                </div> 

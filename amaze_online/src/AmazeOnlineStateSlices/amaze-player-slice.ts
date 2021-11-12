@@ -17,7 +17,7 @@ interface State {
 }
 
 const initialState: State = {
-    player : { username: '', points: 0, is_navigator: false, instruction: 'Left', current_position: {x: 0 , y: 0} as Position, afk: false} as RunTimePlayerModelDTO,
+    player : { username: '', color: 'orange', location: {x : 0 ,  y : 0 } as Position, points: 0, isDead: false, isHost: false} as RunTimePlayerModelDTO,
     bodyTranslate : [] = [{x : 0 ,  y : 0 }] as Position[],
     isEleminated: false,
     head: {x : 0 ,  y : 0 } as Position
@@ -38,14 +38,14 @@ export const playerSlice = createSlice({
         // Used used to move player right by specified step
         moveRight: (state , action :PayloadAction<number>) => {
             // state = action.payload;
-            state.player.current_position.x = state.player.current_position.x + action.payload;
+            state.player.location.x = state.player.location.x + action.payload;
 
             
         },
         // Used used to move player left by specified step
         moveLeft: (state , action :PayloadAction<number>) => {
             // state = action.payload;
-            state.player.current_position.x = state.player.current_position.x - action.payload;
+            state.player.location.x = state.player.location.x - action.payload;
         
 
             
@@ -54,7 +54,7 @@ export const playerSlice = createSlice({
         moveUp: (state,  action :PayloadAction<number>) => {
             // state  action.payload;
             
-            state.player.current_position.y = state.player.current_position.y + action.payload;
+            state.player.location.y = state.player.location.y + action.payload;
 
            
         }, 
@@ -62,7 +62,7 @@ export const playerSlice = createSlice({
         moveDown: (state,  action :PayloadAction<number>) => {
             // state = action.payload;
             
-            state.player.current_position.y = state.player.current_position.y - action.payload;
+            state.player.location.y = state.player.location.y - action.payload;
       
         }, 
         addPoints: (state,  action :PayloadAction<number>) => {
@@ -92,7 +92,7 @@ export const playerSlice = createSlice({
         }, 
         // Used when resetting the state
         teleprtTo: (state , action) => {
-            state.player.current_position = {x: action.payload.x , y: action.payload.y} as Position;
+            state.player.location = {x: action.payload.x , y: action.payload.y} as Position;
      
         
         }

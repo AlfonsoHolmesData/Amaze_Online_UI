@@ -6,7 +6,7 @@ import { User } from "../AmazeOnlineModels/user";
 import { AmazeClient } from "./AmazeOnlineClient"
 
 export const GetUserRecords = async () =>{
- let  response = await  AmazeClient.get('/users');
+ let  response = await  AmazeClient.get(`/users?username=&password=`);
 
     if(response.status >= 400)
     {

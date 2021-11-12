@@ -2,22 +2,21 @@ import { Position } from "./position";
 
 export class  RunTimePlayerModelDTO{
 
-    username: string;
-    points: number;
-    is_navigator: boolean;
-    instruction: string;
-    current_position: Position;
-    afk: boolean;
+     username: string;
+     color: string;
+     location: Position;
+     points: number;
+     isDead: boolean;
+     isHost: boolean;
    
-    constructor(username: string, points: number, is_navigator: boolean, instruction: string, current_position: Position, afk: boolean )
+    constructor(username: string, color: string, location: Position, points: number, isDead: boolean, isHost: boolean )
     {
         
         this.username = username;
         this.points = points;
-        this.is_navigator = is_navigator;
-        this.instruction = instruction;
-        this.current_position = current_position;
-        this.afk = afk;
-       
+        this.color = color;
+        this.location = location;
+        this.isDead = isDead;
+        this.isHost = isHost;
     }
 }
