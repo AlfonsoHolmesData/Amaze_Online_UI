@@ -4,6 +4,7 @@ type Position  {
 }
 
 type Sticker {
+  id: ID!
   position: Position 
   image: String
   width_percentage : Int
@@ -16,6 +17,7 @@ type Sticker {
 
 
 type Player   {
+  id: ID!
   username: String 
   color : String 
   location: Position 

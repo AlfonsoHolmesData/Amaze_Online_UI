@@ -22,12 +22,7 @@ import FindGameComponent from './AmazeOnlineComponents/AmazeOnlineGameComponents
 import GameSetUpComponent from './AmazeOnlineComponents/AmazeOnlineGameComponents/AmazeOnlineSetupGameComponent';
 import LoginComponent from './AmazeOnlineComponents/AmazeOnineLoginComponent';
 
-Amplify.configure({
-  aws_cognito_region: COGNITO.REGION,
-  aws_user_pools_id: COGNITO.USER_POOL_ID,
-  aws_user_pools_web_client_id: COGNITO.APP_CLIENT_ID
-  
-});
+
 
 function App() {
   return (

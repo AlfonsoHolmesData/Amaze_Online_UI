@@ -19,6 +19,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { playerState } from '../../AmazeOnlineStateSlices/amaze-player-slice';
 import { Match, Player, Position, Sticker } from '../../models';
 import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
+import ErrorAlert from '../ErrorComponent';
 
  function GameSetUpComponent (props : any) {
   const history = useHistory();
@@ -26,13 +27,21 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
   const [leaderBoardModal_IsOpen , SetLeaderBoardModal_IsOpen] = useState(false);
   const [selectMapModal_IsOpen , SetSelectMapModal_IsOpen] = useState(false);
   const [mT , SetMT] = useState(30);
-  const gameinfo = useSelector(gameState);
-  const playerinfo = useSelector(playerState);
-
-  const Auth_ = useSelector(authState);
   const [gameName , setGameName] = useState('');
   const [matchTime , setMatchTime] = useState(60);
+  const [error , setError] = useState({
+    message: '',
+    duration: 3000
+   });
+   const [errorStatus , setErrorStatus] = useState( false );
+
+  const gameinfo = useSelector(gameState);
+  const playerinfo = useSelector(playerState);
+  const Auth_ = useSelector(authState); 
   const app_state = useSelector(appState);
+
+  
+ 
   const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({
       root: {
@@ -85,13 +94,21 @@ import { authState } from '../../AmazeOnlineStateSlices/auth-slice';
       dispatch(changeToGameDisplay());
     
       try{
-            let newPlayer : Player = new Player({  username: Auth_.user.username , color: "blue" ,  location: {x: 0, y:0} as Position,  points: 0 ,  isDead: false ,  isHost: true });
+            if( await DataStore.query(Match , gameName ) != undefined) 
+            {
+              setErrorStatus(true);
+              setError({message: "Name Already in use :(" , duration: 3000});
+            }else{
+               let newPlayer : Player = new Player({  username: Auth_.user.username , color: "blue" ,  location: {x: 0, y:0} as Position,  points: 0 ,  isDead: false ,  isHost: true });
             let newPlayer2 : Player = new Player({ username: "" , color: "red" ,  location: {x: 20, y: 20} as Position,  points: 0 ,  isDead: false ,  isHost: true });
             let time : number = gameinfo.match_time as number;
 
            let newMatch : Match = await DataStore.save(new Match({  name: gameName, host: newPlayer , matchTime: 60, player1: newPlayer, player2 : newPlayer2, gameMap: gameinfo.game_map as Sticker[] | [], closed: false } ));   
            dispatch(setGameID(newMatch.id));
             console.log("New Match : ", newMatch.name , " created at : " ,newMatch.createdAt , " Host : " ,  newMatch.host?.username ," Map Payload : " , newMatch.gameMap );
+            }
+
+           
             }catch(eer: any){
               console.log(eer);
             }
@@ -142,7 +159,7 @@ const SetMatchTime = (e : any) => {
               <br/>
                     
               <br/>
-                  
+              <ErrorAlert isOpen={errorStatus} duration={error.duration} message={error.message} SetStatusOnClose={setErrorStatus}  />
                     <h2 style={{color: 'black' }}><span className={classes.display_span} >M</span>aps </h2>
                <MapSelectionModal IsOpen={false}/>
      

@@ -32,7 +32,7 @@ import { UnpackedSticker } from '../../AmazeOnlineModels/grid-sticker-requst-mod
     // TODO: finish setup 
    const sub = DataStore.observe(Match).subscribe( () => { fetchMatches(); } );
     return() =>  sub.unsubscribe();
-  } , [matches])
+  } , [])
 
     const useStyles = makeStyles((theme) => ({
       root: {
@@ -132,10 +132,13 @@ const fetchMatches = async function ()  {
   
   try{
     setLoading(true);
+    
     let liveMatches : Match[] = await DataStore.query(Match);
-
-       
-    setMatches(liveMatches);
+    
+       setMatches(liveMatches);
+     
+         
+    
     console.log( " RESULT : " ,liveMatches );
      setLoading(false);
   }catch(err: any){
@@ -186,9 +189,7 @@ const fetchMatches = async function ()  {
               </TableBody>
             </Table>
           </TableContainer>
-          <Button variant="contained"  href="#contained-buttons" className={classes.button_for_Home}  onClick={fetchMatches}> Refresh </Button>
             
-        
         </div>
       </>
     );

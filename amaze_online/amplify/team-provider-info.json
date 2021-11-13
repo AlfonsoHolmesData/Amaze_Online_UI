@@ -1,15 +1,15 @@
 {
   "test": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-amazeonline-test-173206-authRole",
-      "UnauthRoleArn": "arn:aws:iam::904493219403:role/amplify-amazeonline-test-173206-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::904493219403:role/amplify-amazeonline-test-173206-authRole",
+      "AuthRoleName": "amplify-amazeonline-test-121411-authRole",
+      "UnauthRoleArn": "arn:aws:iam::904493219403:role/amplify-amazeonline-test-121411-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::904493219403:role/amplify-amazeonline-test-121411-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-amazeonline-test-173206-deployment",
-      "UnauthRoleName": "amplify-amazeonline-test-173206-unauthRole",
-      "StackName": "amplify-amazeonline-test-173206",
-      "StackId": "arn:aws:cloudformation:us-east-1:904493219403:stack/amplify-amazeonline-test-173206/3517b6f0-433f-11ec-b08a-0a529d9489a7",
-      "AmplifyAppId": "d20f1lpj30xmkt"
+      "DeploymentBucketName": "amplify-amazeonline-test-121411-deployment",
+      "UnauthRoleName": "amplify-amazeonline-test-121411-unauthRole",
+      "StackName": "amplify-amazeonline-test-121411",
+      "StackId": "arn:aws:cloudformation:us-east-1:904493219403:stack/amplify-amazeonline-test-121411/2203a6c0-44a5-11ec-81b5-0e05e98ac277",
+      "AmplifyAppId": "dwk9xfemtcnyg"
     }
   }
 }

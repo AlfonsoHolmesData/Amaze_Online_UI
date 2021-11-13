@@ -3,6 +3,8 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@aws-amplify/analytics": "^5.1.4",
+        "@aws-amplify/api": "^4.0.24",
         "@aws-amplify/core": "^4.3.4",
         "@aws-amplify/datastore": "^3.5.1",
         "@emotion/react": "^11.4.1",
